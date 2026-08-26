@@ -804,7 +804,69 @@ Add, edit or deactivate employees.
 </p>
 
 </div>
+<div class="status">
 
+    <h3>
+        🏢 Branch Management
+    </h3>
+
+    <p>
+        Create and manage branch accounts.
+    </p>
+
+    <input
+        type="text"
+        id="newBranchStoreId"
+        placeholder="Store ID"
+        style="width:100%;padding:12px;margin:6px 0;"
+    >
+
+    <input
+        type="text"
+        id="newBranchName"
+        placeholder="Branch Name"
+        style="width:100%;padding:12px;margin:6px 0;"
+    >
+
+    <input
+        type="number"
+        id="newBranchLatitude"
+        placeholder="Latitude"
+        step="any"
+        style="width:100%;padding:12px;margin:6px 0;"
+    >
+
+    <input
+        type="number"
+        id="newBranchLongitude"
+        placeholder="Longitude"
+        step="any"
+        style="width:100%;padding:12px;margin:6px 0;"
+    >
+
+    <input
+        type="number"
+        id="newBranchRadius"
+        placeholder="Attendance Radius (meters)"
+        value="100"
+        min="10"
+        style="width:100%;padding:12px;margin:6px 0;"
+    >
+
+    <button
+        class="primary"
+        onclick="createBranchAccount()"
+    >
+        ➕ Create Branch Account
+    </button>
+
+    <div
+        id="branchManagementMessage"
+        class="status"
+        style="margin-top:15px;"
+    ></div>
+
+</div>
 
 <!-- ADD EMPLOYEE -->
 
