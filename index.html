@@ -392,7 +392,13 @@ onclick="alert('Reports will be added next.')"
 >
 📊 Reports
 </button>
-
+    
+<button
+onclick="showPage('settingsPage'); loadEmployeesSettings()"
+>
+⚙️ Settings
+    
+</button>
 
 </div>
 
@@ -654,13 +660,136 @@ style="margin-top:20px;"
 
 </section>
 
+<!-- ================================================= -->
+<!-- SETTINGS -->
+<!-- ================================================= -->
 
+<section
+id="settingsPage"
+class="page"
+>
+
+<button
+class="back"
+onclick="showPage('dashboardPage')"
+>
+← Back to Dashboard
+</button>
+
+<h2>
+⚙️ Settings
+</h2>
+
+<div class="status">
+
+<h3>
+Employee Management
+</h3>
+
+<p>
+Add, edit or deactivate employees.
+</p>
+
+</div>
+
+
+<!-- ADD EMPLOYEE -->
+
+<div class="status">
+
+<h3>
+➕ Add Employee
+</h3>
+
+<input
+type="text"
+id="newStaffId"
+placeholder="Staff ID"
+style="width:100%;padding:12px;margin:6px 0;"
+>
+
+<input
+type="text"
+id="newFullName"
+placeholder="Full Name"
+style="width:100%;padding:12px;margin:6px 0;"
+>
+
+<input
+type="text"
+id="newRole"
+placeholder="Role"
+style="width:100%;padding:12px;margin:6px 0;"
+>
+
+<button
+class="primary"
+onclick="addEmployee()"
+>
+Add Employee
+</button>
+
+</div>
+
+
+<!-- EMPLOYEE LIST -->
+
+<div
+id="settingsEmployeesStatus"
+class="status loading"
+>
+Loading employees...
+</div>
+
+
+<div class="table-container">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>
+Staff ID
+</th>
+
+<th>
+Name
+</th>
+
+<th>
+Role
+</th>
+
+<th>
+Status
+</th>
+
+<th>
+Action
+</th>
+
+</tr>
+
+</thead>
+
+<tbody
+id="settingsEmployeesTable"
+>
+</tbody>
+
+</table>
+
+</div>
+
+</section>
 </div>
 
 
 <footer>
 
-Al Alameen Attendance System
+Al Alameen Attendance System @powerd by Ahmed Sobhy Basha
 
 </footer>
 
@@ -772,6 +901,373 @@ function showPage(pageId) {
 
 }
 
+ // =====================================================
+// SETTINGS - LOAD EMPLOYEES
+// =====================================================
+
+async function loadEmployeesSettings() {
+
+    const table =
+        document.getElementById(
+            "settingsEmployeesTable"
+        );
+
+    const status =
+        document.getElementById(
+            "settingsEmployeesStatus"
+        );
+
+    try {
+
+        status.textContent =
+            "Loading employees...";
+
+        status.className =
+            "status loading";
+
+
+        const employees =
+            await supabaseRequest(
+                "/rest/v1/employees" +
+                "?select=id,staff_id,full_name,role,active" +
+                "&order=staff_id.asc"
+            );
+
+
+        table.innerHTML = "";
+
+
+        employees.forEach(
+            employee => {
+
+                const row =
+                    document.createElement("tr");
+
+
+                row.innerHTML = `
+
+<td>
+${escapeHTML(employee.staff_id)}
+</td>
+
+<td>
+${escapeHTML(employee.full_name)}
+</td>
+
+<td>
+${escapeHTML(employee.role || "-")}
+</td>
+
+<td class="${
+    employee.active
+    ? "success"
+    : "error"
+}">
+${
+    employee.active
+    ? "Active"
+    : "Inactive"
+}
+</td>
+
+<td>
+
+${
+employee.active
+
+?
+
+`<button
+onclick="deactivateEmployee(${employee.id})"
+class="danger"
+>
+Deactivate
+</button>`
+
+:
+
+`<button
+onclick="activateEmployee(${employee.id})"
+class="primary"
+>
+Activate
+</button>`
+
+}
+
+</td>
+
+`;
+
+
+                table.appendChild(row);
+
+            }
+        );
+
+
+        status.textContent =
+            employees.length +
+            " employees loaded.";
+
+        status.className =
+            "status success";
+
+    }
+
+    catch(error) {
+
+        console.error(error);
+
+        status.textContent =
+            "Error: " +
+            error.message;
+
+        status.className =
+            "status error";
+
+    }
+
+}
+
+
+// =====================================================
+// ADD EMPLOYEE
+// =====================================================
+
+async function addEmployee() {
+
+    const staffId =
+        document.getElementById(
+            "newStaffId"
+        ).value.trim();
+
+
+    const fullName =
+        document.getElementById(
+            "newFullName"
+        ).value.trim();
+
+
+    const role =
+        document.getElementById(
+            "newRole"
+        ).value.trim();
+
+
+    if (!staffId || !fullName) {
+
+        alert(
+            "Staff ID and Full Name are required."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const branch =
+            await supabaseRequest(
+                "/rest/v1/branches" +
+                "?select=id" +
+                "&limit=1"
+            );
+
+
+        const branchId =
+            branch.length
+            ? branch[0].id
+            : null;
+
+
+        await supabaseRequest(
+            "/rest/v1/employees",
+            {
+                method: "POST",
+
+                headers: {
+                    "Prefer": "return=minimal"
+                },
+
+                body: JSON.stringify({
+
+                    staff_id: staffId,
+
+                    full_name: fullName,
+
+                    role: role || null,
+
+                    branch_id: branchId,
+
+                    active: true
+
+                })
+
+            }
+        );
+
+
+        alert(
+            "Employee added successfully."
+        );
+
+
+        document.getElementById(
+            "newStaffId"
+        ).value = "";
+
+
+        document.getElementById(
+            "newFullName"
+        ).value = "";
+
+
+        document.getElementById(
+            "newRole"
+        ).value = "";
+
+
+        loadEmployeesSettings();
+
+        loadEmployeeCount();
+
+    }
+
+    catch(error) {
+
+        console.error(error);
+
+        alert(
+            "Error adding employee:\n" +
+            error.message
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// DEACTIVATE EMPLOYEE
+// =====================================================
+
+async function deactivateEmployee(id) {
+
+    const confirmed =
+        confirm(
+            "Are you sure you want to deactivate this employee?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    try {
+
+        await supabaseRequest(
+
+            "/rest/v1/employees" +
+            "?id=eq." +
+            id,
+
+            {
+                method: "PATCH",
+
+                headers: {
+                    "Prefer": "return=minimal"
+                },
+
+                body: JSON.stringify({
+                    active: false
+                })
+
+            }
+
+        );
+
+
+        alert(
+            "Employee deactivated successfully."
+        );
+
+
+        loadEmployeesSettings();
+
+        loadEmployeeCount();
+
+    }
+
+    catch(error) {
+
+        console.error(error);
+
+        alert(
+            "Error:\n" +
+            error.message
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// ACTIVATE EMPLOYEE
+// =====================================================
+
+async function activateEmployee(id) {
+
+    try {
+
+        await supabaseRequest(
+
+            "/rest/v1/employees" +
+            "?id=eq." +
+            id,
+
+            {
+                method: "PATCH",
+
+                headers: {
+                    "Prefer": "return=minimal"
+                },
+
+                body: JSON.stringify({
+                    active: true
+                })
+
+            }
+
+        );
+
+
+        alert(
+            "Employee activated successfully."
+        );
+
+
+        loadEmployeesSettings();
+
+        loadEmployeeCount();
+
+    }
+
+    catch(error) {
+
+        console.error(error);
+
+        alert(
+            "Error:\n" +
+            error.message
+        );
+
+    }
+
+}   
 // =====================================================
 // DATE
 // =====================================================
