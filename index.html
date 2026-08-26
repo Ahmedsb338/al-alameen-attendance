@@ -456,63 +456,81 @@ System Management
 </h2>
 
 
-<div class="menu">
+<h2>
+System Management
+</h2>
 
 
-<button
-onclick="showPage('employeesPage')"
+<div
+    class="menu"
+    id="dashboardMenu"
 >
-👥 Employees
-</button>
 
 
-<button
-onclick="showPage('schedulePage'); loadSchedule()"
->
-📅 Shift Schedule
-</button>
+    <button
+        id="employeesMenuButton"
+        onclick="showPage('employeesPage')"
+    >
+        👥 Employees
+    </button>
 
 
-<button
-onclick="showPage('importPage')"
->
-📥 Import Excel
-</button>
+    <button
+        id="scheduleMenuButton"
+        onclick="showPage('schedulePage'); loadSchedule()"
+    >
+        📅 Shift Schedule
+    </button>
 
 
-<button
-onclick="alert('Export Excel will be added next.')"
->
-📤 Export Excel
-</button>
+    <button
+        id="importMenuButton"
+        onclick="showPage('importPage')"
+    >
+        📥 Import Excel
+    </button>
 
 
-<button
-onclick="alert('Attendance will be added next.')"
->
-🕐 Attendance
-</button>
+    <button
+        id="exportMenuButton"
+        onclick="alert('Export Excel will be added next.')"
+    >
+        📤 Export Excel
+    </button>
 
 
-<button
-onclick="alert('Reports will be added next.')"
->
-📊 Reports
-</button>
-    
-<button
-onclick="showPage('settingsPage'); loadEmployeesSettings()"
->
-⚙️ Settings
-</button>
-    
-<button
-    onclick="logoutUser()"
-    class="logout-button"
->
-    🚪 Logout
-</button>
-    
+    <button
+        id="attendanceMenuButton"
+        onclick="alert('Attendance will be added next.')"
+    >
+        🕐 Attendance
+    </button>
+
+
+    <button
+        id="reportsMenuButton"
+        onclick="alert('Reports will be added next.')"
+    >
+        📊 Reports
+    </button>
+
+
+    <button
+        id="settingsMenuButton"
+        onclick="showPage('settingsPage'); loadEmployeesSettings()"
+    >
+        ⚙️ Settings
+    </button>
+
+
+    <button
+        onclick="logoutUser()"
+        class="logout-button"
+    >
+        🚪 Logout
+    </button>
+
+
 </div>
 
 
@@ -2366,6 +2384,10 @@ async function checkLoginSession() {
         document.getElementById("dashboardPage");
 
 
+    // =========================================
+    // No session
+    // =========================================
+
     if (!accessToken) {
 
         loginPage.style.display = "flex";
@@ -2378,16 +2400,339 @@ async function checkLoginSession() {
     }
 
 
-    // User is already logged in
-    loginPage.style.display = "none";
+    try {
 
-    dashboardPage.style.display = "block";
+        // =========================================
+        // Get current user from Supabase Auth
+        // =========================================
 
-    dashboardPage.classList.add("active");
+        const userResponse =
+            await fetch(
+                SUPABASE_URL +
+                "/auth/v1/user",
+                {
+                    method: "GET",
+
+                    headers: {
+                        "apikey": SUPABASE_KEY,
+                        "Authorization":
+                            "Bearer " + accessToken
+                    }
+                }
+            );
+
+
+        const user =
+            await userResponse.json();
+
+
+        if (!userResponse.ok || !user.id) {
+
+            throw new Error(
+                "Session expired."
+            );
+        }
+
+
+        // =========================================
+        // Get user profile
+        // =========================================
+
+        const profileResponse =
+            await fetch(
+                SUPABASE_URL +
+                "/rest/v1/profiles?id=eq." +
+                user.id +
+                "&select=*",
+                {
+                    method: "GET",
+
+                    headers: {
+                        "apikey": SUPABASE_KEY,
+                        "Authorization":
+                            "Bearer " + accessToken
+                    }
+                }
+            );
+
+
+        const profiles =
+            await profileResponse.json();
+
+
+        if (
+            !profileResponse.ok ||
+            !profiles.length
+        ) {
+
+            throw new Error(
+                "User profile not found."
+            );
+        }
+
+
+        const profile =
+            profiles[0];
+
+
+        // =========================================
+        // Check active account
+        // =========================================
+
+        if (profile.active !== true) {
+
+            throw new Error(
+                "This account has been deactivated."
+            );
+        }
+
+
+        // =========================================
+        // Save current user information
+        // =========================================
+
+        window.currentUserProfile =
+            profile;
+
+
+        // =========================================
+        // Hide Login
+        // =========================================
+
+        loginPage.style.display =
+            "none";
+
+        dashboardPage.style.display =
+            "block";
+
+        dashboardPage.classList.add(
+            "active"
+        );
+
+
+        // =========================================
+        // Apply permissions
+        // =========================================
+
+        applyRolePermissions(
+            profile.role
+        );
+
+
+        // =========================================
+        // Load Branch Header
+        // =========================================
+
+        if (
+            typeof loadBranchHeader ===
+            "function"
+        ) {
+
+            await loadBranchHeader();
+        }
+
+
+    } catch (error) {
+
+        console.error(error);
+
+
+        // Remove invalid session
+
+        localStorage.removeItem(
+            "access_token"
+        );
+
+        localStorage.removeItem(
+            "refresh_token"
+        );
+
+
+        loginPage.style.display =
+            "flex";
+
+        dashboardPage.style.display =
+            "none";
+
+        dashboardPage.classList.remove(
+            "active"
+        );
+
+
+        const errorBox =
+            document.getElementById(
+                "loginError"
+            );
+
+
+        if (errorBox) {
+
+            errorBox.textContent =
+                error.message;
+        }
+    }
 }
 
 
 // Check session when page loads
+document.addEventListener(
+    "DOMContentLoaded",
+    checkLoginSession
+);
+// =====================================================
+// ROLE-BASED DASHBOARD PERMISSIONS
+// =====================================================
+
+function applyRolePermissions(role) {
+
+    // =========================================
+    // Get dashboard buttons
+    // =========================================
+
+    const employeesButton =
+        document.getElementById(
+            "employeesMenuButton"
+        );
+
+    const scheduleButton =
+        document.getElementById(
+            "scheduleMenuButton"
+        );
+
+    const importButton =
+        document.getElementById(
+            "importMenuButton"
+        );
+
+    const exportButton =
+        document.getElementById(
+            "exportMenuButton"
+        );
+
+    const attendanceButton =
+        document.getElementById(
+            "attendanceMenuButton"
+        );
+
+    const reportsButton =
+        document.getElementById(
+            "reportsMenuButton"
+        );
+
+    const settingsButton =
+        document.getElementById(
+            "settingsMenuButton"
+        );
+
+
+    // =========================================
+    // Hide everything first
+    // =========================================
+
+    if (employeesButton)
+        employeesButton.style.display = "none";
+
+    if (scheduleButton)
+        scheduleButton.style.display = "none";
+
+    if (importButton)
+        importButton.style.display = "none";
+
+    if (exportButton)
+        exportButton.style.display = "none";
+
+    if (attendanceButton)
+        attendanceButton.style.display = "none";
+
+    if (reportsButton)
+        reportsButton.style.display = "none";
+
+    if (settingsButton)
+        settingsButton.style.display = "none";
+
+
+    // =========================================
+    // SUPER ADMIN
+    // =========================================
+
+    if (role === "Super Admin") {
+
+        if (employeesButton)
+            employeesButton.style.display = "block";
+
+        if (scheduleButton)
+            scheduleButton.style.display = "block";
+
+        if (importButton)
+            importButton.style.display = "block";
+
+        if (exportButton)
+            exportButton.style.display = "block";
+
+        if (attendanceButton)
+            attendanceButton.style.display = "block";
+
+        if (reportsButton)
+            reportsButton.style.display = "block";
+
+        if (settingsButton)
+            settingsButton.style.display = "block";
+
+        return;
+    }
+
+
+    // =========================================
+    // BRANCH MANAGER
+    // =========================================
+
+    if (role === "Branch Manager") {
+
+        if (employeesButton)
+            employeesButton.style.display = "block";
+
+        if (scheduleButton)
+            scheduleButton.style.display = "block";
+
+        if (exportButton)
+            exportButton.style.display = "block";
+
+        if (attendanceButton)
+            attendanceButton.style.display = "block";
+
+        if (settingsButton)
+            settingsButton.style.display = "block";
+
+        return;
+    }
+
+
+    // =========================================
+    // EMPLOYEE
+    // =========================================
+
+    if (role === "Employee") {
+
+        if (scheduleButton)
+            scheduleButton.style.display = "block";
+
+        if (attendanceButton)
+            attendanceButton.style.display = "block";
+
+        return;
+    }
+
+
+    // =========================================
+    // Unknown role
+    // =========================================
+
+    console.warn(
+        "Unknown user role:",
+        role
+    );
+}
+    
 document.addEventListener(
     "DOMContentLoaded",
     checkLoginSession
