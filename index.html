@@ -12,7 +12,64 @@
 * {
     box-sizing: border-box;
 }
+.login-page {
+    min-height: 100vh;
 
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #f4f6f8;
+
+    padding: 20px;
+}
+
+.login-box {
+    width: 100%;
+
+    max-width: 400px;
+
+    background: white;
+
+    padding: 30px;
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 5px 25px rgba(0,0,0,0.10);
+
+    text-align: center;
+}
+
+.login-box h1 {
+    margin-bottom: 10px;
+}
+
+.login-box p {
+    color: #6b7280;
+
+    margin-bottom: 25px;
+}
+
+.login-box input {
+    width: 100%;
+
+    padding: 14px;
+
+    margin-bottom: 12px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 8px;
+
+    font-size: 15px;
+}
+
+.login-button {
+    width: 100%;
+}
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -238,7 +295,50 @@ footer {
 
 <body>
 
+<!-- LOGIN PAGE -->
 
+<div id="loginPage" class="login-page">
+
+    <div class="login-box">
+
+        <h1>
+            Al Alameen Attendance
+        </h1>
+
+        <p>
+            Please login to continue
+        </p>
+
+        <input
+            type="email"
+            id="loginEmail"
+            placeholder="Email"
+            autocomplete="username"
+        >
+
+        <input
+            type="password"
+            id="loginPassword"
+            placeholder="Password"
+            autocomplete="current-password"
+        >
+
+        <button
+            class="primary login-button"
+            onclick="loginUser()"
+        >
+            Login
+        </button>
+
+        <div
+            id="loginError"
+            class="error"
+            style="margin-top:15px;"
+        ></div>
+
+    </div>
+
+</div>
 <header>
 
 <h1>
@@ -809,7 +909,130 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
 "sb_publishable_BeMQaIT1VmSjOb9B4t8VdA_QQAkS-jF";
 
+// =====================================================
+// AUTHENTICATION
+// =====================================================
 
+async function loginUser() {
+
+    const email =
+        document.getElementById("loginEmail").value.trim();
+
+    const password =
+        document.getElementById("loginPassword").value;
+
+
+    const errorBox =
+        document.getElementById("loginError");
+
+
+    errorBox.textContent = "";
+
+
+    if (!email || !password) {
+
+        errorBox.textContent =
+            "Please enter email and password.";
+
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                SUPABASE_URL +
+                "/auth/v1/token?grant_type=password",
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "apikey":
+                            SUPABASE_KEY,
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body: JSON.stringify({
+
+                        email: email,
+
+                        password: password
+
+                    })
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error_description ||
+                data.msg ||
+                "Login failed."
+            );
+
+        }
+
+
+        // Save session
+        localStorage.setItem(
+            "access_token",
+            data.access_token
+        );
+
+
+        localStorage.setItem(
+            "refresh_token",
+            data.refresh_token
+        );
+
+
+        // Hide login
+        document.getElementById(
+            "loginPage"
+        ).style.display = "none";
+
+
+        // Show dashboard
+        document.getElementById(
+            "dashboardPage"
+        ).classList.add("active");
+
+
+        document.getElementById(
+            "systemStatus"
+        ).textContent =
+            "Logged in successfully.";
+
+        document.getElementById(
+            "systemStatus"
+        ).className =
+            "success";
+
+
+    }
+
+    catch(error) {
+
+        console.error(error);
+
+        errorBox.textContent =
+            error.message;
+
+    }
+
+}
 // =====================================================
 // SUPABASE REQUEST
 // =====================================================
