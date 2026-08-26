@@ -500,11 +500,11 @@ System Management
 
 
     <button
-        id="attendanceMenuButton"
-        onclick="alert('Attendance will be added next.')"
-    >
-        🕐 Attendance
-    </button>
+    id="attendanceMenuButton"
+    onclick="showPage('attendancePage'); loadAttendancePage()"
+>
+    🕐 Attendance
+</button>
 
 
     <button
@@ -978,7 +978,115 @@ id="settingsEmployeesTable"
 
 </section>
 </div>
+<!-- =====================================================
+     ATTENDANCE PAGE
+===================================================== -->
 
+<section
+    id="attendancePage"
+    class="page"
+>
+
+    <button
+        class="back"
+        onclick="showPage('dashboardPage')"
+    >
+        ← Back to Dashboard
+    </button>
+
+
+    <h2>
+        🕐 Attendance
+    </h2>
+
+
+    <div class="cards">
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Today's Status
+            </div>
+
+            <div
+                id="myAttendanceStatus"
+                class="card-value"
+            >
+                -
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Check In
+            </div>
+
+            <div
+                id="myCheckInTime"
+                class="card-value"
+                style="font-size:20px;"
+            >
+                -
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Check Out
+            </div>
+
+            <div
+                id="myCheckOutTime"
+                class="card-value"
+                style="font-size:20px;"
+            >
+                -
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="menu">
+
+
+        <button
+            id="checkInButton"
+            onclick="checkIn()"
+        >
+            🟢 Check In
+        </button>
+
+
+        <button
+            id="checkOutButton"
+            onclick="checkOut()"
+        >
+            🔴 Check Out
+        </button>
+
+
+    </div>
+
+
+    <div
+        id="attendancePageStatus"
+        class="status"
+    >
+        Ready
+    </div>
+
+
+</section>
 
 <footer>
 
