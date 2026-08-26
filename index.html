@@ -309,11 +309,11 @@ footer {
             Please login to continue
         </p>
 
-        <input
-            type="email"
-            id="loginEmail"
-            placeholder="Email"
-            autocomplete="username"
+         <input
+          type="text"
+          id="loginEmail"
+          placeholder="Username"
+          autocomplete="username"
         >
 
         <input
@@ -498,7 +498,13 @@ onclick="showPage('settingsPage'); loadEmployeesSettings()"
 >
 ⚙️ Settings
 </button>
-
+    
+<button
+    onclick="logoutUser()"
+    class="logout-button"
+>
+    🚪 Logout
+</button>
     
 </div>
 
@@ -889,7 +895,7 @@ id="settingsEmployeesTable"
 
 <footer>
 
-Al Alameen Attendance System @powerd by Ahmed Sobhy Basha
+Al Alameen Attendance System @powered by Ahmed Sobhy Basha
 
 </footer>
 
@@ -915,75 +921,93 @@ const SUPABASE_KEY =
 
 async function loginUser() {
 
-    const email =
-        document.getElementById("loginEmail").value.trim();
+    const username =
+        document
+            .getElementById("loginEmail")
+            .value
+            .trim();
 
     const password =
-        document.getElementById("loginPassword").value;
-
+        document
+            .getElementById("loginPassword")
+            .value;
 
     const errorBox =
-        document.getElementById("loginError");
-
+        document
+            .getElementById("loginError");
 
     errorBox.textContent = "";
 
-
-    if (!email || !password) {
-
+    if (!username || !password) {
         errorBox.textContent =
-            "Please enter email and password.";
-
+            "Please enter username and password.";
         return;
     }
 
-
     try {
 
-        const response =
+        // Find the Auth email linked to this username
+        const lookupResponse =
+            await fetch(
+                SUPABASE_URL +
+                "/rest/v1/rpc/get_login_email",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "apikey": SUPABASE_KEY,
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        p_login_id: username
+                    })
+                }
+            );
+
+        const authEmail =
+            await lookupResponse.json();
+
+        if (
+            !lookupResponse.ok ||
+            !authEmail
+        ) {
+            throw new Error(
+                "Username not found."
+            );
+        }
+
+        // Login to Supabase Auth
+        const loginResponse =
             await fetch(
                 SUPABASE_URL +
                 "/auth/v1/token?grant_type=password",
                 {
-
                     method: "POST",
 
                     headers: {
-
-                        "apikey":
-                            SUPABASE_KEY,
-
+                        "apikey": SUPABASE_KEY,
                         "Content-Type":
                             "application/json"
-
                     },
 
                     body: JSON.stringify({
-
-                        email: email,
-
+                        email: authEmail,
                         password: password
-
                     })
-
                 }
             );
 
-
         const data =
-            await response.json();
+            await loginResponse.json();
 
-
-        if (!response.ok) {
-
+        if (!loginResponse.ok) {
             throw new Error(
                 data.error_description ||
-                data.msg ||
-                "Login failed."
+                "Invalid username or password."
             );
-
         }
-
 
         // Save session
         localStorage.setItem(
@@ -991,39 +1015,22 @@ async function loginUser() {
             data.access_token
         );
 
-
         localStorage.setItem(
             "refresh_token",
             data.refresh_token
         );
 
-
-        // Hide login
+        // Hide Login
         document.getElementById(
             "loginPage"
         ).style.display = "none";
 
-
-        // Show dashboard
+        // Show Dashboard
         document.getElementById(
             "dashboardPage"
         ).classList.add("active");
 
-
-        document.getElementById(
-            "systemStatus"
-        ).textContent =
-            "Logged in successfully.";
-
-        document.getElementById(
-            "systemStatus"
-        ).className =
-            "success";
-
-
-    }
-
-    catch(error) {
+    } catch (error) {
 
         console.error(error);
 
@@ -1031,7 +1038,6 @@ async function loginUser() {
             error.message;
 
     }
-
 }
 // =====================================================
 // SUPABASE REQUEST
@@ -2116,7 +2122,36 @@ async function initialize() {
 
 
 initialize();
+function logoutUser() {
 
+    localStorage.removeItem(
+        "access_token"
+    );
+
+    localStorage.removeItem(
+        "refresh_token"
+    );
+
+    document.getElementById(
+        "dashboardPage"
+    ).classList.remove("active");
+
+    document.getElementById(
+        "loginPage"
+    ).style.display = "flex";
+
+    document.getElementById(
+        "loginEmail"
+    ).value = "";
+
+    document.getElementById(
+        "loginPassword"
+    ).value = "";
+
+    document.getElementById(
+        "loginError"
+    ).textContent = "";
+}
 </script>
 
 
