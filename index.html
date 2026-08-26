@@ -2380,10 +2380,71 @@ async function loadBranch() {
 
     try {
 
+        const profileData =
+            await supabaseRequest(
+                "/rest/v1/profiles" +
+                "?select=role,branch_id" +
+                "&limit=1"
+            );
+
+
+        if (
+            !profileData ||
+            !profileData.length
+        ) {
+
+            document.getElementById(
+                "branchName"
+            ).textContent =
+                "Not Found";
+
+            return false;
+        }
+
+
+        const profile =
+            profileData[0];
+
+
+        // =========================================
+        // SUPER ADMIN
+        // =========================================
+
+        if (
+            profile.role ===
+            "Super Admin"
+        ) {
+
+            document.getElementById(
+                "branchName"
+            ).textContent =
+                "Quantech HR";
+
+            return true;
+        }
+
+
+        // =========================================
+        // BRANCH USER
+        // =========================================
+
+        if (!profile.branch_id) {
+
+            document.getElementById(
+                "branchName"
+            ).textContent =
+                "Not Found";
+
+            return false;
+        }
+
+
         const data =
             await supabaseRequest(
                 "/rest/v1/branches" +
                 "?select=name" +
+                "&id=eq." +
+                profile.branch_id +
                 "&limit=1"
             );
 
@@ -2391,9 +2452,9 @@ async function loadBranch() {
         document.getElementById(
             "branchName"
         ).textContent =
-        data.length
-        ? data[0].name
-        : "Not Found";
+            data.length
+            ? data[0].name
+            : "Not Found";
 
 
         return true;
@@ -2402,12 +2463,15 @@ async function loadBranch() {
 
     catch(error) {
 
-        console.error(error);
+        console.error(
+            "loadBranch error:",
+            error
+        );
 
         document.getElementById(
             "branchName"
         ).textContent =
-        "Error";
+            "Error";
 
         return false;
 
