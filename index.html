@@ -1021,15 +1021,14 @@ async function loginUser() {
         );
 
         // Hide Login
-        document.getElementById(
-            "loginPage"
-        ).style.display = "none";
+document.getElementById("loginPage").style.display = "none";
 
-        // Show Dashboard
-        document.getElementById(
-            "dashboardPage"
-        ).classList.add("active");
+// Show Dashboard
+const dashboard =
+    document.getElementById("dashboardPage");
 
+dashboard.style.display = "block";
+dashboard.classList.add("active");
     } catch (error) {
 
         console.error(error);
