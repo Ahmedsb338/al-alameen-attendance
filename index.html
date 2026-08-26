@@ -1,864 +1,1386 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Al Alameen Attendance System</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f4f6f8;
-            color: #1f2937;
-        }
+<title>Al Alameen Attendance System</title>
 
-        header {
-            background: #111827;
-            color: white;
-            padding: 22px 20px;
-        }
+<style>
 
-        header h1 {
-            margin: 0;
-            font-size: 24px;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        header p {
-            margin: 7px 0 0;
-            color: #d1d5db;
-        }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    color: #1f2937;
+}
 
-        .container {
-            max-width: 1200px;
-            margin: auto;
-            padding: 25px 20px;
-        }
+header {
+    background: #111827;
+    color: white;
+    padding: 22px;
+}
 
-        .page {
-            display: none;
-        }
+header h1 {
+    margin: 0;
+    font-size: 23px;
+}
 
-        .page.active {
-            display: block;
-        }
+header p {
+    margin: 6px 0 0;
+    color: #d1d5db;
+}
 
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-            gap: 18px;
-            margin: 20px 0 30px;
-        }
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 25px 18px;
+}
 
-        .card {
-            background: white;
-            padding: 22px;
-            border-radius: 12px;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
-        }
+.page {
+    display: none;
+}
 
-        .card-title {
-            color: #6b7280;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
+.page.active {
+    display: block;
+}
 
-        .card-value {
-            font-size: 28px;
-            font-weight: bold;
-        }
+.cards {
+    display: grid;
+    grid-template-columns:
+        repeat(auto-fit, minmax(200px, 1fr));
 
-        .menu {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
+    gap: 18px;
 
-        button {
-            border: none;
-            border-radius: 10px;
-            padding: 16px;
-            background: white;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
-            font-size: 15px;
-            cursor: pointer;
-        }
+    margin: 25px 0;
+}
 
-        button:hover {
-            background: #eef2ff;
-        }
+.card {
+    background: white;
+    padding: 22px;
+    border-radius: 12px;
 
-        .back {
-            background: #111827;
-            color: white;
-            margin-bottom: 20px;
-        }
+    box-shadow:
+        0 3px 12px rgba(0,0,0,0.07);
+}
 
-        .table-container {
-            background: white;
-            border-radius: 12px;
-            padding: 15px;
-            overflow-x: auto;
-            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
-        }
+.card-title {
+    color: #6b7280;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 650px;
-        }
+.card-value {
+    font-size: 28px;
+    font-weight: bold;
+}
 
-        th,
-        td {
-            padding: 13px 10px;
-            text-align: left;
-            border-bottom: 1px solid #e5e7eb;
-        }
+.menu {
+    display: grid;
 
-        th {
-            background: #f8fafc;
-            font-size: 14px;
-        }
+    grid-template-columns:
+        repeat(auto-fit, minmax(180px, 1fr));
 
-        td {
-            font-size: 14px;
-        }
+    gap: 15px;
+}
 
-        .active {
-            color: #15803d;
-            font-weight: bold;
-        }
+button {
+    border: none;
+    border-radius: 10px;
 
-        .inactive {
-            color: #dc2626;
-            font-weight: bold;
-        }
+    padding: 16px;
 
-        .status {
-            margin-top: 20px;
-            padding: 15px;
-            background: white;
-            border-radius: 10px;
-        }
+    background: white;
 
-        .success {
-            color: #15803d;
-        }
+    box-shadow:
+        0 3px 12px rgba(0,0,0,0.07);
 
-        .error {
-            color: #dc2626;
-        }
+    cursor: pointer;
 
-        .loading {
-            color: #ca8a04;
-        }
+    font-size: 15px;
+}
 
-        footer {
-            text-align: center;
-            padding: 30px;
-            color: #6b7280;
-            font-size: 13px;
-        }
-    </style>
+button:hover {
+    background: #eef2ff;
+}
+
+.back {
+    background: #111827;
+    color: white;
+
+    margin-bottom: 20px;
+}
+
+.table-container {
+    background: white;
+
+    border-radius: 12px;
+
+    padding: 15px;
+
+    overflow-x: auto;
+
+    box-shadow:
+        0 3px 12px rgba(0,0,0,0.07);
+}
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    min-width: 700px;
+}
+
+th,
+td {
+    padding: 12px;
+
+    border-bottom:
+        1px solid #e5e7eb;
+
+    text-align: left;
+}
+
+th {
+    background: #f8fafc;
+}
+
+.status {
+    margin: 20px 0;
+
+    padding: 15px;
+
+    background: white;
+
+    border-radius: 10px;
+}
+
+.success {
+    color: #15803d;
+}
+
+.error {
+    color: #dc2626;
+}
+
+.loading {
+    color: #ca8a04;
+}
+
+input[type="file"] {
+    width: 100%;
+
+    padding: 15px;
+
+    background: white;
+
+    border-radius: 10px;
+
+    border: 1px solid #ddd;
+
+    margin: 15px 0;
+}
+
+.primary {
+    background: #2563eb;
+    color: white;
+}
+
+.danger {
+    background: #dc2626;
+    color: white;
+}
+
+.schedule-table th,
+.schedule-table td {
+    text-align: center;
+    white-space: nowrap;
+}
+
+.shift-AM {
+    background: #dcfce7;
+}
+
+.shift-PM {
+    background: #dbeafe;
+}
+
+.shift-Support {
+    background: #fef3c7;
+}
+
+.shift-OFF {
+    background: #f3f4f6;
+}
+
+.shift-Annual {
+    background: #fee2e2;
+}
+
+footer {
+    text-align: center;
+
+    padding: 30px;
+
+    color: #6b7280;
+}
+
+</style>
+
 </head>
+
 
 <body>
 
+
 <header>
-    <h1>Al Alameen Attendance System</h1>
-    <p>Al Alameen Store</p>
+
+<h1>
+Al Alameen Attendance System
+</h1>
+
+<p>
+Al Alameen Store
+</p>
+
 </header>
+
 
 <div class="container">
 
-    <!-- ================= DASHBOARD ================= -->
 
-    <section id="dashboardPage" class="page active">
+<!-- ================================================= -->
+<!-- DASHBOARD -->
+<!-- ================================================= -->
 
-        <h2>Dashboard</h2>
+<section
+id="dashboardPage"
+class="page active"
+>
 
-        <p>
-            Attendance Management System
-        </p>
+<h2>
+Dashboard
+</h2>
 
-        <div class="cards">
-
-            <div class="card">
-                <div class="card-title">
-                    Active Employees
-                </div>
-
-                <div
-                    class="card-value"
-                    id="employeeCount"
-                >
-                    Loading...
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-title">
-                    Today's Attendance
-                </div>
-
-                <div
-                    class="card-value"
-                    id="attendanceCount"
-                >
-                    Loading...
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-title">
-                    Branch
-                </div>
-
-                <div
-                    class="card-value"
-                    id="branchName"
-                    style="font-size:20px;"
-                >
-                    Loading...
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-title">
-                    Date
-                </div>
-
-                <div
-                    class="card-value"
-                    id="todayDate"
-                    style="font-size:20px;"
-                >
-                    -
-                </div>
-            </div>
-
-        </div>
+<p>
+Attendance Management System
+</p>
 
 
-        <h2>System Management</h2>
-
-        <div class="menu">
-
-            <button onclick="showPage('employeesPage')">
-                👥 Employees
-            </button>
-
-            <button onclick="comingSoon('Shift Schedule')">
-                📅 Shift Schedule
-            </button>
-
-            <button onclick="comingSoon('Import Excel')">
-                📥 Import Excel
-            </button>
-
-            <button onclick="comingSoon('Export Excel')">
-                📤 Export Excel
-            </button>
-
-            <button onclick="comingSoon('Attendance')">
-                🕐 Attendance
-            </button>
-
-            <button onclick="comingSoon('Reports')">
-                📊 Reports
-            </button>
-
-        </div>
+<div class="cards">
 
 
-        <div class="status">
-            <strong>System Status:</strong>
+<div class="card">
 
-            <span id="systemStatus" class="loading">
-                Connecting...
-            </span>
-        </div>
+<div class="card-title">
+Active Employees
+</div>
 
-    </section>
+<div
+id="employeeCount"
+class="card-value"
+>
+Loading...
+</div>
 
-
-    <!-- ================= EMPLOYEES ================= -->
-
-    <section id="employeesPage" class="page">
-
-        <button
-            class="back"
-            onclick="showPage('dashboardPage')"
-        >
-            ← Back to Dashboard
-        </button>
-
-        <h2>Employees</h2>
-
-        <p>
-            Al Alameen Store Employees
-        </p>
+</div>
 
 
-        <div
-            id="employeesStatus"
-            class="status loading"
-        >
-            Loading employees...
-        </div>
+<div class="card">
+
+<div class="card-title">
+Today's Attendance
+</div>
+
+<div
+id="attendanceCount"
+class="card-value"
+>
+Loading...
+</div>
+
+</div>
 
 
-        <div class="table-container">
+<div class="card">
 
-            <table>
+<div class="card-title">
+Branch
+</div>
 
-                <thead>
+<div
+id="branchName"
+class="card-value"
+style="font-size:20px;"
+>
+Loading...
+</div>
 
-                    <tr>
-                        <th>#</th>
-                        <th>Staff ID</th>
-                        <th>Full Name</th>
-                        <th>Role</th>
-                        <th>Shift</th>
-                        <th>Status</th>
-                    </tr>
+</div>
 
-                </thead>
 
-                <tbody id="employeesTable">
+<div class="card">
 
-                </tbody>
+<div class="card-title">
+Today's Date
+</div>
 
-            </table>
+<div
+id="todayDate"
+class="card-value"
+style="font-size:20px;"
+>
+-
+</div>
 
-        </div>
+</div>
 
-    </section>
+</div>
+
+
+<h2>
+System Management
+</h2>
+
+
+<div class="menu">
+
+
+<button
+onclick="showPage('employeesPage')"
+>
+👥 Employees
+</button>
+
+
+<button
+onclick="showPage('schedulePage'); loadSchedule()"
+>
+📅 Shift Schedule
+</button>
+
+
+<button
+onclick="showPage('importPage')"
+>
+📥 Import Excel
+</button>
+
+
+<button
+onclick="alert('Export Excel will be added next.')"
+>
+📤 Export Excel
+</button>
+
+
+<button
+onclick="alert('Attendance will be added next.')"
+>
+🕐 Attendance
+</button>
+
+
+<button
+onclick="alert('Reports will be added next.')"
+>
+📊 Reports
+</button>
+
+
+</div>
+
+
+<div class="status">
+
+<strong>
+System Status:
+</strong>
+
+<span
+id="systemStatus"
+class="loading"
+>
+Connecting...
+</span>
+
+</div>
+
+</section>
+
+
+
+<!-- ================================================= -->
+<!-- EMPLOYEES -->
+<!-- ================================================= -->
+
+<section
+id="employeesPage"
+class="page"
+>
+
+<button
+class="back"
+onclick="showPage('dashboardPage')"
+>
+← Back to Dashboard
+</button>
+
+
+<h2>
+Employees
+</h2>
+
+
+<div
+id="employeesStatus"
+class="status loading"
+>
+Loading...
+</div>
+
+
+<div class="table-container">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>
+#
+</th>
+
+<th>
+Staff ID
+</th>
+
+<th>
+Full Name
+</th>
+
+<th>
+Role
+</th>
+
+<th>
+Status
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody
+id="employeesTable"
+>
+</tbody>
+
+</table>
+
+</div>
+
+</section>
+
+
+
+<!-- ================================================= -->
+<!-- SHIFT SCHEDULE -->
+<!-- ================================================= -->
+
+<section
+id="schedulePage"
+class="page"
+>
+
+<button
+class="back"
+onclick="showPage('dashboardPage')"
+>
+← Back to Dashboard
+</button>
+
+
+<h2>
+Shift Schedule
+</h2>
+
+
+<div
+id="scheduleStatus"
+class="status loading"
+>
+Loading schedule...
+</div>
+
+
+<div class="table-container">
+
+<table
+class="schedule-table"
+>
+
+<thead>
+
+<tr>
+
+<th>
+Date
+</th>
+
+<th>
+121090
+</th>
+
+<th>
+121040
+</th>
+
+<th>
+125453
+</th>
+
+<th>
+126439
+</th>
+
+<th>
+127981
+</th>
+
+<th>
+126225
+</th>
+
+<th>
+129776
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody
+id="scheduleTable"
+>
+</tbody>
+
+</table>
+
+</div>
+
+</section>
+
+
+
+<!-- ================================================= -->
+<!-- IMPORT EXCEL -->
+<!-- ================================================= -->
+
+<section
+id="importPage"
+class="page"
+>
+
+<button
+class="back"
+onclick="showPage('dashboardPage')"
+>
+← Back to Dashboard
+</button>
+
+
+<h2>
+Import Monthly Schedule
+</h2>
+
+
+<p>
+Upload the monthly Excel schedule.
+</p>
+
+
+<div class="status">
+
+<strong>
+Required format:
+</strong>
+
+<p>
+Column A = Date
+</p>
+
+<p>
+Columns B onward = Staff IDs
+</p>
+
+<p>
+Shift values:
+AM / PM / Support / OFF / Annual Leave
+</p>
+
+</div>
+
+
+<input
+type="file"
+id="excelFile"
+accept=".xlsx,.xls,.csv"
+>
+
+
+<button
+class="primary"
+onclick="readExcel()"
+>
+Preview Excel
+</button>
+
+
+<div
+id="excelPreview"
+style="margin-top:20px;"
+>
+</div>
+
+</section>
+
 
 </div>
 
 
 <footer>
-    Al Alameen Attendance System
+
+Al Alameen Attendance System
+
 </footer>
+
 
 
 <script>
 
-    // ==================================================
-    // SUPABASE CONFIGURATION
-    // ==================================================
 
-    const SUPABASE_URL =
-        "https://lwbyjnzpmtlflhsywtcw.supabase.co";
+// =====================================================
+// SUPABASE
+// =====================================================
 
-
-    /*
-       put your key here
-    */
-
-    const SUPABASE_KEY =
-        "sb_publishable_BeMQaIT1VmSjOb9B4t8VdA_QQAkS-jF";
+const SUPABASE_URL =
+"https://lwbyjnzpmtlflhsywtcw.supabase.co";
 
 
-    // ==================================================
-    // SUPABASE REQUEST
-    // ==================================================
+const SUPABASE_KEY =
+"sb_publishable_BeMQaIT1VmSjOb9B4t8VdA_QQAkS-jF";
 
-    async function supabaseRequest(endpoint) {
 
-        const response = await fetch(
+// =====================================================
+// SUPABASE REQUEST
+// =====================================================
+
+async function supabaseRequest(
+    endpoint,
+    options = {}
+) {
+
+    const response =
+        await fetch(
             SUPABASE_URL + endpoint,
             {
-                method: "GET",
+
+                method:
+                    options.method || "GET",
 
                 headers: {
-                    "apikey": SUPABASE_KEY
-                }
+
+                    "apikey":
+                        SUPABASE_KEY,
+
+                    "Content-Type":
+                        "application/json",
+
+                    ...(options.headers || {})
+
+                },
+
+                body:
+                    options.body || undefined
+
             }
         );
 
 
-        const text =
-            await response.text();
+    const text =
+        await response.text();
 
 
-        if (!response.ok) {
+    if (!response.ok) {
 
-            throw new Error(
-                "HTTP " +
-                response.status +
-                ": " +
-                text
-            );
-
-        }
-
-
-        if (!text) {
-            return [];
-        }
-
-
-        return JSON.parse(text);
+        throw new Error(
+            "HTTP " +
+            response.status +
+            ": " +
+            text
+        );
 
     }
 
 
-    // ==================================================
-    // DATE
-    // ==================================================
+    if (!text) {
 
-    const today =
-        new Date();
-
-
-    document.getElementById(
-        "todayDate"
-    ).textContent =
-        today.toLocaleDateString("en-GB");
-
-
-    // ==================================================
-    // LOAD EMPLOYEE COUNT
-    // ==================================================
-
-    async function loadEmployeeCount() {
-
-        try {
-
-            const data =
-                await supabaseRequest(
-                    "/rest/v1/employees" +
-                    "?select=id" +
-                    "&active=eq.true"
-                );
-
-
-            document.getElementById(
-                "employeeCount"
-            ).textContent =
-                data.length;
-
-            return true;
-
-        }
-
-        catch (error) {
-
-            console.error(error);
-
-            document.getElementById(
-                "employeeCount"
-            ).textContent =
-                "Error";
-
-            return false;
-        }
+        return [];
 
     }
 
 
-    // ==================================================
-    // LOAD ATTENDANCE COUNT
-    // ==================================================
+    return JSON.parse(text);
 
-    async function loadAttendanceCount() {
-
-        try {
-
-            const now =
-                new Date();
+}
 
 
-            const start =
-                new Date(
-                    now.getFullYear(),
-                    now.getMonth(),
-                    now.getDate()
-                );
+// =====================================================
+// PAGE
+// =====================================================
+
+function showPage(pageId) {
+
+    document
+        .querySelectorAll(".page")
+        .forEach(
+            page =>
+                page.classList.remove("active")
+        );
 
 
-            const end =
-                new Date(start);
+    document
+        .getElementById(pageId)
+        .classList.add("active");
+
+}
 
 
-            end.setDate(
-                end.getDate() + 1
+// =====================================================
+// DATE
+// =====================================================
+
+const today =
+new Date();
+
+
+document.getElementById(
+    "todayDate"
+).textContent =
+today.toLocaleDateString("en-GB");
+
+
+// =====================================================
+// EMPLOYEES COUNT
+// =====================================================
+
+async function loadEmployeeCount() {
+
+    try {
+
+        const data =
+            await supabaseRequest(
+                "/rest/v1/employees" +
+                "?select=id" +
+                "&active=eq.true"
             );
 
 
-            const startISO =
-                start.toISOString();
+        document.getElementById(
+            "employeeCount"
+        ).textContent =
+        data.length;
 
-
-            const endISO =
-                end.toISOString();
-
-
-            const data =
-                await supabaseRequest(
-
-                    "/rest/v1/attendance" +
-                    "?select=id" +
-                    "&recorded_at=gte." +
-                    encodeURIComponent(startISO) +
-                    "&recorded_at=lt." +
-                    encodeURIComponent(endISO)
-
-                );
-
-
-            document.getElementById(
-                "attendanceCount"
-            ).textContent =
-                data.length;
-
-
-            return true;
-
-        }
-
-        catch (error) {
-
-            console.error(error);
-
-            document.getElementById(
-                "attendanceCount"
-            ).textContent =
-                "Error";
-
-            return false;
-        }
+        return true;
 
     }
 
+    catch(error) {
 
-    // ==================================================
-    // LOAD BRANCH
-    // ==================================================
+        console.error(error);
 
-    async function loadBranch() {
+        document.getElementById(
+            "employeeCount"
+        ).textContent =
+        "Error";
 
-        try {
+        return false;
 
-            const data =
-                await supabaseRequest(
-                    "/rest/v1/branches" +
-                    "?select=name" +
-                    "&limit=1"
-                );
+    }
+
+}
 
 
-            if (data.length > 0) {
+// =====================================================
+// ATTENDANCE
+// =====================================================
 
-                document.getElementById(
-                    "branchName"
-                ).textContent =
-                    data[0].name;
+async function loadAttendanceCount() {
+
+    try {
+
+        const start =
+            new Date();
+
+        start.setHours(
+            0,0,0,0
+        );
+
+
+        const end =
+            new Date(start);
+
+        end.setDate(
+            end.getDate() + 1
+        );
+
+
+        const data =
+            await supabaseRequest(
+
+                "/rest/v1/attendance" +
+
+                "?select=id" +
+
+                "&recorded_at=gte." +
+                encodeURIComponent(
+                    start.toISOString()
+                ) +
+
+                "&recorded_at=lt." +
+                encodeURIComponent(
+                    end.toISOString()
+                )
+
+            );
+
+
+        document.getElementById(
+            "attendanceCount"
+        ).textContent =
+        data.length;
+
+
+        return true;
+
+    }
+
+    catch(error) {
+
+        console.error(error);
+
+        document.getElementById(
+            "attendanceCount"
+        ).textContent =
+        "Error";
+
+        return false;
+
+    }
+
+}
+
+
+// =====================================================
+// BRANCH
+// =====================================================
+
+async function loadBranch() {
+
+    try {
+
+        const data =
+            await supabaseRequest(
+                "/rest/v1/branches" +
+                "?select=name" +
+                "&limit=1"
+            );
+
+
+        document.getElementById(
+            "branchName"
+        ).textContent =
+        data.length
+        ? data[0].name
+        : "Not Found";
+
+
+        return true;
+
+    }
+
+    catch(error) {
+
+        console.error(error);
+
+        document.getElementById(
+            "branchName"
+        ).textContent =
+        "Error";
+
+        return false;
+
+    }
+
+}
+
+
+// =====================================================
+// EMPLOYEES TABLE
+// =====================================================
+
+async function loadEmployees() {
+
+    const table =
+        document.getElementById(
+            "employeesTable"
+        );
+
+
+    const status =
+        document.getElementById(
+            "employeesStatus"
+        );
+
+
+    try {
+
+        const employees =
+            await supabaseRequest(
+
+                "/rest/v1/employees" +
+                "?select=staff_id,full_name,role,active" +
+                "&order=staff_id.asc"
+
+            );
+
+
+        table.innerHTML = "";
+
+
+        employees.forEach(
+            (employee,index) => {
+
+                const row =
+                    document.createElement("tr");
+
+
+                row.innerHTML = `
+
+<td>
+${index + 1}
+</td>
+
+<td>
+${escapeHTML(employee.staff_id)}
+</td>
+
+<td>
+${escapeHTML(employee.full_name)}
+</td>
+
+<td>
+${escapeHTML(employee.role || "-")}
+</td>
+
+<td class="${
+employee.active
+? "success"
+: "error"
+}">
+${
+employee.active
+? "Active"
+: "Inactive"
+}
+</td>
+
+`;
+
+
+                table.appendChild(row);
 
             }
-
-            else {
-
-                document.getElementById(
-                    "branchName"
-                ).textContent =
-                    "Not Found";
-
-            }
+        );
 
 
-            return true;
+        status.textContent =
+        employees.length +
+        " employees loaded successfully.";
 
-        }
 
-        catch (error) {
+        status.className =
+        "status success";
 
-            console.error(error);
-
-            document.getElementById(
-                "branchName"
-            ).textContent =
-                "Error";
-
-            return false;
-        }
 
     }
 
+    catch(error) {
 
-    // ==================================================
-    // LOAD EMPLOYEES TABLE
-    // ==================================================
+        status.textContent =
+        "Error: " +
+        error.message;
 
-    async function loadEmployeesTable() {
 
-        const table =
-            document.getElementById(
-                "employeesTable"
+        status.className =
+        "status error";
+
+    }
+
+}
+
+
+// =====================================================
+// LOAD SCHEDULE
+// =====================================================
+
+async function loadSchedule() {
+
+    const table =
+        document.getElementById(
+            "scheduleTable"
+        );
+
+
+    const status =
+        document.getElementById(
+            "scheduleStatus"
+        );
+
+
+    try {
+
+        const data =
+            await supabaseRequest(
+
+                "/rest/v1/monthly_schedule" +
+
+                "?select=schedule_date,shift_type,employee_id" +
+
+                "&order=schedule_date.asc"
+
             );
 
 
-        const status =
-            document.getElementById(
-                "employeesStatus"
-            );
+        table.innerHTML = "";
 
 
-        try {
+        if (!data.length) {
 
             status.textContent =
-                "Loading employees...";
+            "No monthly schedule has been imported yet.";
 
             status.className =
-                "status loading";
+            "status loading";
+
+            return;
+
+        }
 
 
-            const employees =
-                await supabaseRequest(
+        const employees =
+            await supabaseRequest(
+                "/rest/v1/employees" +
+                "?select=id,staff_id"
+            );
 
-                    "/rest/v1/employees" +
 
-                    "?select=id,staff_id,full_name,role,shift_start,shift_end,active" +
+        const staffMap = {};
 
-                    "&order=staff_id.asc"
 
+        employees.forEach(
+            employee => {
+
+                staffMap[
+                    employee.id
+                ] =
+                employee.staff_id;
+
+            }
+        );
+
+
+        const dates = {};
+
+
+        data.forEach(
+            item => {
+
+                if (!dates[item.schedule_date]) {
+
+                    dates[item.schedule_date] =
+                    {};
+
+                }
+
+
+                dates[
+                    item.schedule_date
+                ][
+                    staffMap[item.employee_id]
+                ] =
+                item.shift_type;
+
+            }
+        );
+
+
+        Object.keys(dates)
+        .sort()
+        .forEach(
+            date => {
+
+                const row =
+                document.createElement("tr");
+
+
+                let html =
+                `<td>${date}</td>`;
+
+
+                const staffIds = [
+                    "121090",
+                    "121040",
+                    "125453",
+                    "126439",
+                    "127981",
+                    "126225",
+                    "129776"
+                ];
+
+
+                staffIds.forEach(
+                    staffId => {
+
+                        const shift =
+                        dates[date][staffId]
+                        || "-";
+
+
+                        let className =
+                        "";
+
+
+                        if (
+                            shift === "AM"
+                        )
+                            className =
+                            "shift-AM";
+
+
+                        else if (
+                            shift === "PM"
+                        )
+                            className =
+                            "shift-PM";
+
+
+                        else if (
+                            shift === "Support"
+                        )
+                            className =
+                            "shift-Support";
+
+
+                        else if (
+                            shift === "OFF"
+                        )
+                            className =
+                            "shift-OFF";
+
+
+                        else if (
+                            shift === "Annual Leave"
+                        )
+                            className =
+                            "shift-Annual";
+
+
+                        html +=
+                        `<td class="${className}">
+                        ${shift}
+                        </td>`;
+
+                    }
                 );
 
 
-            table.innerHTML = "";
+                row.innerHTML =
+                html;
 
 
-            employees.forEach(
-                (employee, index) => {
+                table.appendChild(row);
 
-                    const row =
-                        document.createElement("tr");
-
-
-                    const shift =
-
-                        employee.shift_start &&
-                        employee.shift_end
-
-                        ?
-
-                        employee.shift_start
-                        .substring(0,5)
-                        +
-                        " - "
-                        +
-                        employee.shift_end
-                        .substring(0,5)
-
-                        :
-
-                        "Monthly Schedule";
+            }
+        );
 
 
-                    const activeText =
-                        employee.active
-                        ? "Active"
-                        : "Inactive";
+        status.textContent =
+        data.length +
+        " schedule records loaded.";
 
 
-                    const activeClass =
-                        employee.active
-                        ? "active"
-                        : "inactive";
-
-
-                    row.innerHTML = `
-
-                        <td>
-                            ${index + 1}
-                        </td>
-
-                        <td>
-                            ${escapeHTML(employee.staff_id)}
-                        </td>
-
-                        <td>
-                            ${escapeHTML(employee.full_name)}
-                        </td>
-
-                        <td>
-                            ${escapeHTML(employee.role || "-")}
-                        </td>
-
-                        <td>
-                            ${shift}
-                        </td>
-
-                        <td class="${activeClass}">
-                            ${activeText}
-                        </td>
-
-                    `;
-
-
-                    table.appendChild(row);
-
-                }
-            );
-
-
-            status.textContent =
-                employees.length +
-                " employees loaded successfully.";
-
-            status.className =
-                "status success";
-
-        }
-
-        catch (error) {
-
-            console.error(error);
-
-            status.textContent =
-                "Error loading employees: " +
-                error.message;
-
-            status.className =
-                "status error";
-
-        }
+        status.className =
+        "status success";
 
     }
 
+    catch(error) {
 
-    // ==================================================
-    // ESCAPE HTML
-    // ==================================================
+        console.error(error);
 
-    function escapeHTML(value) {
-
-        if (value === null ||
-            value === undefined) {
-
-            return "";
-
-        }
+        status.textContent =
+        "Error: " +
+        error.message;
 
 
-        return String(value)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+        status.className =
+        "status error";
 
     }
 
-
-    // ==================================================
-    // PAGE NAVIGATION
-    // ==================================================
-
-    function showPage(pageId) {
-
-        document
-            .querySelectorAll(".page")
-            .forEach(
-                page => {
-                    page.classList.remove("active");
-                }
-            );
+}
 
 
-        document
-            .getElementById(pageId)
-            .classList.add("active");
+// =====================================================
+// EXCEL PREVIEW
+// =====================================================
+
+function readExcel() {
+
+    const file =
+        document.getElementById(
+            "excelFile"
+        ).files[0];
 
 
-        if (pageId === "employeesPage") {
-
-            loadEmployeesTable();
-
-        }
-
-    }
+    const preview =
+        document.getElementById(
+            "excelPreview"
+        );
 
 
-    // ==================================================
-    // COMING SOON
-    // ==================================================
-
-    function comingSoon(section) {
+    if (!file) {
 
         alert(
-            section +
-            " will be added in the next step."
+            "Please select an Excel file first."
         );
 
-    }
-
-
-    // ==================================================
-    // INITIALIZE DASHBOARD
-    // ==================================================
-
-    async function initializeDashboard() {
-
-        const employeeOK =
-            await loadEmployeeCount();
-
-
-        const attendanceOK =
-            await loadAttendanceCount();
-
-
-        const branchOK =
-            await loadBranch();
-
-
-        const status =
-            document.getElementById(
-                "systemStatus"
-            );
-
-
-        if (
-            employeeOK &&
-            attendanceOK &&
-            branchOK
-        ) {
-
-            status.textContent =
-                "Connected to Supabase successfully.";
-
-            status.className =
-                "success";
-
-        }
-
-        else {
-
-            status.textContent =
-                "Connection or database error.";
-
-            status.className =
-                "error";
-
-        }
+        return;
 
     }
 
 
-    // ==================================================
-    // START
-    // ==================================================
+    preview.innerHTML = `
 
-    initializeDashboard();
+<div class="status success">
+
+<strong>
+File selected successfully
+</strong>
+
+<p>
+File name:
+${escapeHTML(file.name)}
+</p>
+
+<p>
+The Excel import engine will be connected
+in the next step.
+</p>
+
+</div>
+
+`;
+
+}
+
+
+// =====================================================
+// ESCAPE
+// =====================================================
+
+function escapeHTML(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+
+}
+
+
+// =====================================================
+// INITIALIZE
+// =====================================================
+
+async function initialize() {
+
+    const a =
+        await loadEmployeeCount();
+
+    const b =
+        await loadAttendanceCount();
+
+    const c =
+        await loadBranch();
+
+
+    const status =
+        document.getElementById(
+            "systemStatus"
+        );
+
+
+    if (a && b && c) {
+
+        status.textContent =
+        "Connected to Supabase successfully.";
+
+        status.className =
+        "success";
+
+    }
+
+    else {
+
+        status.textContent =
+        "Database connection error.";
+
+        status.className =
+        "error";
+
+    }
+
+}
+
+
+initialize();
 
 </script>
+
 
 </body>
 </html>
