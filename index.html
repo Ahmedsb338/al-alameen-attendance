@@ -748,23 +748,29 @@ async function supabaseRequest(
 // =====================================================
 // PAGE
 // =====================================================
-
 function showPage(pageId) {
 
     document
         .querySelectorAll(".page")
         .forEach(
-            page =>
-                page.classList.remove("active")
+            page => page.classList.remove("active")
         );
-
 
     document
         .getElementById(pageId)
         .classList.add("active");
 
-}
 
+    if (pageId === "employeesPage") {
+        loadEmployees();
+    }
+
+
+    if (pageId === "schedulePage") {
+        loadSchedule();
+    }
+
+}
 
 // =====================================================
 // DATE
