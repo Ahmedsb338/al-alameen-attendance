@@ -194,22 +194,148 @@
 
     <script>
 
-        // Show today's date
-        const today = new Date();
+    // ================================
+    // SUPABASE CONFIGURATION
+    // ================================
 
-        document.getElementById("todayDate").textContent =
-            today.toLocaleDateString("en-GB");
+    const SUPABASE_URL =
+        "https://lwbyjnzpmtlflhsywtcw.supabase.co";
+
+    const SUPABASE_KEY =
+        "sb_publishable_BeMQaIT1VmSjOb9B4t8VdA_QQAkS-j";
 
 
-        // Temporary button handler
-        function showMessage(section) {
+    // ================================
+    // TODAY
+    // ================================
 
-            document.getElementById("message").textContent =
-                section + " section will be available here.";
+    const today = new Date();
 
+    const todayDate =
+        today.toLocaleDateString("en-CA");
+
+    document.getElementById("todayDate").textContent =
+        today.toLocaleDateString("en-GB");
+
+
+    // ================================
+    // SUPABASE REQUEST
+    // ================================
+
+    async function supabaseRequest(endpoint) {
+
+        const response = await fetch(
+            SUPABASE_URL + endpoint,
+            {
+                method: "GET",
+                headers: {
+                    "apikey": SUPABASE_KEY,
+                    "Authorization": "Bearer " + SUPABASE_KEY,
+                    "Content-Type": "application/json"
+                }
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                "Supabase error: " + response.status
+            );
         }
 
-    </script>
+        return await response.json();
+    }
+
+
+    // ================================
+    // LOAD EMPLOYEE COUNT
+    // ================================
+
+    async function loadEmployeeCount() {
+
+        try {
+
+            const employees =
+                await supabaseRequest(
+                    "/rest/v1/employees?select=id&active=eq.true"
+                );
+
+            document.getElementById("employeeCount").textContent =
+                employees.length;
+
+        } catch (error) {
+
+            console.error(error);
+
+            document.getElementById("employeeCount").textContent =
+                "Error";
+        }
+    }
+
+
+    // ================================
+    // LOAD TODAY'S ATTENDANCE
+    // ================================
+
+    async function loadAttendanceCount() {
+
+        try {
+
+            const startOfDay =
+                todayDate + "T00:00:00";
+
+            const tomorrow = new Date(today);
+
+            tomorrow.setDate(
+                tomorrow.getDate() + 1
+            );
+
+            const endOfDay =
+                tomorrow.toISOString();
+
+
+            const attendance =
+                await supabaseRequest(
+                    "/rest/v1/attendance" +
+                    "?select=id" +
+                    "&recorded_at=gte." + encodeURIComponent(startOfDay) +
+                    "&recorded_at=lt." + encodeURIComponent(endOfDay)
+                );
+
+
+            document.getElementById("attendanceCount").textContent =
+                attendance.length;
+
+        } catch (error) {
+
+            console.error(error);
+
+            document.getElementById("attendanceCount").textContent =
+                "Error";
+        }
+    }
+
+
+    // ================================
+    // BUTTONS
+    // ================================
+
+    function showMessage(section) {
+
+        document.getElementById("message").textContent =
+            section + " section will be available here.";
+
+    }
+
+
+    // ================================
+    // START DASHBOARD
+    // ================================
+
+    loadEmployeeCount();
+
+    loadAttendanceCount();
+
+</script>
 
 </body>
 </html>
