@@ -964,7 +964,7 @@ async function loginUser() {
                     headers: {
                         "apikey": SUPABASE_KEY,
                         "Content-Type":
-                            "application/json"
+                        "application/json"
                     },
 
                     body: JSON.stringify({
@@ -1036,6 +1036,7 @@ const dashboard =
 
 dashboard.style.display = "block";
 dashboard.classList.add("active");
+await loadBranchHeader();
     } catch (error) {
 
         console.error(error);
@@ -2158,6 +2159,139 @@ function logoutUser() {
         "loginError"
     ).textContent = "";
 }
+//last add
+async function loadBranchHeader() {
+
+    try {
+
+        const accessToken =
+            localStorage.getItem("access_token");
+
+        if (!accessToken) return;
+
+
+        const profileResponse =
+            await fetch(
+                SUPABASE_URL +
+                "/rest/v1/profiles?select=branch_id,role&limit=1",
+                {
+                    method: "GET",
+
+                    headers: {
+                        "apikey": SUPABASE_KEY,
+                        "Authorization":
+                            "Bearer " +
+                            accessToken
+                    }
+                }
+            );
+
+
+        if (!profileResponse.ok) {
+            console.error(
+                "Profile load failed"
+            );
+            return;
+        }
+
+
+        const profiles =
+            await profileResponse.json();
+
+
+        if (
+            !profiles ||
+            !profiles.length
+        ) {
+            return;
+        }
+
+
+        const profile =
+            profiles[0];
+
+
+        const header =
+            document.getElementById(
+                "branchHeaderName"
+            );
+
+
+        if (!header) return;
+
+
+        // Super Admin
+        if (
+            profile.role ===
+            "Super Admin"
+        ) {
+
+            header.textContent =
+                "HR Administration";
+
+            return;
+        }
+
+
+        // Branch Account
+        if (!profile.branch_id) {
+            return;
+        }
+
+
+        const branchResponse =
+            await fetch(
+                SUPABASE_URL +
+                "/rest/v1/branches?id=eq." +
+                profile.branch_id +
+                "&select=name&limit=1",
+                {
+                    method: "GET",
+
+                    headers: {
+                        "apikey":
+                            SUPABASE_KEY,
+
+                        "Authorization":
+                            "Bearer " +
+                            accessToken
+                    }
+                }
+            );
+
+
+        if (!branchResponse.ok) {
+            console.error(
+                "Branch load failed"
+            );
+            return;
+        }
+
+
+        const branches =
+            await branchResponse.json();
+
+
+        if (
+            branches &&
+            branches.length
+        ) {
+
+            header.textContent =
+                branches[0].name;
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Header error:",
+            error
+        );
+
+    }
+}
+// to here
 async function checkLoginSession() {
 
     const accessToken =
