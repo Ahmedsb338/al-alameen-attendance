@@ -1042,6 +1042,10 @@ async function supabaseRequest(
     options = {}
 ) {
 
+    const accessToken =
+        localStorage.getItem("access_token");
+
+
     const response =
         await fetch(
             SUPABASE_URL + endpoint,
@@ -1054,6 +1058,13 @@ async function supabaseRequest(
 
                     "apikey":
                         SUPABASE_KEY,
+
+                    "Authorization":
+                        "Bearer " +
+                        (
+                            accessToken ||
+                            SUPABASE_KEY
+                        ),
 
                     "Content-Type":
                         "application/json",
@@ -1095,6 +1106,8 @@ async function supabaseRequest(
     return JSON.parse(text);
 
 }
+
+    
 
 
 // =====================================================
