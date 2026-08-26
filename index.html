@@ -1,88 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Al Alameen Attendance</title>
+    <title>Al Alameen Attendance System</title>
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: #f3f4f6;
+            background: #f4f6f8;
+            color: #1f2937;
         }
 
         header {
             background: #111827;
             color: white;
-            padding: 25px;
+            padding: 22px 20px;
         }
 
         header h1 {
             margin: 0;
+            font-size: 24px;
+        }
+
+        header p {
+            margin: 7px 0 0;
+            color: #d1d5db;
         }
 
         .container {
-            max-width: 1000px;
-            margin: 30px auto;
-            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+            padding: 25px 20px;
         }
 
-        .welcome {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            margin-bottom: 20px;
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
         }
 
         .cards {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 18px;
+            margin: 20px 0 30px;
         }
 
         .card {
             background: white;
-            padding: 25px;
+            padding: 22px;
             border-radius: 12px;
-            text-align: center;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
         }
 
-        .card h2 {
-            margin: 0 0 10px;
+        .card-title {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 10px;
         }
 
-        .number {
-            font-size: 32px;
+        .card-value {
+            font-size: 28px;
             font-weight: bold;
         }
 
-        .buttons {
-            margin-top: 25px;
+        .menu {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
             gap: 15px;
+            margin-top: 20px;
         }
 
         button {
-            padding: 18px;
             border: none;
             border-radius: 10px;
+            padding: 16px;
             background: white;
-            font-size: 16px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+            font-size: 15px;
             cursor: pointer;
         }
 
         button:hover {
-            background: #e5e7eb;
+            background: #eef2ff;
+        }
+
+        .back {
+            background: #111827;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            overflow-x: auto;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th,
+        td {
+            padding: 13px 10px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        th {
+            background: #f8fafc;
+            font-size: 14px;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        .active {
+            color: #15803d;
+            font-weight: bold;
+        }
+
+        .inactive {
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+        }
+
+        .success {
+            color: #15803d;
+        }
+
+        .error {
+            color: #dc2626;
+        }
+
+        .loading {
+            color: #ca8a04;
         }
 
         footer {
             text-align: center;
             padding: 30px;
             color: #6b7280;
+            font-size: 13px;
         }
     </style>
 </head>
@@ -96,74 +176,689 @@
 
 <div class="container">
 
-    <div class="welcome">
+    <!-- ================= DASHBOARD ================= -->
+
+    <section id="dashboardPage" class="page active">
+
         <h2>Dashboard</h2>
-        <p>Welcome to the Attendance Management System</p>
-    </div>
 
-    <div class="cards">
+        <p>
+            Attendance Management System
+        </p>
 
-        <div class="card">
-            <h2>Employees</h2>
-            <div class="number">7</div>
+        <div class="cards">
+
+            <div class="card">
+                <div class="card-title">
+                    Active Employees
+                </div>
+
+                <div
+                    class="card-value"
+                    id="employeeCount"
+                >
+                    Loading...
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    Today's Attendance
+                </div>
+
+                <div
+                    class="card-value"
+                    id="attendanceCount"
+                >
+                    Loading...
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    Branch
+                </div>
+
+                <div
+                    class="card-value"
+                    id="branchName"
+                    style="font-size:20px;"
+                >
+                    Loading...
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">
+                    Date
+                </div>
+
+                <div
+                    class="card-value"
+                    id="todayDate"
+                    style="font-size:20px;"
+                >
+                    -
+                </div>
+            </div>
+
         </div>
 
-        <div class="card">
-            <h2>Today's Attendance</h2>
-            <div class="number">0</div>
+
+        <h2>System Management</h2>
+
+        <div class="menu">
+
+            <button onclick="showPage('employeesPage')">
+                👥 Employees
+            </button>
+
+            <button onclick="comingSoon('Shift Schedule')">
+                📅 Shift Schedule
+            </button>
+
+            <button onclick="comingSoon('Import Excel')">
+                📥 Import Excel
+            </button>
+
+            <button onclick="comingSoon('Export Excel')">
+                📤 Export Excel
+            </button>
+
+            <button onclick="comingSoon('Attendance')">
+                🕐 Attendance
+            </button>
+
+            <button onclick="comingSoon('Reports')">
+                📊 Reports
+            </button>
+
         </div>
 
-        <div class="card">
-            <h2>Branch</h2>
-            <p>Al Alameen Store</p>
+
+        <div class="status">
+            <strong>System Status:</strong>
+
+            <span id="systemStatus" class="loading">
+                Connecting...
+            </span>
         </div>
 
-        <div class="card">
-            <h2>Date</h2>
-            <p id="date"></p>
+    </section>
+
+
+    <!-- ================= EMPLOYEES ================= -->
+
+    <section id="employeesPage" class="page">
+
+        <button
+            class="back"
+            onclick="showPage('dashboardPage')"
+        >
+            ← Back to Dashboard
+        </button>
+
+        <h2>Employees</h2>
+
+        <p>
+            Al Alameen Store Employees
+        </p>
+
+
+        <div
+            id="employeesStatus"
+            class="status loading"
+        >
+            Loading employees...
         </div>
 
-    </div>
 
-    <div class="buttons">
+        <div class="table-container">
 
-        <button onclick="alert('Employees')">
-            👥 Employees
-        </button>
+            <table>
 
-        <button onclick="alert('Shift Schedule')">
-            📅 Shift Schedule
-        </button>
+                <thead>
 
-        <button onclick="alert('Import Excel')">
-            📥 Import Excel
-        </button>
+                    <tr>
+                        <th>#</th>
+                        <th>Staff ID</th>
+                        <th>Full Name</th>
+                        <th>Role</th>
+                        <th>Shift</th>
+                        <th>Status</th>
+                    </tr>
 
-        <button onclick="alert('Export Excel')">
-            📤 Export Excel
-        </button>
+                </thead>
 
-        <button onclick="alert('Attendance')">
-            🕐 Attendance
-        </button>
+                <tbody id="employeesTable">
 
-        <button onclick="alert('Reports')">
-            📊 Reports
-        </button>
+                </tbody>
 
-    </div>
+            </table>
+
+        </div>
+
+    </section>
 
 </div>
+
 
 <footer>
     Al Alameen Attendance System
 </footer>
 
+
 <script>
-    document.getElementById("date").textContent =
-        new Date().toLocaleDateString("en-GB");
+
+    // ==================================================
+    // SUPABASE CONFIGURATION
+    // ==================================================
+
+    const SUPABASE_URL =
+        "https://lwbyjnzpmtlflhsywtcw.supabase.co";
+
+
+    /*
+       put your key here
+    */
+
+    const SUPABASE_KEY =
+        "sb_publishable_BeMQaIT1VmSjOb9B4t8VdA_QQAkS-jF";
+
+
+    // ==================================================
+    // SUPABASE REQUEST
+    // ==================================================
+
+    async function supabaseRequest(endpoint) {
+
+        const response = await fetch(
+            SUPABASE_URL + endpoint,
+            {
+                method: "GET",
+
+                headers: {
+                    "apikey": SUPABASE_KEY
+                }
+            }
+        );
+
+
+        const text =
+            await response.text();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "HTTP " +
+                response.status +
+                ": " +
+                text
+            );
+
+        }
+
+
+        if (!text) {
+            return [];
+        }
+
+
+        return JSON.parse(text);
+
+    }
+
+
+    // ==================================================
+    // DATE
+    // ==================================================
+
+    const today =
+        new Date();
+
+
+    document.getElementById(
+        "todayDate"
+    ).textContent =
+        today.toLocaleDateString("en-GB");
+
+
+    // ==================================================
+    // LOAD EMPLOYEE COUNT
+    // ==================================================
+
+    async function loadEmployeeCount() {
+
+        try {
+
+            const data =
+                await supabaseRequest(
+                    "/rest/v1/employees" +
+                    "?select=id" +
+                    "&active=eq.true"
+                );
+
+
+            document.getElementById(
+                "employeeCount"
+            ).textContent =
+                data.length;
+
+            return true;
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            document.getElementById(
+                "employeeCount"
+            ).textContent =
+                "Error";
+
+            return false;
+        }
+
+    }
+
+
+    // ==================================================
+    // LOAD ATTENDANCE COUNT
+    // ==================================================
+
+    async function loadAttendanceCount() {
+
+        try {
+
+            const now =
+                new Date();
+
+
+            const start =
+                new Date(
+                    now.getFullYear(),
+                    now.getMonth(),
+                    now.getDate()
+                );
+
+
+            const end =
+                new Date(start);
+
+
+            end.setDate(
+                end.getDate() + 1
+            );
+
+
+            const startISO =
+                start.toISOString();
+
+
+            const endISO =
+                end.toISOString();
+
+
+            const data =
+                await supabaseRequest(
+
+                    "/rest/v1/attendance" +
+                    "?select=id" +
+                    "&recorded_at=gte." +
+                    encodeURIComponent(startISO) +
+                    "&recorded_at=lt." +
+                    encodeURIComponent(endISO)
+
+                );
+
+
+            document.getElementById(
+                "attendanceCount"
+            ).textContent =
+                data.length;
+
+
+            return true;
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            document.getElementById(
+                "attendanceCount"
+            ).textContent =
+                "Error";
+
+            return false;
+        }
+
+    }
+
+
+    // ==================================================
+    // LOAD BRANCH
+    // ==================================================
+
+    async function loadBranch() {
+
+        try {
+
+            const data =
+                await supabaseRequest(
+                    "/rest/v1/branches" +
+                    "?select=name" +
+                    "&limit=1"
+                );
+
+
+            if (data.length > 0) {
+
+                document.getElementById(
+                    "branchName"
+                ).textContent =
+                    data[0].name;
+
+            }
+
+            else {
+
+                document.getElementById(
+                    "branchName"
+                ).textContent =
+                    "Not Found";
+
+            }
+
+
+            return true;
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            document.getElementById(
+                "branchName"
+            ).textContent =
+                "Error";
+
+            return false;
+        }
+
+    }
+
+
+    // ==================================================
+    // LOAD EMPLOYEES TABLE
+    // ==================================================
+
+    async function loadEmployeesTable() {
+
+        const table =
+            document.getElementById(
+                "employeesTable"
+            );
+
+
+        const status =
+            document.getElementById(
+                "employeesStatus"
+            );
+
+
+        try {
+
+            status.textContent =
+                "Loading employees...";
+
+            status.className =
+                "status loading";
+
+
+            const employees =
+                await supabaseRequest(
+
+                    "/rest/v1/employees" +
+
+                    "?select=id,staff_id,full_name,role,shift_start,shift_end,active" +
+
+                    "&order=staff_id.asc"
+
+                );
+
+
+            table.innerHTML = "";
+
+
+            employees.forEach(
+                (employee, index) => {
+
+                    const row =
+                        document.createElement("tr");
+
+
+                    const shift =
+
+                        employee.shift_start &&
+                        employee.shift_end
+
+                        ?
+
+                        employee.shift_start
+                        .substring(0,5)
+                        +
+                        " - "
+                        +
+                        employee.shift_end
+                        .substring(0,5)
+
+                        :
+
+                        "Monthly Schedule";
+
+
+                    const activeText =
+                        employee.active
+                        ? "Active"
+                        : "Inactive";
+
+
+                    const activeClass =
+                        employee.active
+                        ? "active"
+                        : "inactive";
+
+
+                    row.innerHTML = `
+
+                        <td>
+                            ${index + 1}
+                        </td>
+
+                        <td>
+                            ${escapeHTML(employee.staff_id)}
+                        </td>
+
+                        <td>
+                            ${escapeHTML(employee.full_name)}
+                        </td>
+
+                        <td>
+                            ${escapeHTML(employee.role || "-")}
+                        </td>
+
+                        <td>
+                            ${shift}
+                        </td>
+
+                        <td class="${activeClass}">
+                            ${activeText}
+                        </td>
+
+                    `;
+
+
+                    table.appendChild(row);
+
+                }
+            );
+
+
+            status.textContent =
+                employees.length +
+                " employees loaded successfully.";
+
+            status.className =
+                "status success";
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            status.textContent =
+                "Error loading employees: " +
+                error.message;
+
+            status.className =
+                "status error";
+
+        }
+
+    }
+
+
+    // ==================================================
+    // ESCAPE HTML
+    // ==================================================
+
+    function escapeHTML(value) {
+
+        if (value === null ||
+            value === undefined) {
+
+            return "";
+
+        }
+
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    // ==================================================
+    // PAGE NAVIGATION
+    // ==================================================
+
+    function showPage(pageId) {
+
+        document
+            .querySelectorAll(".page")
+            .forEach(
+                page => {
+                    page.classList.remove("active");
+                }
+            );
+
+
+        document
+            .getElementById(pageId)
+            .classList.add("active");
+
+
+        if (pageId === "employeesPage") {
+
+            loadEmployeesTable();
+
+        }
+
+    }
+
+
+    // ==================================================
+    // COMING SOON
+    // ==================================================
+
+    function comingSoon(section) {
+
+        alert(
+            section +
+            " will be added in the next step."
+        );
+
+    }
+
+
+    // ==================================================
+    // INITIALIZE DASHBOARD
+    // ==================================================
+
+    async function initializeDashboard() {
+
+        const employeeOK =
+            await loadEmployeeCount();
+
+
+        const attendanceOK =
+            await loadAttendanceCount();
+
+
+        const branchOK =
+            await loadBranch();
+
+
+        const status =
+            document.getElementById(
+                "systemStatus"
+            );
+
+
+        if (
+            employeeOK &&
+            attendanceOK &&
+            branchOK
+        ) {
+
+            status.textContent =
+                "Connected to Supabase successfully.";
+
+            status.className =
+                "success";
+
+        }
+
+        else {
+
+            status.textContent =
+                "Connection or database error.";
+
+            status.className =
+                "error";
+
+        }
+
+    }
+
+
+    // ==================================================
+    // START
+    // ==================================================
+
+    initializeDashboard();
+
 </script>
 
 </body>
-
 </html>
