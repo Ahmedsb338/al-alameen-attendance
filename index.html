@@ -366,6 +366,10 @@ Quantech Attendance System
 <!-- DASHBOARD -->
 <!-- ================================================= -->
 
+<!-- ================================================= -->
+<!-- DASHBOARD -->
+<!-- ================================================= -->
+
 <section
 id="dashboardPage"
 class="page active"
@@ -379,6 +383,10 @@ Dashboard
 Attendance Management System
 </p>
 
+
+<!-- ================================================= -->
+<!-- DASHBOARD CARDS -->
+<!-- ================================================= -->
 
 <div class="cards">
 
@@ -451,10 +459,9 @@ style="font-size:20px;"
 </div>
 
 
-<h2>
-System Management
-</h2>
-
+<!-- ================================================= -->
+<!-- SYSTEM MANAGEMENT -->
+<!-- ================================================= -->
 
 <h2>
 System Management
@@ -462,77 +469,107 @@ System Management
 
 
 <div
-    class="menu"
-    id="dashboardMenu"
+class="menu"
+id="dashboardMenu"
 >
 
 
-    <button
-        id="employeesMenuButton"
-        onclick="showPage('employeesPage')"
-    >
-        👥 Employees
-    </button>
+<!-- EMPLOYEES -->
 
-
-    <button
-        id="scheduleMenuButton"
-        onclick="showPage('schedulePage'); loadSchedule()"
-    >
-        📅 Shift Schedule
-    </button>
-
-
-    <button
-        id="importMenuButton"
-        onclick="showPage('importPage')"
-    >
-        📥 Import Excel
-    </button>
-
-
-    <button
-        id="exportMenuButton"
-        onclick="alert('Export Excel will be added next.')"
-    >
-        📤 Export Excel
-    </button>
-
-
-    <button
-    id="attendanceMenuButton"
-    onclick="showPage('attendancePage'); loadAttendancePage()"
+<button
+id="employeesMenuButton"
+onclick="showPage('employeesPage'); loadEmployees()"
 >
-    🕐 Attendance
+👥 Employees
 </button>
 
 
-    <button
-        id="reportsMenuButton"
-        onclick="alert('Reports will be added next.')"
-    >
-        📊 Reports
-    </button>
+<!-- BRANCHES -->
+
+<button
+id="branchesMenuButton"
+onclick="showPage('branchesPage'); loadBranches()"
+>
+🏢 Branches
+</button>
 
 
-    <button
-        id="settingsMenuButton"
-        onclick="showPage('settingsPage'); loadEmployeesSettings()"
-    >
-        ⚙️ Settings
-    </button>
+<!-- SCHEDULE -->
+
+<button
+id="scheduleMenuButton"
+onclick="showPage('schedulePage'); loadSchedule()"
+>
+📅 Shift Schedule
+</button>
 
 
-    <button
-        onclick="logoutUser()"
-        class="logout-button"
-    >
-        🚪 Logout
-    </button>
+<!-- IMPORT -->
+
+<button
+id="importMenuButton"
+onclick="showPage('importPage')"
+>
+📥 Import Excel
+</button>
+
+
+<!-- EXPORT -->
+
+<button
+id="exportMenuButton"
+onclick="alert('Export Excel will be added next.')"
+>
+📤 Export Excel
+</button>
+
+
+<!-- ATTENDANCE -->
+
+<button
+id="attendanceMenuButton"
+onclick="showPage('attendancePage'); loadAttendancePage()"
+>
+🕐 Attendance
+</button>
+
+
+<!-- REPORTS -->
+
+<button
+id="reportsMenuButton"
+onclick="alert('Reports will be added next.')"
+>
+📊 Reports
+</button>
+
+
+<!-- SETTINGS -->
+
+<button
+id="settingsMenuButton"
+onclick="showPage('settingsPage')"
+>
+⚙️ Settings
+</button>
+
+
+<!-- LOGOUT -->
+
+<button
+onclick="logoutUser()"
+class="logout-button"
+>
+🚪 Logout
+</button>
 
 
 </div>
 
+
+<!-- ================================================= -->
+<!-- SYSTEM STATUS -->
+<!-- ================================================= -->
 
 <div class="status">
 
@@ -550,7 +587,6 @@ Connecting...
 </div>
 
 </section>
-
 
 
 <!-- ================================================= -->
@@ -3204,39 +3240,28 @@ function applyRolePermissions(role) {
     // =========================================
 
     const employeesButton =
-        document.getElementById(
-            "employeesMenuButton"
-        );
+        document.getElementById("employeesMenuButton");
+
+    const branchesButton =
+        document.getElementById("branchesMenuButton");
 
     const scheduleButton =
-        document.getElementById(
-            "scheduleMenuButton"
-        );
+        document.getElementById("scheduleMenuButton");
 
     const importButton =
-        document.getElementById(
-            "importMenuButton"
-        );
+        document.getElementById("importMenuButton");
 
     const exportButton =
-        document.getElementById(
-            "exportMenuButton"
-        );
+        document.getElementById("exportMenuButton");
 
     const attendanceButton =
-        document.getElementById(
-            "attendanceMenuButton"
-        );
+        document.getElementById("attendanceMenuButton");
 
     const reportsButton =
-        document.getElementById(
-            "reportsMenuButton"
-        );
+        document.getElementById("reportsMenuButton");
 
     const settingsButton =
-        document.getElementById(
-            "settingsMenuButton"
-        );
+        document.getElementById("settingsMenuButton");
 
 
     // =========================================
@@ -3245,6 +3270,9 @@ function applyRolePermissions(role) {
 
     if (employeesButton)
         employeesButton.style.display = "none";
+
+    if (branchesButton)
+        branchesButton.style.display = "none";
 
     if (scheduleButton)
         scheduleButton.style.display = "none";
@@ -3273,6 +3301,9 @@ function applyRolePermissions(role) {
 
         if (employeesButton)
             employeesButton.style.display = "block";
+
+        if (branchesButton)
+            branchesButton.style.display = "block";
 
         if (scheduleButton)
             scheduleButton.style.display = "block";
@@ -3317,6 +3348,10 @@ function applyRolePermissions(role) {
         if (settingsButton)
             settingsButton.style.display = "block";
 
+        // Branches intentionally hidden
+        if (branchesButton)
+            branchesButton.style.display = "none";
+
         return;
     }
 
@@ -3332,6 +3367,13 @@ function applyRolePermissions(role) {
 
         if (attendanceButton)
             attendanceButton.style.display = "block";
+
+        // Employees / Branches / Management hidden
+        if (employeesButton)
+            employeesButton.style.display = "none";
+
+        if (branchesButton)
+            branchesButton.style.display = "none";
 
         return;
     }
