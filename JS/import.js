@@ -675,38 +675,23 @@ function normalizeShift(value) {
 // =====================================================
 // EXCEL DATE CONVERSION
 // =====================================================
-
 function convertExcelDate(value) {
 
-    if (
-        value === null ||
-        value === undefined
-    ) {
+    if (value === null || value === undefined) {
         return null;
     }
 
-    const text =
-        String(value).trim();
+    const text = String(value).trim();
 
     if (!text) {
         return null;
     }
 
-
-    // =============================================
     // Excel serial number
-    // =============================================
-
     if (typeof value === "number") {
 
         const excelEpoch =
-            new Date(
-                Date.UTC(
-                    1899,
-                    11,
-                    30
-                )
-            );
+            new Date(Date.UTC(1899, 11, 30));
 
         const date =
             new Date(
@@ -717,11 +702,7 @@ function convertExcelDate(value) {
         return formatDate(date);
     }
 
-
-    // =============================================
     // YYYY-MM-DD
-    // =============================================
-
     let match =
         text.match(
             /^(\d{4})-(\d{1,2})-(\d{1,2})$/
@@ -736,12 +717,8 @@ function convertExcelDate(value) {
         );
     }
 
-
-    // =============================================
-    // D-M-YYYY / DD-MM-YYYY
+    // D-M-YYYY
     // Example: 8-1-2026
-    // =============================================
-
     match =
         text.match(
             /^(\d{1,2})-(\d{1,2})-(\d{4})$/
@@ -756,12 +733,7 @@ function convertExcelDate(value) {
         );
     }
 
-
-    // =============================================
-    // D/M/YYYY / DD/MM/YYYY
-    // Example: 8/1/2026
-    // =============================================
-
+    // D/M/YYYY
     match =
         text.match(
             /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/
@@ -776,10 +748,8 @@ function convertExcelDate(value) {
         );
     }
 
-
     return null;
 }
-
 
 // =====================================================
 // BUILD VALID DATE
