@@ -236,7 +236,9 @@ async function readExcel() {
 
             const rawDate =
                 row[dateColumnIndex];
-
+                console.log("ROW 2 DATA:", row);
+                console.log("RAW DATE:", rawDate);
+                console.log("RAW DATE TYPE:", typeof rawDate);
 
             if (
                 rawDate === undefined ||
