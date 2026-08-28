@@ -1,53 +1,75 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <title>
-        Quantech Attendance System
-    </title>
+<title>Quantech Attendance System</title>
 
-    <link
-        rel="stylesheet"
-        href="CSS/style.css"
-    >
+<link
+    rel="stylesheet"
+    href="CSS/style.css"
+>
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+>
 
 </head>
 
-
 <body>
-
-
-<!-- =====================================================
-     HEADER
-===================================================== -->
 
 <header>
 
-    <h1>
-        Quantech Attendance System
-    </h1>
+    <div class="header-content">
 
-    <p>
-        <span id="branchHeaderName">
-            Al Alameen Store
-        </span>
-    </p>
+        <div class="header-brand">
+
+            <h1>
+                Quantech Attendance System
+            </h1>
+
+            <p>
+                <span id="branchHeaderName">
+                    
+                </span>
+            </p>
+
+            <div class="user-header-info">
+
+                <span id="headerUserName">
+                    -
+                </span>
+
+                <span id="headerUserRole">
+                    -
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="header-actions">
+
+            <button
+                type="button"
+                class="logout-button"
+                onclick="logoutUser()"
+            >
+                🚪 Logout
+            </button>
+
+        </div>
+
+    </div>
 
 </header>
-
-
-
-<!-- =====================================================
-     LOGIN PAGE
-===================================================== -->
 
 <div
     id="loginPage"
@@ -56,117 +78,94 @@
 
     <div class="login-box">
 
-        <h1>
-            Employee Login
-        </h1>
+    <h1>Employee Login</h1>
 
-        <p>
-            Please login to continue
-        </p>
+    <p>Please login to continue</p>
 
+    <input
+        type="text"
+        id="loginEmail"
+        placeholder="Username"
+        autocomplete="username"
+    >
 
-        <input
-            type="text"
-            id="loginEmail"
-            placeholder="Username"
-            autocomplete="username"
-        >
+    <input
+        type="password"
+        id="loginPassword"
+        placeholder="Password"
+        autocomplete="current-password"
+    >
 
+    <button
+        class="primary login-button"
+        onclick="loginUser()"
+    >
+        Login
+    </button>
 
-        <input
-            type="password"
-            id="loginPassword"
-            placeholder="Password"
-            autocomplete="current-password"
-        >
-
-
-        <button
-            class="primary login-button"
-            onclick="loginUser()"
-        >
-            Login
-        </button>
-
-
-        <div
-            id="loginError"
-            class="error"
-            style="margin-top:15px;"
-        ></div>
+    <div
+        id="loginError"
+        class="error"
+        style="margin-top:15px;"
+    ></div>
 
     </div>
 
 </div>
 
-
-
-<!-- =====================================================
-     APPLICATION CONTAINER
-===================================================== -->
-
 <div
     class="container"
     id="appContainer"
+    style="display: none;"
 >
 
+    <section
+        id="dashboardPage"
+        class="page active"
+    >
 
-<!-- =====================================================
-     DASHBOARD PAGE
-===================================================== -->
+    <div class="page-header">
 
-<section
-    id="dashboardPage"
-    class="page active"
->
+        <h2>Dashboard</h2>
 
-    <h2>
-        Dashboard
-    </h2>
+        <p>
+            Attendance Management System
+        </p>
 
-    <p>
-        Attendance Management System
-    </p>
+    </div>
 
+    <div class="card">
 
-    <!-- DASHBOARD CARDS -->
+        <div
+            id="primaryStatTitle"
+            class="card-title"
+        >
+            Loading...
+        </div>
 
-    <div class="cards">
+        <div
+            id="primaryStatValue"
+            class="card-value"
+        >
+            Loading...
+        </div>
 
+    </div>
 
         <div class="card">
 
-            <div class="card-title">
-                Active Employees
-            </div>
+            <div class="card-title" id="primaryStatTitle">
+    Loading...
+</div>
 
-            <div
-                id="employeeCount"
-                class="card-value"
-            >
-                Loading...
-            </div>
-
-        </div>
-
-
-
-        <div class="card">
-
-            <div class="card-title">
-                Today's Attendance
-            </div>
-
-            <div
-                id="attendanceCount"
-                class="card-value"
-            >
-                Loading...
-            </div>
+<div
+    id="primaryStatValue"
+    class="card-value"
+>
+    Loading...
+</div>
 
         </div>
-
-
 
         <div class="card">
 
@@ -184,8 +183,6 @@
 
         </div>
 
-
-
         <div class="card">
 
             <div class="card-title">
@@ -201,23 +198,12 @@
             </div>
 
         </div>
-
-    </div>
-
-
-
-    <!-- SYSTEM MANAGEMENT -->
-
-    <h2>
-        System Management
-    </h2>
-
+    <h2>System Management</h2>
 
     <div
         class="menu"
         id="dashboardMenu"
     >
-
 
         <button
             id="employeesMenuButton"
@@ -226,38 +212,12 @@
             👥 Employees
         </button>
 
-
         <button
             id="branchesMenuButton"
             onclick="showPage('branchesPage')"
         >
             🏢 Branches
         </button>
-
-
-        <button
-            id="scheduleMenuButton"
-            onclick="showPage('schedulePage')"
-        >
-            📅 Shift Schedule
-        </button>
-
-
-        <button
-            id="importMenuButton"
-            onclick="showPage('importPage')"
-        >
-            📥 Import Excel
-        </button>
-
-
-        <button
-            id="exportMenuButton"
-            onclick="alert('Export Excel will be added next.')"
-        >
-            📤 Export Excel
-        </button>
-
 
         <button
             id="attendanceMenuButton"
@@ -266,14 +226,33 @@
             🕐 Attendance
         </button>
 
+        <button
+            id="scheduleMenuButton"
+            onclick="showPage('schedulePage')"
+        >
+            📅 Schedule
+        </button>
+
+        <button
+            id="importMenuButton"
+            onclick="showPage('importPage')"
+        >
+            📥 Import Excel
+        </button>
+
+        <button
+            id="exportMenuButton"
+            onclick="openExportDialog()"
+        >
+            📤 Export Excel
+        </button>
 
         <button
             id="reportsMenuButton"
-            onclick="alert('Reports will be added next.')"
+            onclick="showPage('reportsPage')"
         >
             📊 Reports
         </button>
-
 
         <button
             id="settingsMenuButton"
@@ -283,24 +262,10 @@
         </button>
 
 
-        <button
-            onclick="logoutUser()"
-            class="logout-button"
-        >
-            🚪 Logout
-        </button>
-
     </div>
-
-
-
-    <!-- SYSTEM STATUS -->
-
     <div class="status">
 
-        <strong>
-            System Status:
-        </strong>
+        <strong>System Status:</strong>
 
         <span
             id="systemStatus"
@@ -311,13 +276,11 @@
 
     </div>
 
+
+</div>
+
+
 </section>
-
-
-
-<!-- =====================================================
-     EMPLOYEES PAGE
-===================================================== -->
 
 <section
     id="employeesPage"
@@ -331,454 +294,415 @@
         ← Back to Dashboard
     </button>
 
+    <div class="page-header">
 
-    <h2>
-        👥 Employees
-    </h2>
-
-    <p>
-        Employee list and current status.
-    </p>
-
-
-    <div
-        id="employeesStatus"
-        class="status loading"
-    >
-        Loading...
-    </div>
-
-
-    <div class="table-container">
-
-        <table>
-
-            <thead>
-
-                <tr>
-
-                    <th>
-                        #
-                    </th>
-
-                    <th>
-                        Staff ID
-                    </th>
-
-                    <th>
-                        Full Name
-                    </th>
-
-                    <th>
-                        Role
-                    </th>
-
-                    <th>
-                        Status
-                    </th>
-
-                </tr>
-
-            </thead>
-
-
-            <tbody
-                id="employeesTable"
-            ></tbody>
-
-        </table>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     SHIFT SCHEDULE PAGE
-===================================================== -->
-
-<section
-    id="schedulePage"
-    class="page"
->
-
-    <button
-        class="back"
-        onclick="showPage('dashboardPage')"
-    >
-        ← Back to Dashboard
-    </button>
-
-
-    <h2>
-        📅 Shift Schedule
-    </h2>
-
-    <p>
-        Monthly employee shift schedule.
-    </p>
-
-
-    <div
-        id="scheduleStatus"
-        class="status loading"
-    >
-        Loading schedule...
-    </div>
-
-
-    <div class="table-container">
-
-        <table
-            class="schedule-table"
-        >
-
-            <thead>
-
-                <tr>
-
-                    <th>
-                        Date
-                    </th>
-
-                    <th>
-                        121090
-                    </th>
-
-                    <th>
-                        121040
-                    </th>
-
-                    <th>
-                        125453
-                    </th>
-
-                    <th>
-                        126439
-                    </th>
-
-                    <th>
-                        127981
-                    </th>
-
-                    <th>
-                        126225
-                    </th>
-
-                    <th>
-                        129776
-                    </th>
-
-                </tr>
-
-            </thead>
-
-
-            <tbody
-                id="scheduleTable"
-            ></tbody>
-
-        </table>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     IMPORT EXCEL PAGE
-===================================================== -->
-
-<section
-    id="importPage"
-    class="page"
->
-
-    <button
-        class="back"
-        onclick="showPage('dashboardPage')"
-    >
-        ← Back to Dashboard
-    </button>
-
-
-    <h2>
-        📥 Import Monthly Schedule
-    </h2>
-
-    <p>
-        Upload the monthly Excel schedule.
-    </p>
-
-
-    <div class="status">
-
-        <strong>
-            Required format
-        </strong>
+        <h2>👥 Employees</h2>
 
         <p>
-            Column A = Date
-        </p>
-
-        <p>
-            Columns B onward = Staff IDs
-        </p>
-
-        <p>
-            Shift values:
-            AM / PM / Support / OFF / Annual Leave
+            Manage employees and employee accounts.
         </p>
 
     </div>
 
+    <div class="card">
 
-    <input
-        type="file"
-        id="excelFile"
-        accept=".xlsx,.xls,.csv"
-    >
+        <h3>➕ Add New Employee</h3>
 
+        <div class="form-grid">
 
-    <button
-        class="primary"
-        onclick="readExcel()"
-    >
-        Preview Excel
-    </button>
+            <div class="form-group">
 
+                <label for="newStaffId">
+                    Staff ID
+                </label>
 
-    <div
-        id="excelPreview"
-        style="margin-top:20px;"
-    ></div>
+                <input
+                    type="text"
+                    id="newStaffId"
+                    placeholder="Enter Staff ID"
+                >
 
-</section>
+            </div>
 
+            <div class="form-group">
 
+                <label for="newFullName">
+                    Full Name
+                </label>
 
-<!-- =====================================================
-     SETTINGS PAGE
-===================================================== -->
+                <input
+                    type="text"
+                    id="newFullName"
+                    placeholder="Enter employee full name"
+                >
 
-<section
-    id="settingsPage"
-    class="page"
->
+            </div>
 
-    <button
-        class="back"
-        onclick="showPage('dashboardPage')"
-    >
-        ← Back to Dashboard
-    </button>
+            <div class="form-group">
 
+                <label for="newRole">
+                    Role
+                </label>
 
-    <h2>
-        ⚙️ Settings
-    </h2>
+                <input
+                    type="text"
+                    id="newRole"
+                    placeholder="e.g. Employee"
+                >
 
-    <p>
-        Manage employees and branch configuration.
-    </p>
+            </div>
 
+            <div class="form-group">
 
+                <label for="newEmail">
+                    Email
+                </label>
 
-    <!-- EMPLOYEE MANAGEMENT -->
+                <input
+                    type="email"
+                    id="newEmail"
+                    placeholder="employee@example.com"
+                >
 
-    <div class="status">
+            </div>
 
-        <h3>
-            Employee Management
-        </h3>
+            <div class="form-group">
 
-        <p>
-            Add, edit or deactivate employees.
-        </p>
+                <label for="newPhone">
+                    Phone
+                </label>
 
-    </div>
+                <input
+                    type="tel"
+                    id="newPhone"
+                    placeholder="01xxxxxxxxx"
+                >
 
+            </div>
 
+            <div class="form-group">
 
-    <!-- BRANCH MANAGEMENT -->
+                <label for="newEmployeeBranch">
+                    Branch
+                </label>
 
-    <div class="status">
+                <select id="newEmployeeBranch">
 
-        <h3>
-            🏢 Branch Management
-        </h3>
+                    <option value="">
+                        Select Branch
+                    </option>
 
-        <p>
-            Create and manage branch accounts.
-        </p>
+                </select>
 
+            </div>
 
-        <input
-            type="text"
-            id="newBranchStoreId"
-            placeholder="Store ID"
-            style="width:100%;padding:12px;margin:6px 0;"
-        >
-
-
-        <input
-            type="text"
-            id="newBranchName"
-            placeholder="Branch Name"
-            style="width:100%;padding:12px;margin:6px 0;"
-        >
-
-
-        <input
-            type="number"
-            id="newBranchLatitude"
-            placeholder="Latitude"
-            step="any"
-            style="width:100%;padding:12px;margin:6px 0;"
-        >
-
-
-        <input
-            type="number"
-            id="newBranchLongitude"
-            placeholder="Longitude"
-            step="any"
-            style="width:100%;padding:12px;margin:6px 0;"
-        >
-
-
-        <input
-            type="number"
-            id="newBranchRadius"
-            placeholder="Attendance Radius (meters)"
-            value="100"
-            min="10"
-            style="width:100%;padding:12px;margin:6px 0;"
-        >
-
-
-        <button
-            class="primary"
-            onclick="createBranchAccount()"
-        >
-            ➕ Create Branch Account
-        </button>
-
+        </div>
 
         <div
-            id="branchManagementMessage"
+            id="addEmployeeStatus"
             class="status"
-            style="margin-top:15px;"
         ></div>
 
-    </div>
-
-
-
-    <!-- ADD EMPLOYEE -->
-
-    <div class="status">
-
-        <h3>
-            ➕ Add Employee
-        </h3>
-
-
-        <input
-            type="text"
-            id="newStaffId"
-            placeholder="Staff ID"
-            style="width:100%;padding:12px;margin:6px 0;"
-        >
-
-
-        <input
-            type="text"
-            id="newFullName"
-            placeholder="Full Name"
-            style="width:100%;padding:12px;margin:6px 0;"
-        >
-
-
-        <input
-            type="text"
-            id="newRole"
-            placeholder="Role"
-            style="width:100%;padding:12px;margin:6px 0;"
-        >
-
-
         <button
+            type="button"
             class="primary"
             onclick="addEmployee()"
         >
-            Add Employee
+            ➕ Add Employee
         </button>
 
     </div>
 
+    <div class="card">
 
+        <h3>Employee List</h3>
 
-    <!-- EMPLOYEE LIST -->
+        <div
+            id="employeesStatus"
+            class="status loading"
+        >
+        </div>
 
-    <div
-        id="settingsEmployeesStatus"
-        class="status loading"
-    >
-        Loading employees...
-    </div>
+        <div class="table-container">
 
+            <table>
 
-    <div class="table-container">
+                <thead>
 
-        <table>
+                    <tr>
 
-            <thead>
+                        <th>#</th>
+                        <th>Staff ID</th>
+                        <th>Full Name</th>
+                        <th>Role</th>
+                        <th>Status</th>
 
-                <tr>
+                    </tr>
 
-                    <th>
-                        Staff ID
-                    </th>
+                </thead>
 
-                    <th>
-                        Name
-                    </th>
+                <tbody id="employeesTable"></tbody>
 
-                    <th>
-                        Role
-                    </th>
+            </table>
 
-                    <th>
-                        Status
-                    </th>
-
-                    <th>
-                        Action
-                    </th>
-
-                </tr>
-
-            </thead>
-
-
-            <tbody
-                id="settingsEmployeesTable"
-            ></tbody>
-
-        </table>
+        </div>
 
     </div>
 
 </section>
 
+<section
+    id="branchesPage"
+    class="page"
+>
 
+    <button
+        class="back"
+        onclick="showPage('dashboardPage')"
+    >
+        ← Back to Dashboard
+    </button>
 
-<!-- =====================================================
-     ATTENDANCE PAGE
-===================================================== -->
+    <div class="page-header">
+
+        <h2>🏢 Branch Management</h2>
+
+        <p>
+            Create and manage company branches.
+        </p>
+
+    </div>
+
+    <div class="card">
+
+        <h3>➕ Create New Branch</h3>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label for="branchNameInput">
+                    Branch Name
+                </label>
+
+                <input
+                    type="text"
+                    id="branchNameInput"
+                    placeholder="Enter branch name"
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="branchCodeInput">
+                    Branch Code
+                </label>
+
+                <input
+                    type="text"
+                    id="branchCodeInput"
+                    placeholder="e.g. 1706"
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="managerNameInput">
+                    Manager Name
+                </label>
+
+                <input
+                    type="text"
+                    id="managerNameInput"
+                    placeholder="Enter manager name"
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="managerEmailInput">
+                    Manager Email
+                </label>
+
+                <input
+                    type="email"
+                    id="managerEmailInput"
+                    placeholder="manager@example.com"
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="managerPhoneInput">
+                    Manager Phone
+                </label>
+
+                <input
+                    type="tel"
+                    id="managerPhoneInput"
+                    placeholder="01xxxxxxxxx"
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="branchLatitudeInput">
+                    Latitude
+                </label>
+
+                <input
+                    type="number"
+                    id="branchLatitudeInput"
+                    step="any"
+                    placeholder="31.2001"
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="branchLongitudeInput">
+                    Longitude
+                </label>
+
+                <input
+                    type="number"
+                    id="branchLongitudeInput"
+                    step="any"
+                    placeholder="29.9187"
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="branchRadiusInput">
+                    Allowed Radius (meters)
+                </label>
+
+                <input
+                    type="number"
+                    id="branchRadiusInput"
+                    value="50"
+                    min="1"
+                >
+
+            </div>
+
+        </div>
+
+        <div
+            id="createBranchStatus"
+            class="status"
+        ></div>
+
+        <button
+            type="button"
+            class="primary"
+            onclick="createBranch()"
+        >
+            ➕ Create Branch
+        </button>
+
+    </div>
+
+    <div
+        class="card"
+        id="branchActivationResult"
+        style="display:none;"
+    >
+
+        <h3>
+            ✅ Branch Created Successfully
+        </h3>
+
+        <p>
+            <strong>Branch Name:</strong>
+            <span id="createdBranchName">-</span>
+        </p>
+
+        <p>
+            <strong>Branch Code:</strong>
+            <span id="createdBranchCode">-</span>
+        </p>
+
+        <p>
+            <strong>Manager Username:</strong>
+            <span id="createdManagerLogin">-</span>
+        </p>
+
+        <p>
+            <strong>Manager:</strong>
+            <span id="createdManagerName">-</span>
+        </p>
+
+        <div class="form-group">
+
+            <label>
+                Manager Activation Link
+            </label>
+
+            <textarea
+                id="managerActivationLink"
+                readonly
+                rows="3"
+            ></textarea>
+
+        </div>
+
+        <button
+            type="button"
+            class="primary"
+            onclick="copyManagerActivationLink()"
+        >
+            📋 Copy Activation Link
+        </button>
+
+    </div>
+
+    <div class="card">
+
+        <h3>Existing Branches</h3>
+
+        <div
+            id="branchesStatus"
+            class="status loading"
+        >
+            Loading branches...
+        </div>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>#</th>
+                        <th>Branch Code</th>
+                        <th>Branch Name</th>
+                        <th>Manager</th>
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="branchesTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
 
 <section
     id="attendancePage"
@@ -792,18 +716,17 @@
         ← Back to Dashboard
     </button>
 
+    <div class="page-header">
 
-    <h2>
-        🕐 Attendance
-    </h2>
+        <h2>🕐 Attendance</h2>
 
-    <p>
-        Your attendance for today.
-    </p>
+        <p>
+            Attendance and check-in/check-out management.
+        </p>
 
+    </div>
 
     <div class="cards">
-
 
         <div class="card">
 
@@ -820,7 +743,6 @@
 
         </div>
 
-
         <div class="card">
 
             <div class="card-title">
@@ -836,7 +758,6 @@
             </div>
 
         </div>
-
 
         <div class="card">
 
@@ -856,9 +777,10 @@
 
     </div>
 
-
-    <div class="menu">
-
+    <div
+        class="menu"
+        id="attendanceActions"
+    >
 
         <button
             id="checkInButton"
@@ -867,7 +789,6 @@
             🟢 Check In
         </button>
 
-
         <button
             id="checkOutButton"
             onclick="checkOut()"
@@ -875,9 +796,7 @@
             🔴 Check Out
         </button>
 
-
     </div>
-
 
     <div
         id="attendancePageStatus"
@@ -886,29 +805,384 @@
         Ready
     </div>
 
+    <div
+        class="card"
+        id="attendanceDataCard"
+    >
+
+        <h3>Attendance Records</h3>
+
+        <div id="attendanceFilters"></div>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Date</th>
+                        <th>Staff ID</th>
+                        <th>Employee</th>
+                        <th>Branch</th>
+                        <th>Check In</th>
+                        <th>Check Out</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="attendanceTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
 </section>
 
+<section
+    id="schedulePage"
+    class="page"
+>
 
+    <button
+        class="back"
+        onclick="showPage('dashboardPage')"
+    >
+        ← Back to Dashboard
+    </button>
+
+    <div class="page-header">
+
+        <h2>📅 Shift Schedule</h2>
+
+        <p>
+            Monthly employee shift schedule.
+        </p>
+
+    </div>
+
+    <div
+        id="scheduleStatus"
+        class="status loading"
+    >
+        Loading schedule...
+    </div>
+
+    <div class="table-container">
+
+        <table class="schedule-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Date</th>
+
+                    <th>121090</th>
+                    <th>121040</th>
+                    <th>125453</th>
+                    <th>126439</th>
+                    <th>127981</th>
+                    <th>126225</th>
+                    <th>129776</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="scheduleTable"></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+<section
+    id="importPage"
+    class="page"
+>
+
+    <button
+        class="back"
+        onclick="showPage('dashboardPage')"
+    >
+        ← Back to Dashboard
+    </button>
+
+    <div class="page-header">
+
+        <h2>📥 Import Monthly Schedule</h2>
+
+        <p>
+            Upload the monthly Excel schedule.
+        </p>
+
+    </div>
+
+    <div class="status">
+
+        <strong>Required format</strong>
+
+        <p>
+            Column A = Date
+        </p>
+
+        <p>
+            Columns B onward = Staff IDs
+        </p>
+
+        <p>
+            Shift values:
+            AM / PM / Support / OFF / Annual Leave
+        </p>
+
+    </div>
+
+    <input
+        type="file"
+        id="excelFile"
+        accept=".xlsx,.xls,.csv"
+    >
+
+    <button
+        class="primary"
+        onclick="readExcel()"
+    >
+        Preview Excel
+    </button>
+
+    <div
+        id="excelPreview"
+        style="margin-top:20px;"
+    ></div>
+
+</section>
+
+<section
+    id="reportsPage"
+    class="page"
+>
+
+    <button
+        class="back"
+        onclick="showPage('dashboardPage')"
+    >
+        ← Back to Dashboard
+    </button>
+
+    <div class="page-header">
+
+        <h2>📊 Reports</h2>
+
+        <p>
+            Reports will be added later.
+        </p>
+
+    </div>
+
+    <div class="card">
+
+        <h3>Reports</h3>
+
+        <p>
+            This section is reserved for future reports.
+        </p>
+
+    </div>
+
+</section>
+
+<section
+    id="settingsPage"
+    class="page"
+>
+
+    <button
+        class="back"
+        onclick="showPage('dashboardPage')"
+    >
+        ← Back to Dashboard
+    </button>
+
+    <div class="page-header">
+
+        <h2>
+            ⚙️ Settings
+        </h2>
+
+        <p>
+            Manage your branch settings.
+        </p>
+
+    </div>
+
+
+    <div
+        id="branchSettingsCard"
+        class="card"
+    >
+
+        <h3>
+            🏢 Branch Settings
+        </h3>
+
+
+        <div class="form-grid">
+
+
+            <div class="form-group">
+
+                <label for="settingsBranchName">
+                    Branch Name
+                </label>
+
+                <input
+                    type="text"
+                    id="settingsBranchName"
+                    placeholder="Branch Name"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="settingsBranchCode">
+                    Branch Code
+                </label>
+
+                <input
+                    type="text"
+                    id="settingsBranchCode"
+                    placeholder="Branch Code"
+                    readonly
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="settingsManagerName">
+                    Manager Name
+                </label>
+
+                <input
+                    type="text"
+                    id="settingsManagerName"
+                    placeholder="Manager Name"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="settingsManagerEmail">
+                    Manager Email
+                </label>
+
+                <input
+                    type="email"
+                    id="settingsManagerEmail"
+                    placeholder="Manager Email"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="settingsManagerPhone">
+                    Manager Phone
+                </label>
+
+                <input
+                    type="tel"
+                    id="settingsManagerPhone"
+                    placeholder="Manager Phone"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="settingsLatitude">
+                    Latitude
+                </label>
+
+                <input
+                    type="number"
+                    id="settingsLatitude"
+                    step="any"
+                    placeholder="Latitude"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="settingsLongitude">
+                    Longitude
+                </label>
+
+                <input
+                    type="number"
+                    id="settingsLongitude"
+                    step="any"
+                    placeholder="Longitude"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="settingsRadius">
+                    Allowed Radius (meters)
+                </label>
+
+                <input
+                    type="number"
+                    id="settingsRadius"
+                    min="1"
+                    placeholder="50"
+                >
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="branchSettingsStatus"
+            class="status"
+        ></div>
+
+
+        <button
+            type="button"
+            class="primary"
+            onclick="saveBranchSettings()"
+        >
+            💾 Save Changes
+        </button>
+
+    </div>
+
+</section>
 </div>
-<!-- END CONTAINER -->
-
-
-
-<!-- =====================================================
-     FOOTER
-===================================================== -->
 
 <footer>
-
-    2026 @powered by Ahmed Sobhy
-
+    © 2026 Ahmed Sobhy. All rights reserved.
 </footer>
-
-
-
-<!-- =====================================================
-     JAVASCRIPT
-===================================================== -->
 
 <script
     src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"
@@ -926,7 +1200,10 @@
     src="JS/schedule.js"
 ></script>
 
+<script
+    src="JS/export.js"
+></script>
 
 </body>
+
 </html>
-```

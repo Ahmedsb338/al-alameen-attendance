@@ -254,7 +254,12 @@ async function readExcel() {
                 convertExcelDate(
                     rawDate
                 );
-
+                console.log(
+                    "DATE DEBUG:",
+                    rawDate,
+                    "=>",
+                    scheduleDate
+                );
 
             if (!scheduleDate) {
 

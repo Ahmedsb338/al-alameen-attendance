@@ -295,19 +295,28 @@ async function checkLoginSession() {
     const loginPage =
         document.getElementById("loginPage");
 
+    const appContainer =
+        document.getElementById("appContainer");
+
     const dashboardPage =
         document.getElementById("dashboardPage");
 
 
     // No session
-
     if (!accessToken) {
 
-        loginPage.style.display = "flex";
+        if (loginPage) {
+            loginPage.style.display = "flex";
+        }
 
-        dashboardPage.style.display = "none";
+        if (appContainer) {
+            appContainer.style.display = "none";
+        }
 
-        dashboardPage.classList.remove("active");
+        if (dashboardPage) {
+            dashboardPage.style.display = "none";
+            dashboardPage.classList.remove("active");
+        }
 
         return;
     }
@@ -322,11 +331,9 @@ async function checkLoginSession() {
                 SUPABASE_URL +
                 "/auth/v1/user",
                 {
-
                     method: "GET",
 
                     headers: {
-
                         "apikey":
                             SUPABASE_KEY,
 
@@ -362,11 +369,9 @@ async function checkLoginSession() {
                 user.id +
                 "&select=*",
                 {
-
                     method: "GET",
 
                     headers: {
-
                         "apikey":
                             SUPABASE_KEY,
 
@@ -415,20 +420,62 @@ async function checkLoginSession() {
             profile;
 
 
+        // Header user information
+
+        const headerUserName =
+            document.getElementById(
+                "headerUserName"
+            );
+
+        const headerUserRole =
+            document.getElementById(
+                "headerUserRole"
+            );
+
+
+        if (headerUserName) {
+
+            headerUserName.textContent =
+                profile.full_name || "-";
+        }
+
+
+        if (headerUserRole) {
+
+            headerUserRole.textContent =
+                profile.role || "-";
+        }
+
+
         // Hide login
 
-        loginPage.style.display =
-            "none";
+        if (loginPage) {
+
+            loginPage.style.display =
+                "none";
+        }
+
+
+        // Show application
+
+        if (appContainer) {
+
+            appContainer.style.display =
+                "block";
+        }
 
 
         // Show dashboard
 
-        dashboardPage.style.display =
-            "block";
+        if (dashboardPage) {
 
-        dashboardPage.classList.add(
-            "active"
-        );
+            dashboardPage.style.display =
+                "block";
+
+            dashboardPage.classList.add(
+                "active"
+            );
+        }
 
 
         // Apply role permissions
@@ -437,30 +484,77 @@ async function checkLoginSession() {
             profile.role
         );
 
+        configureDashboardForRole(
+            profile.role
+        );
 
         // Load branch header
 
-if (
-    typeof loadBranchHeader ===
-    "function"
-) {
+        if (
+            typeof loadBranchHeader ===
+            "function"
+        ) {
 
-    await loadBranchHeader();
+            await loadBranchHeader();
+        }
+
+    function configureDashboardForRole(role) {
+
+    const title =
+        document.getElementById("primaryStatTitle");
+
+    const value =
+        document.getElementById("primaryStatValue");
+
+    if (!title || !value) {
+        return;
+    }
+
+    if (role === "Super Admin") {
+
+        title.textContent =
+            "Active Branches";
+
+        loadBranchCount();
+
+        return;
+    }
+
+    if (role === "Branch Manager") {
+
+        title.textContent =
+            "Active Agents";
+
+        loadActiveAgentCount();
+
+        return;
+    }
+
+    if (role === "Employee") {
+
+        title.textContent =
+            "My Attendance";
+
+        value.textContent =
+            "-";
+
+        return;
+    }
 }
+        // Load dashboard data
 
-// Load dashboard data
-
-await loadDashboard();
-
-
-// Update system status
-
-await updateSystemStatus();
+        await loadDashboard();
 
 
-// Load today's date
+        // Update system status
 
-loadTodayDate();
+        await updateSystemStatus();
+
+
+        // Load today's date
+
+        loadTodayDate();
+
     }
 
     catch (error) {
@@ -480,17 +574,39 @@ loadTodayDate();
         );
 
 
-        loginPage.style.display =
-            "flex";
+        window.currentUserProfile =
+            null;
 
 
-        dashboardPage.style.display =
-            "none";
+        // Show login
+
+        if (loginPage) {
+
+            loginPage.style.display =
+                "flex";
+        }
 
 
-        dashboardPage.classList.remove(
-            "active"
-        );
+        // Hide application
+
+        if (appContainer) {
+
+            appContainer.style.display =
+                "none";
+        }
+
+
+        // Hide dashboard
+
+        if (dashboardPage) {
+
+            dashboardPage.style.display =
+                "none";
+
+            dashboardPage.classList.remove(
+                "active"
+            );
+        }
 
 
         const errorBox =
@@ -611,14 +727,21 @@ function applyRolePermissions(role) {
 
     if (role === "Super Admin") {
 
-        Object.values(buttons).forEach(button => {
-            if (button) {
-                button.style.display = "block";
-            }
-        });
+    [
+        buttons.employees,
+        buttons.branches,
+        buttons.export,
+        buttons.settings
+    ].forEach(button => {
 
-        return;
-    }
+        if (button) {
+            button.style.display = "block";
+        }
+
+    });
+
+    return;
+}
 
 
     // =================================================
@@ -672,7 +795,51 @@ function applyRolePermissions(role) {
         role
     );
 }
+async function loadActiveAgentCount() {
 
+    const value =
+        document.getElementById("primaryStatValue");
+
+    if (!value) {
+        return;
+    }
+
+    try {
+
+        const branchId =
+            window.currentUserProfile &&
+            window.currentUserProfile.branch_id;
+
+        if (!branchId) {
+
+            value.textContent = "0";
+
+            return;
+        }
+
+        const data =
+            await supabaseRequest(
+                "/rest/v1/employees" +
+                "?select=id" +
+                "&active=eq.true" +
+                "&branch_id=eq." +
+                branchId
+            );
+
+        value.textContent =
+            data.length;
+
+    } catch (error) {
+
+        console.error(
+            "Active agent count error:",
+            error
+        );
+
+        value.textContent =
+            "Error";
+    }
+}
 // =====================================================
 // DASHBOARD
 // =====================================================
@@ -680,7 +847,7 @@ function applyRolePermissions(role) {
 async function loadDashboard() {
 
     await Promise.all([
-        loadEmployeeCount(),
+        loadBranchCount(),
         loadAttendanceCount(),
         loadBranch()
     ]);
@@ -754,61 +921,47 @@ function loadTodayDate() {
 // EMPLOYEES COUNT
 // =====================================================
 
-async function loadEmployeeCount() {
+async function loadBranchCount() {
 
     try {
 
         const data =
             await supabaseRequest(
-                "/rest/v1/employees" +
+                "/rest/v1/branches" +
                 "?select=id" +
                 "&active=eq.true"
             );
 
-
         const element =
             document.getElementById(
-                "employeeCount"
+                "branchCount"
             );
 
-
         if (element) {
-
-            element.textContent =
-                data.length;
+            element.textContent = data.length;
         }
-
 
         return true;
 
-    }
-
-    catch (error) {
+    } catch (error) {
 
         console.error(
-            "Employee count error:",
+            "Branch count error:",
             error
         );
 
-
         const element =
             document.getElementById(
-                "employeeCount"
+                "branchCount"
             );
 
-
         if (element) {
-
-            element.textContent =
-                "Error";
+            element.textContent = "Error";
         }
-
 
         return false;
     }
 }
-
-
 // =====================================================
 // ATTENDANCE COUNT
 // =====================================================
@@ -910,10 +1063,12 @@ async function loadBranch() {
 
         const profileData =
             await supabaseRequest(
-                "/rest/v1/profiles" +
-                "?select=role,branch_id" +
-                "&limit=1"
-            );
+            "/rest/v1/profiles" +
+            "?select=role,branch_id" +
+            "&id=eq." +
+            window.currentUserProfile.id +
+            "&limit=1"
+    );
 
 
         const element =
@@ -1194,13 +1349,22 @@ function showPage(pageId) {
     // Page-specific loading
 
     if (
-        pageId ===
-        "employeesPage"
-    ) {
+    pageId ===
+    "employeesPage"
+) {
 
-        loadEmployees();
-    }
+    loadEmployees();
 
+    loadEmployeeBranches();
+  }
+
+    if (
+    pageId ===
+    "branchesPage"
+) {
+
+    loadBranches();
+}
 
     if (
         pageId ===
@@ -1225,9 +1389,373 @@ function showPage(pageId) {
         "settingsPage"
     ) {
 
-        loadEmployeesSettings();
+        loadBranchSettings();
     }
 }
+async function loadBranchSettings() {
+
+    const branchId =
+        window.currentUserProfile &&
+        window.currentUserProfile.branch_id;
+
+    const card =
+        document.getElementById(
+            "branchSettingsCard"
+        );
+
+    const status =
+        document.getElementById(
+            "branchSettingsStatus"
+        );
+
+    if (!card || !status) {
+        return;
+    }
+
+    if (
+        !window.currentUserProfile ||
+        window.currentUserProfile.role !== "Branch Manager"
+    ) {
+        card.style.display = "none";
+        return;
+    }
+
+    if (!branchId) {
+
+        status.textContent =
+            "Branch could not be determined.";
+
+        status.className =
+            "status error";
+
+        return;
+    }
+
+    try {
+
+        status.textContent =
+            "Loading branch settings...";
+
+        status.className =
+            "status loading";
+
+        const branches =
+            await supabaseRequest(
+                "/rest/v1/branches" +
+                "?select=id,name,store_id,manager_name,manager_phone,manager_email,latitude,longitude,allowed_radius_meters" +
+                "&id=eq." +
+                branchId +
+                "&limit=1"
+            );
+
+        if (
+            !branches ||
+            !branches.length
+        ) {
+
+            throw new Error(
+                "Branch not found."
+            );
+        }
+
+        const branch =
+            branches[0];
+
+        document.getElementById(
+            "settingsBranchName"
+        ).value =
+            branch.name || "";
+
+        document.getElementById(
+            "settingsBranchCode"
+        ).value =
+            branch.store_id || "";
+
+        document.getElementById(
+            "settingsManagerName"
+        ).value =
+            branch.manager_name || "";
+
+        document.getElementById(
+            "settingsManagerEmail"
+        ).value =
+            branch.manager_email || "";
+
+        document.getElementById(
+            "settingsManagerPhone"
+        ).value =
+            branch.manager_phone || "";
+
+        document.getElementById(
+            "settingsLatitude"
+        ).value =
+            branch.latitude ?? "";
+
+        document.getElementById(
+            "settingsLongitude"
+        ).value =
+            branch.longitude ?? "";
+
+        document.getElementById(
+            "settingsRadius"
+        ).value =
+            branch.allowed_radius_meters ?? 50;
+
+        status.textContent =
+            "Branch settings loaded.";
+
+        status.className =
+            "status success";
+
+    } catch (error) {
+
+        console.error(
+            "loadBranchSettings error:",
+            error
+        );
+
+        status.textContent =
+            "Error: " +
+            error.message;
+
+        status.className =
+            "status error";
+    }
+}
+
+async function saveBranchSettings() {
+
+    const branchId =
+        window.currentUserProfile &&
+        window.currentUserProfile.branch_id;
+
+    const status =
+        document.getElementById(
+            "branchSettingsStatus"
+        );
+
+    if (!status) {
+        return;
+    }
+
+    if (
+        !window.currentUserProfile ||
+        window.currentUserProfile.role !== "Branch Manager"
+    ) {
+        status.textContent =
+            "You are not allowed to edit branch settings.";
+
+        status.className =
+            "status error";
+
+        return;
+    }
+
+    if (!branchId) {
+        status.textContent =
+            "Branch could not be determined.";
+
+        status.className =
+            "status error";
+
+        return;
+    }
+
+    const branchName =
+        document
+            .getElementById("settingsBranchName")
+            .value
+            .trim();
+
+    const managerName =
+        document
+            .getElementById("settingsManagerName")
+            .value
+            .trim();
+
+    const managerEmail =
+        document
+            .getElementById("settingsManagerEmail")
+            .value
+            .trim();
+
+    const managerPhone =
+        document
+            .getElementById("settingsManagerPhone")
+            .value
+            .trim();
+
+    const latitude =
+        document
+            .getElementById("settingsLatitude")
+            .value;
+
+    const longitude =
+        document
+            .getElementById("settingsLongitude")
+            .value;
+
+    const radius =
+        document
+            .getElementById("settingsRadius")
+            .value;
+
+
+    if (!branchName) {
+        status.textContent =
+            "Branch Name is required.";
+
+        status.className =
+            "status error";
+
+        return;
+    }
+
+    if (!managerName) {
+        status.textContent =
+            "Manager Name is required.";
+
+        status.className =
+            "status error";
+
+        return;
+    }
+
+    if (!managerEmail) {
+        status.textContent =
+            "Manager Email is required.";
+
+        status.className =
+            "status error";
+
+        return;
+    }
+
+    if (!managerPhone) {
+        status.textContent =
+            "Manager Phone is required.";
+
+        status.className =
+            "status error";
+
+        return;
+    }
+
+    if (
+        latitude === "" ||
+        longitude === ""
+    ) {
+        status.textContent =
+            "Latitude and Longitude are required.";
+
+        status.className =
+            "status error";
+
+        return;
+    }
+
+    if (
+        !radius ||
+        Number(radius) <= 0
+    ) {
+        status.textContent =
+            "Allowed Radius must be greater than zero.";
+
+        status.className =
+            "status error";
+
+        return;
+    }
+
+
+    try {
+
+        status.textContent =
+            "Saving branch settings...";
+
+        status.className =
+            "status loading";
+
+
+        await supabaseRequest(
+
+            "/rest/v1/branches" +
+            "?id=eq." +
+            branchId,
+
+            {
+                method: "PATCH",
+
+                headers: {
+                    "Prefer":
+                        "return=minimal"
+                },
+
+                body:
+                    JSON.stringify({
+
+                        name:
+                            branchName,
+
+                        manager_name:
+                            managerName,
+
+                        manager_phone:
+                            managerPhone,
+
+                        manager_email:
+                            managerEmail,
+
+                        latitude:
+                            Number(latitude),
+
+                        longitude:
+                            Number(longitude),
+
+                        allowed_radius_meters:
+                            Number(radius)
+
+                    })
+            }
+        );
+
+
+        status.textContent =
+            "Branch settings saved successfully.";
+
+        status.className =
+            "status success";
+
+
+        // Refresh branch header
+        if (
+            typeof loadBranchHeader ===
+            "function"
+        ) {
+            await loadBranchHeader();
+        }
+
+
+        // Refresh dashboard branch name
+        await loadBranch();
+
+
+    } catch (error) {
+
+        console.error(
+            "saveBranchSettings error:",
+            error
+        );
+
+        status.textContent =
+            "Error: " +
+            error.message;
+
+        status.className =
+            "status error";
+    }
+}
+
 // =====================================================
 // SETTINGS - LOAD EMPLOYEES
 // =====================================================
@@ -1339,7 +1867,7 @@ async function loadEmployeesSettings() {
 
 
 // =====================================================
-// ADD EMPLOYEE
+// ADD EMPLOYEE + CREATE LOGIN ACCOUNT
 // =====================================================
 
 async function addEmployee() {
@@ -1362,11 +1890,32 @@ async function addEmployee() {
             .value
             .trim();
 
+    const email =
+        document
+            .getElementById("newEmail")
+            .value
+            .trim();
 
-    if (!staffId || !fullName) {
+    const phone =
+        document
+            .getElementById("newPhone")
+            .value
+            .trim();
+
+
+    // =========================================
+    // VALIDATION
+    // =========================================
+
+    if (
+        !staffId ||
+        !fullName ||
+        !email ||
+        !phone
+    ) {
 
         alert(
-            "Staff ID and Full Name are required."
+            "Staff ID, Full Name, Email and Phone are required."
         );
 
         return;
@@ -1375,63 +1924,207 @@ async function addEmployee() {
 
     try {
 
-        const profile =
+        // =========================================
+// 1. DETERMINE EMPLOYEE BRANCH
+// =========================================
+
+const selectedBranch =
+    document
+        .getElementById("newEmployeeBranch")
+        .value
+        .trim();
+
+
+if (!selectedBranch) {
+
+    throw new Error(
+        "Please select a branch."
+    );
+}
+
+
+const branchId =
+    Number(selectedBranch);
+
+
+if (!Number.isInteger(branchId) || branchId <= 0) {
+
+    throw new Error(
+        "Invalid branch selected."
+    );
+}
+
+        // =========================================
+        // 2. CREATE EMPLOYEE RECORD
+        // =========================================
+
+        const employeeResponse =
             await supabaseRequest(
-                "/rest/v1/profiles" +
-                "?select=branch_id" +
-                "&limit=1"
+                "/rest/v1/employees",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Prefer":
+                            "return=representation"
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            staff_id:
+                                staffId,
+
+                            full_name:
+                                fullName,
+
+                            role:
+                                role || "Employee",
+
+                            branch_id:
+                                branchId,
+
+                            active:
+                                true
+                        })
+                }
             );
 
 
-        const branchId =
-            profile.length
-                ? profile[0].branch_id
+        const employee =
+            employeeResponse &&
+            employeeResponse.length
+                ? employeeResponse[0]
                 : null;
 
 
-        if (!branchId) {
+        if (!employee) {
 
             throw new Error(
-                "Branch could not be determined."
+                "Employee was created but no employee ID was returned."
             );
         }
 
 
-        await supabaseRequest(
-            "/rest/v1/employees",
-            {
-                method: "POST",
+        // =========================================
+        // 3. CREATE LOGIN ACCOUNT
+        // =========================================
 
-                headers: {
-                    "Prefer":
-                        "return=minimal"
-                },
+        const accessToken =
+            localStorage.getItem(
+                "access_token"
+            );
 
-                body: JSON.stringify({
 
-                    staff_id:
-                        staffId,
+        const userResponse =
+            await fetch(
 
-                    full_name:
-                        fullName,
+                SUPABASE_URL +
+                "/functions/v1/create-user",
 
-                    role:
-                        role || null,
+                {
+                    method: "POST",
 
-                    branch_id:
-                        branchId,
+                    headers: {
 
-                    active:
-                        true
-                })
-            }
+                        "Authorization":
+                            "Bearer " +
+                            accessToken,
+
+                        "apikey":
+                            SUPABASE_KEY,
+
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            name:
+                                fullName,
+
+                            email:
+                                email,
+
+                            phone:
+                                phone,
+
+                            login_id:
+                                staffId,
+
+                            role:
+                                role || "Employee",
+
+                            employee_id:
+                                employee.id,
+
+                            branch_id:
+                                branchId
+                        })
+                }
+            );
+
+
+        const userResult =
+            await userResponse.json();
+
+
+        console.log(
+            "Create user result:",
+            userResult
         );
 
+
+        if (!userResponse.ok) {
+
+            throw new Error(
+                userResult.message ||
+                "Employee created, but login account creation failed."
+            );
+        }
+
+
+        // =========================================
+        // 4. SUCCESS
+        // =========================================
 
         alert(
-            "Employee added successfully."
+            "Employee and login account created successfully."
         );
 
+
+        // =========================================
+        // 5. SHOW ACTIVATION LINK
+        // =========================================
+
+        if (
+            userResult.activation_link
+        ) {
+
+            const openLink =
+                confirm(
+                    "Account created successfully.\n\n" +
+                    "Login ID: " +
+                    staffId +
+                    "\n\n" +
+                    "Do you want to open the activation link?"
+                );
+
+
+            if (openLink) {
+
+                window.open(
+                    userResult.activation_link,
+                    "_blank"
+                );
+            }
+        }
+
+
+        // =========================================
+        // 6. CLEAR FORM
+        // =========================================
 
         document.getElementById(
             "newStaffId"
@@ -1445,6 +2138,18 @@ async function addEmployee() {
             "newRole"
         ).value = "";
 
+        document.getElementById(
+            "newEmail"
+        ).value = "";
+
+        document.getElementById(
+            "newPhone"
+        ).value = "";
+
+
+        // =========================================
+        // 7. REFRESH DATA
+        // =========================================
 
         await loadEmployeesSettings();
 
@@ -1458,70 +2163,6 @@ async function addEmployee() {
             error
         );
 
-        alert(
-            "Error adding employee:\n" +
-            error.message
-        );
-    }
-}
-
-
-// =====================================================
-// DEACTIVATE EMPLOYEE
-// =====================================================
-
-async function deactivateEmployee(id) {
-
-    const confirmed =
-        confirm(
-            "Are you sure you want to deactivate this employee?"
-        );
-
-
-    if (!confirmed) {
-        return;
-    }
-
-
-    try {
-
-        await supabaseRequest(
-
-            "/rest/v1/employees" +
-            "?id=eq." +
-            id,
-
-            {
-                method: "PATCH",
-
-                headers: {
-                    "Prefer":
-                        "return=minimal"
-                },
-
-                body: JSON.stringify({
-                    active: false
-                })
-            }
-        );
-
-
-        alert(
-            "Employee deactivated successfully."
-        );
-
-
-        await loadEmployeesSettings();
-
-        await loadEmployeeCount();
-
-
-    } catch (error) {
-
-        console.error(
-            "deactivateEmployee error:",
-            error
-        );
 
         alert(
             "Error:\n" +
@@ -1530,7 +2171,70 @@ async function deactivateEmployee(id) {
     }
 }
 
+// =====================================================
+// LOAD BRANCHES FOR EMPLOYEE FORM
+// =====================================================
 
+async function loadEmployeeBranches() {
+
+    const select =
+        document.getElementById(
+            "newEmployeeBranch"
+        );
+
+    if (!select) {
+        return;
+    }
+
+    try {
+
+        const branches =
+            await supabaseRequest(
+                "/rest/v1/branches" +
+                "?select=id,name,store_id,active" +
+                "&active=eq.true" +
+                "&order=name.asc"
+            );
+
+
+        select.innerHTML = `
+            <option value="">
+                Select Branch
+            </option>
+        `;
+
+
+        branches.forEach(branch => {
+
+            const option =
+                document.createElement("option");
+
+
+            option.value =
+                branch.id;
+
+
+            option.textContent =
+                branch.store_id
+                    ? `${branch.name} (${branch.store_id})`
+                    : branch.name;
+
+
+            select.appendChild(option);
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "loadEmployeeBranches error:",
+            error
+        );
+
+    }
+}
 // =====================================================
 // ACTIVATE EMPLOYEE
 // =====================================================
@@ -2441,10 +3145,12 @@ async function uploadScheduleRows() {
 
         const profile =
             await supabaseRequest(
-                "/rest/v1/profiles" +
-                "?select=branch_id,role" +
-                "&limit=1"
-            );
+            "/rest/v1/profiles" +
+            "?select=branch_id,role" +
+            "&id=eq." +
+            window.currentUserProfile.id +
+            "&limit=1"
+    );
 
 
         if (
@@ -3139,5 +3845,563 @@ async function checkOut() {
 
         statusBox.className =
             "status error";
+    }
+}
+
+// =====================================================
+// BRANCH MANAGEMENT
+// =====================================================
+
+
+// =====================================================
+// LOAD BRANCHES
+// =====================================================
+
+async function loadBranches() {
+
+    const table =
+        document.getElementById("branchesTable");
+
+    const status =
+        document.getElementById("branchesStatus");
+
+    if (!table || !status) {
+        return;
+    }
+
+
+    try {
+
+        status.textContent =
+            "Loading branches...";
+
+        status.className =
+            "status loading";
+
+
+        const branches =
+            await supabaseRequest(
+                "/rest/v1/branches" +
+                "?select=id,name,store_id,manager_name,manager_phone,manager_email,active" +
+                "&order=id.asc"
+            );
+
+
+        table.innerHTML = "";
+
+
+        branches.forEach(
+            (branch, index) => {
+
+                const row =
+                    document.createElement("tr");
+
+
+                row.innerHTML = `
+
+                    <td>
+                        ${index + 1}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(
+                            branch.store_id || "-"
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(
+                            branch.name
+                        )}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(
+                            branch.manager_name || "-"
+                        )}
+                    </td>
+
+                    <td class="${
+                        branch.active
+                            ? "success"
+                            : "error"
+                    }">
+
+                        ${
+                            branch.active
+                                ? "Active"
+                                : "Inactive"
+                        }
+
+                    </td>
+
+                `;
+
+
+                table.appendChild(row);
+
+            }
+        );
+
+
+        status.textContent =
+            branches.length +
+            " branches loaded.";
+
+        status.className =
+            "status success";
+
+
+    } catch (error) {
+
+        console.error(
+            "loadBranches error:",
+            error
+        );
+
+
+        status.textContent =
+            "Error: " +
+            error.message;
+
+        status.className =
+            "status error";
+    }
+}
+
+
+// =====================================================
+// CREATE BRANCH
+// =====================================================
+
+async function createBranch() {
+
+    const branchName =
+        document
+            .getElementById("branchNameInput")
+            .value
+            .trim();
+
+
+    const branchCode =
+        document
+            .getElementById("branchCodeInput")
+            .value
+            .trim();
+
+
+    const managerName =
+        document
+            .getElementById("managerNameInput")
+            .value
+            .trim();
+
+
+    const managerEmail =
+        document
+            .getElementById("managerEmailInput")
+            .value
+            .trim();
+
+
+    const managerPhone =
+        document
+            .getElementById("managerPhoneInput")
+            .value
+            .trim();
+
+
+    const latitude =
+        document
+            .getElementById("branchLatitudeInput")
+            .value;
+
+
+    const longitude =
+        document
+            .getElementById("branchLongitudeInput")
+            .value;
+
+
+    const radius =
+        document
+            .getElementById("branchRadiusInput")
+            .value;
+
+
+    const status =
+        document.getElementById(
+            "createBranchStatus"
+        );
+
+
+    if (!branchName) {
+
+        status.textContent =
+            "Branch Name is required.";
+
+        status.className =
+            "status error";
+
+        return;
+    }
+
+
+    if (!branchCode) {
+
+        status.textContent =
+            "Branch Code is required.";
+
+        status.className =
+            "status error";
+
+        return;
+    }
+
+
+    if (!managerName) {
+
+        status.textContent =
+            "Manager Name is required.";
+
+        status.className =
+            "status error";
+
+        return;
+    }
+
+
+    if (!managerEmail) {
+
+        status.textContent =
+            "Manager Email is required.";
+
+        status.className =
+            "status error";
+
+        return;
+    }
+
+
+    if (!managerPhone) {
+
+        status.textContent =
+            "Manager Phone is required.";
+
+        status.className =
+            "status error";
+
+        return;
+    }
+
+
+    if (
+        latitude === "" ||
+        longitude === ""
+    ) {
+
+        status.textContent =
+            "Latitude and Longitude are required.";
+
+        status.className =
+            "status error";
+
+        return;
+    }
+
+
+    if (!radius || Number(radius) <= 0) {
+
+        status.textContent =
+            "Allowed Radius must be greater than zero.";
+
+        status.className =
+            "status error";
+
+        return;
+    }
+
+
+    const accessToken =
+        localStorage.getItem(
+            "access_token"
+        );
+
+
+    if (!accessToken) {
+
+        status.textContent =
+            "Your session has expired. Please login again.";
+
+        status.className =
+            "status error";
+
+        return;
+    }
+
+
+    try {
+
+        status.textContent =
+            "Creating branch and manager account...";
+
+        status.className =
+            "status loading";
+
+
+        const response =
+            await fetch(
+
+                SUPABASE_URL +
+                "/functions/v1/create-branch",
+
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Authorization":
+                            "Bearer " +
+                            accessToken,
+
+                        "apikey":
+                            SUPABASE_KEY,
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            branch_name:
+                                branchName,
+
+                            branch_code:
+                                branchCode,
+
+                            manager_name:
+                                managerName,
+
+                            manager_email:
+                                managerEmail,
+
+                            manager_phone:
+                                managerPhone,
+
+                            latitude:
+                                Number(latitude),
+
+                            longitude:
+                                Number(longitude),
+
+                            allowed_radius_meters:
+                                Number(radius),
+
+                            redirect_to:
+                                window.location.origin +
+                                "/reset-password.html"
+
+                        })
+
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        console.log(
+            "Create branch response:",
+            result
+        );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                result.error ||
+                result.message ||
+                "Failed to create branch."
+            );
+        }
+
+
+        // =================================================
+        // SUCCESS
+        // =================================================
+
+        status.textContent =
+            "Branch created successfully.";
+
+        status.className =
+            "status success";
+
+
+        const resultBox =
+            document.getElementById(
+                "branchActivationResult"
+            );
+
+
+        if (resultBox) {
+
+            resultBox.style.display =
+                "block";
+        }
+
+
+        document.getElementById(
+            "createdBranchName"
+        ).textContent =
+            result.branch?.name ||
+            branchName;
+
+
+        document.getElementById(
+            "createdBranchCode"
+        ).textContent =
+            result.branch?.store_id ||
+            branchCode;
+
+
+        document.getElementById(
+            "createdManagerLogin"
+        ).textContent =
+            result.manager?.login_id ||
+            branchCode;
+
+
+        document.getElementById(
+            "createdManagerName"
+        ).textContent =
+            result.manager?.full_name ||
+            managerName;
+
+
+        document.getElementById(
+            "managerActivationLink"
+        ).value =
+            result.activation_link ||
+            "Activation link was not generated.";
+
+
+        // =================================================
+        // CLEAR FORM
+        // =================================================
+
+        document.getElementById(
+            "branchNameInput"
+        ).value = "";
+
+
+        document.getElementById(
+            "branchCodeInput"
+        ).value = "";
+
+
+        document.getElementById(
+            "managerNameInput"
+        ).value = "";
+
+
+        document.getElementById(
+            "managerEmailInput"
+        ).value = "";
+
+
+        document.getElementById(
+            "managerPhoneInput"
+        ).value = "";
+
+
+        document.getElementById(
+            "branchLatitudeInput"
+        ).value = "";
+
+
+        document.getElementById(
+            "branchLongitudeInput"
+        ).value = "";
+
+
+        document.getElementById(
+            "branchRadiusInput"
+        ).value = "50";
+
+
+        // =================================================
+        // Refresh branches
+        // =================================================
+
+        await loadBranches();
+
+
+    } catch (error) {
+
+        console.error(
+            "createBranch error:",
+            error
+        );
+
+
+        status.textContent =
+            error.message;
+
+        status.className =
+            "status error";
+    }
+}
+
+
+// =====================================================
+// COPY ACTIVATION LINK
+// =====================================================
+
+async function copyManagerActivationLink() {
+
+    const input =
+        document.getElementById(
+            "managerActivationLink"
+        );
+
+
+    if (!input || !input.value) {
+
+        alert(
+            "No activation link is available."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        await navigator.clipboard.writeText(
+            input.value
+        );
+
+
+        alert(
+            "Activation link copied successfully."
+        );
+
+
+    } catch (error) {
+
+        input.select();
+
+        document.execCommand(
+            "copy"
+        );
+
+
+        alert(
+            "Activation link copied."
+        );
     }
 }
