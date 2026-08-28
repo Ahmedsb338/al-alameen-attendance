@@ -55,12 +55,14 @@ async function readExcel() {
 
         const rows =
             XLSX.utils.sheet_to_json(
-                firstSheet,
-                {
-                    header: 1,
-                    defval: ""
-                }
-            );
+            firstSheet,
+        {
+            header: 1,
+            defval: "",
+            raw: true,
+            cellDates: true
+        }
+    );
 
 
         if (!rows.length) {
@@ -672,30 +674,52 @@ function normalizeShift(value) {
 // EXCEL DATE CONVERSION
 // =====================================================
 
+```javascript
+// =====================================================
+// EXCEL DATE CONVERSION
+// =====================================================
+
 function convertExcelDate(value) {
+
+    // ---------------------------------------------
+    // Empty value
+    // ---------------------------------------------
+
+    if (
+        value === null ||
+        value === undefined ||
+        String(value).trim() === ""
+    ) {
+        return null;
+    }
+
 
     // ---------------------------------------------
     // JavaScript Date
     // ---------------------------------------------
 
-    if (
-        value instanceof Date &&
-        !isNaN(value.getTime())
-    ) {
+    if (value instanceof Date) {
 
-        return formatDate(
-            value
-        );
+        if (!isNaN(value.getTime())) {
+
+            return formatDate(value);
+
+        }
+
+        return null;
     }
 
 
     // ---------------------------------------------
-    // Excel serial number
+    // Excel Serial Number
+    // Example: 46262
     // ---------------------------------------------
 
-    if (
-        typeof value === "number"
-    ) {
+    if (typeof value === "number") {
+
+        if (!isFinite(value)) {
+            return null;
+        }
 
         const excelEpoch =
             new Date(
@@ -706,26 +730,21 @@ function convertExcelDate(value) {
                 )
             );
 
-
         const date =
             new Date(
                 excelEpoch.getTime() +
-                value *
-                86400000
+                Math.round(value) * 86400000
             );
 
-
-        return formatDate(
-            date
-        );
+        return formatDate(date);
     }
 
 
     // ---------------------------------------------
-    // String date
+    // String
     // ---------------------------------------------
 
-    const text =
+    let text =
         String(value)
             .trim();
 
@@ -735,57 +754,251 @@ function convertExcelDate(value) {
     }
 
 
+    // Remove time if present
+    // Example:
+    // 28/08/2026 00:00:00
+    // 2026-08-28 00:00:00
+
+    text =
+        text.split(" ")[0]
+            .trim();
+
+
+    // ---------------------------------------------
     // YYYY-MM-DD
+    // ---------------------------------------------
 
     if (
-        /^\d{4}-\d{2}-\d{2}$/.test(
-            text
-        )
+        /^\d{4}-\d{1,2}-\d{1,2}$/.test(text)
     ) {
 
-        return text;
+        const parts =
+            text.split("-");
+
+        const year =
+            Number(parts[0]);
+
+        const month =
+            Number(parts[1]);
+
+        const day =
+            Number(parts[2]);
+
+        return buildValidDate(
+            year,
+            month,
+            day
+        );
     }
 
 
+    // ---------------------------------------------
     // DD/MM/YYYY
+    // ---------------------------------------------
 
-    const parts =
-        text.split("/");
+    if (
+        /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(text)
+    ) {
+
+        const parts =
+            text.split("/");
+
+        const day =
+            Number(parts[0]);
+
+        const month =
+            Number(parts[1]);
+
+        const year =
+            Number(parts[2]);
+
+        return buildValidDate(
+            year,
+            month,
+            day
+        );
+    }
+
+
+    // ---------------------------------------------
+    // DD-MM-YYYY
+    // ---------------------------------------------
+
+    if (
+        /^\d{1,2}-\d{1,2}-\d{4}$/.test(text)
+    ) {
+
+        const parts =
+            text.split("-");
+
+        const day =
+            Number(parts[0]);
+
+        const month =
+            Number(parts[1]);
+
+        const year =
+            Number(parts[2]);
+
+        return buildValidDate(
+            year,
+            month,
+            day
+        );
+    }
+
+
+    // ---------------------------------------------
+    // MM/DD/YYYY
+    // ---------------------------------------------
+
+    if (
+        /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(text)
+    ) {
+
+        const parts =
+            text.split("/");
+
+        const first =
+            Number(parts[0]);
+
+        const second =
+            Number(parts[1]);
+
+        const year =
+            Number(parts[2]);
+
+
+        // If first number is greater than 12,
+        // it must be DD/MM/YYYY.
+
+        if (first > 12) {
+
+            return buildValidDate(
+                year,
+                second,
+                first
+            );
+        }
+
+
+        // Otherwise treat as MM/DD/YYYY.
+
+        return buildValidDate(
+            year,
+            first,
+            second
+        );
+    }
+
+
+    // ---------------------------------------------
+    // Excel date text with dots
+    // Example: 28.08.2026
+    // ---------------------------------------------
+
+    if (
+        /^\d{1,2}\.\d{1,2}\.\d{4}$/.test(text)
+    ) {
+
+        const parts =
+            text.split(".");
+
+        const day =
+            Number(parts[0]);
+
+        const month =
+            Number(parts[1]);
+
+        const year =
+            Number(parts[2]);
+
+        return buildValidDate(
+            year,
+            month,
+            day
+        );
+    }
+
+
+    // ---------------------------------------------
+    // Final fallback
+    // ---------------------------------------------
+
+    const parsed =
+        new Date(text);
 
 
     if (
-        parts.length === 3
+        !isNaN(parsed.getTime())
     ) {
 
-        const day =
-            parts[0].padStart(
-                2,
-                "0"
-            );
+        return formatDate(parsed);
 
-        const month =
-            parts[1].padStart(
-                2,
-                "0"
-            );
-
-        const year =
-            parts[2];
-
-
-        if (
-            year.length === 4
-        ) {
-
-            return `
-                ${year}-${month}-${day}
-            `.replace(/\s/g, "");
-        }
     }
 
 
     return null;
 }
+
+
+// =====================================================
+// BUILD VALID DATE
+// =====================================================
+
+function buildValidDate(
+    year,
+    month,
+    day
+) {
+
+    if (
+        !year ||
+        !month ||
+        !day
+    ) {
+
+        return null;
+    }
+
+
+    if (
+        month < 1 ||
+        month > 12 ||
+        day < 1 ||
+        day > 31
+    ) {
+
+        return null;
+    }
+
+
+    const date =
+        new Date(
+            Date.UTC(
+                year,
+                month - 1,
+                day
+            )
+        );
+
+
+    // Make sure JavaScript did not
+    // automatically correct an invalid date.
+
+    if (
+        date.getUTCFullYear() !== year ||
+        date.getUTCMonth() !== month - 1 ||
+        date.getUTCDate() !== day
+    ) {
+
+        return null;
+    }
+
+
+    return formatDate(date);
+}
+```
 
 
 // =====================================================
