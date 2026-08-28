@@ -1,337 +1,78 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Quantech Attendance System</title>
-
-<style>
-
-* {
-    box-sizing: border-box;
-}
-.login-page {
-    min-height: 100vh;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    background: #f4f6f8;
-
-    padding: 20px;
-}
-
-.login-box {
-    width: 100%;
-
-    max-width: 400px;
-
-    background: white;
-
-    padding: 30px;
-
-    border-radius: 15px;
-
-    box-shadow:
-        0 5px 25px rgba(0,0,0,0.10);
-
-    text-align: center;
-}
-
-.login-box h1 {
-    margin-bottom: 10px;
-}
-
-.login-box p {
-    color: #6b7280;
-
-    margin-bottom: 25px;
-}
-
-.login-box input {
-    width: 100%;
-
-    padding: 14px;
-
-    margin-bottom: 12px;
-
-    border: 1px solid #d1d5db;
-
-    border-radius: 8px;
-
-    font-size: 15px;
-}
-
-.login-button {
-    width: 100%;
-}
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f4f6f8;
-    color: #1f2937;
-}
-
-header {
-    background: #111827;
-    color: white;
-    padding: 22px;
-}
-
-header h1 {
-    margin: 0;
-    font-size: 23px;
-}
-
-header p {
-    margin: 6px 0 0;
-    color: #d1d5db;
-}
-
-.container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 25px 18px;
-}
-
-.page {
-    display: none;
-}
-
-.page.active {
-    display: block;
-}
-
-.cards {
-    display: grid;
-    grid-template-columns:
-        repeat(auto-fit, minmax(200px, 1fr));
-
-    gap: 18px;
-
-    margin: 25px 0;
-}
-
-.card {
-    background: white;
-    padding: 22px;
-    border-radius: 12px;
-
-    box-shadow:
-        0 3px 12px rgba(0,0,0,0.07);
-}
-
-.card-title {
-    color: #6b7280;
-    font-size: 14px;
-    margin-bottom: 10px;
-}
-
-.card-value {
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.menu {
-    display: grid;
-
-    grid-template-columns:
-        repeat(auto-fit, minmax(180px, 1fr));
-
-    gap: 15px;
-}
-
-button {
-    border: none;
-    border-radius: 10px;
-
-    padding: 16px;
-
-    background: white;
-
-    box-shadow:
-        0 3px 12px rgba(0,0,0,0.07);
-
-    cursor: pointer;
-
-    font-size: 15px;
-}
-
-button:hover {
-    background: #eef2ff;
-}
-
-.back {
-    background: #111827;
-    color: white;
-
-    margin-bottom: 20px;
-}
-
-.table-container {
-    background: white;
-
-    border-radius: 12px;
-
-    padding: 15px;
-
-    overflow-x: auto;
-
-    box-shadow:
-        0 3px 12px rgba(0,0,0,0.07);
-}
-
-table {
-    width: 100%;
-
-    border-collapse: collapse;
-
-    min-width: 700px;
-}
-
-th,
-td {
-    padding: 12px;
-
-    border-bottom:
-        1px solid #e5e7eb;
-
-    text-align: left;
-}
-
-th {
-    background: #f8fafc;
-}
-
-.status {
-    margin: 20px 0;
-
-    padding: 15px;
-
-    background: white;
-
-    border-radius: 10px;
-}
-
-.success {
-    color: #15803d;
-}
-
-.error {
-    color: #dc2626;
-}
-
-.loading {
-    color: #ca8a04;
-}
-
-input[type="file"] {
-    width: 100%;
-
-    padding: 15px;
-
-    background: white;
-
-    border-radius: 10px;
-
-    border: 1px solid #ddd;
-
-    margin: 15px 0;
-}
-
-.primary {
-    background: #2563eb;
-    color: white;
-}
-
-.danger {
-    background: #dc2626;
-    color: white;
-}
-
-.schedule-table th,
-.schedule-table td {
-    text-align: center;
-    white-space: nowrap;
-}
-
-.shift-AM {
-    background: #dcfce7;
-}
-
-.shift-PM {
-    background: #dbeafe;
-}
-
-.shift-Support {
-    background: #fef3c7;
-}
-
-.shift-OFF {
-    background: #f3f4f6;
-}
-
-.shift-Annual {
-    background: #fee2e2;
-}
-
-footer {
-    text-align: center;
-
-    padding: 30px;
-
-    color: #6b7280;
-}
-.site-footer {
-    text-align: center;
-    padding: 20px;
-    margin-top: 30px;
-    color: #777;
-    font-size: 14px;
-}
-
-</style>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Quantech Attendance System
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
 
 </head>
 
 
 <body>
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
 <header>
 
-<h1>
-Quantech Attendance System
-</h1>
+    <h1>
+        Quantech Attendance System
+    </h1>
 
-<p>
-<span id="branchHeaderName">Al Alameen Store</span>
-</p>
+    <p>
+        <span id="branchHeaderName">
+            Al Alameen Store
+        </span>
+    </p>
 
 </header>
-<!-- LOGIN PAGE -->
 
-<div id="loginPage" class="login-page">
+
+
+<!-- =====================================================
+     LOGIN PAGE
+===================================================== -->
+
+<div
+    id="loginPage"
+    class="login-page"
+>
 
     <div class="login-box">
 
         <h1>
-           Employee login 
+            Employee Login
         </h1>
 
         <p>
             Please login to continue
         </p>
 
-         <input
-          type="text"
-          id="loginEmail"
-          placeholder="Username"
-          autocomplete="username"
+
+        <input
+            type="text"
+            id="loginEmail"
+            placeholder="Username"
+            autocomplete="username"
         >
+
 
         <input
             type="password"
@@ -340,12 +81,14 @@ Quantech Attendance System
             autocomplete="current-password"
         >
 
+
         <button
             class="primary login-button"
             onclick="loginUser()"
         >
             Login
         </button>
+
 
         <div
             id="loginError"
@@ -359,661 +102,681 @@ Quantech Attendance System
 
 
 
-<div class="container">
+<!-- =====================================================
+     APPLICATION CONTAINER
+===================================================== -->
+
+<div
+    class="container"
+    id="appContainer"
+>
 
 
-<!-- ================================================= -->
-<!-- DASHBOARD -->
-<!-- ================================================= -->
-
-<!-- ================================================= -->
-<!-- DASHBOARD -->
-<!-- ================================================= -->
+<!-- =====================================================
+     DASHBOARD PAGE
+===================================================== -->
 
 <section
-id="dashboardPage"
-class="page active"
+    id="dashboardPage"
+    class="page active"
 >
 
-<h2>
-Dashboard
-</h2>
-
-<p>
-Attendance Management System
-</p>
-
-
-<!-- ================================================= -->
-<!-- DASHBOARD CARDS -->
-<!-- ================================================= -->
-
-<div class="cards">
-
-
-<div class="card">
-
-<div class="card-title">
-Active Employees
-</div>
-
-<div
-id="employeeCount"
-class="card-value"
->
-Loading...
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="card-title">
-Today's Attendance
-</div>
-
-<div
-id="attendanceCount"
-class="card-value"
->
-Loading...
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="card-title">
-Branch
-</div>
-
-<div
-id="branchName"
-class="card-value"
-style="font-size:20px;"
->
-Loading...
-</div>
-
-</div>
-
-
-<div class="card">
-
-<div class="card-title">
-Today's Date
-</div>
-
-<div
-id="todayDate"
-class="card-value"
-style="font-size:20px;"
->
--
-</div>
-
-</div>
-
-</div>
-
-
-<!-- ================================================= -->
-<!-- SYSTEM MANAGEMENT -->
-<!-- ================================================= -->
-
-<h2>
-System Management
-</h2>
-
-
-<div
-class="menu"
-id="dashboardMenu"
->
-
-
-<!-- EMPLOYEES -->
-
-<button
-id="employeesMenuButton"
-onclick="showPage('employeesPage'); loadEmployees()"
->
-👥 Employees
-</button>
-
-
-<!-- BRANCHES -->
-
-<button
-id="branchesMenuButton"
-onclick="showPage('branchesPage'); loadBranches()"
->
-🏢 Branches
-</button>
-
-
-<!-- SCHEDULE -->
-
-<button
-id="scheduleMenuButton"
-onclick="showPage('schedulePage'); loadSchedule()"
->
-📅 Shift Schedule
-</button>
-
-
-<!-- IMPORT -->
-
-<button
-id="importMenuButton"
-onclick="showPage('importPage')"
->
-📥 Import Excel
-</button>
-
-
-<!-- EXPORT -->
-
-<button
-id="exportMenuButton"
-onclick="alert('Export Excel will be added next.')"
->
-📤 Export Excel
-</button>
-
-
-<!-- ATTENDANCE -->
-
-<button
-id="attendanceMenuButton"
-onclick="showPage('attendancePage'); loadAttendancePage()"
->
-🕐 Attendance
-</button>
-
-
-<!-- REPORTS -->
-
-<button
-id="reportsMenuButton"
-onclick="alert('Reports will be added next.')"
->
-📊 Reports
-</button>
-
-
-<!-- SETTINGS -->
-
-<button
-id="settingsMenuButton"
-onclick="showPage('settingsPage')"
->
-⚙️ Settings
-</button>
-
-
-<!-- LOGOUT -->
-
-<button
-onclick="logoutUser()"
-class="logout-button"
->
-🚪 Logout
-</button>
-
-
-</div>
-
-
-<!-- ================================================= -->
-<!-- SYSTEM STATUS -->
-<!-- ================================================= -->
-
-<div class="status">
-
-<strong>
-System Status:
-</strong>
-
-<span
-id="systemStatus"
-class="loading"
->
-Connecting...
-</span>
-
-</div>
-
-</section>
-
-
-<!-- ================================================= -->
-<!-- EMPLOYEES -->
-<!-- ================================================= -->
-
-<section
-id="employeesPage"
-class="page"
->
-
-<button
-class="back"
-onclick="showPage('dashboardPage')"
->
-← Back to Dashboard
-</button>
-
-
-<h2>
-Employees
-</h2>
-
-
-<div
-id="employeesStatus"
-class="status loading"
->
-Loading...
-</div>
-
-
-<div class="table-container">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>
-#
-</th>
-
-<th>
-Staff ID
-</th>
-
-<th>
-Full Name
-</th>
-
-<th>
-Role
-</th>
-
-<th>
-Status
-</th>
-
-</tr>
-
-</thead>
-
-
-<tbody
-id="employeesTable"
->
-</tbody>
-
-</table>
-
-</div>
-
-</section>
-
-
-
-<!-- ================================================= -->
-<!-- SHIFT SCHEDULE -->
-<!-- ================================================= -->
-
-<section
-id="schedulePage"
-class="page"
->
-
-<button
-class="back"
-onclick="showPage('dashboardPage')"
->
-← Back to Dashboard
-</button>
-
-
-<h2>
-Shift Schedule
-</h2>
-
-
-<div
-id="scheduleStatus"
-class="status loading"
->
-Loading schedule...
-</div>
-
-
-<div class="table-container">
-
-<table
-class="schedule-table"
->
-
-<thead>
-
-<tr>
-
-<th>
-Date
-</th>
-
-<th>
-121090
-</th>
-
-<th>
-121040
-</th>
-
-<th>
-125453
-</th>
-
-<th>
-126439
-</th>
-
-<th>
-127981
-</th>
-
-<th>
-126225
-</th>
-
-<th>
-129776
-</th>
-
-</tr>
-
-</thead>
-
-
-<tbody
-id="scheduleTable"
->
-</tbody>
-
-</table>
-
-</div>
-
-</section>
-
-
-
-<!-- ================================================= -->
-<!-- IMPORT EXCEL -->
-<!-- ================================================= -->
-
-<section
-id="importPage"
-class="page"
->
-
-<button
-class="back"
-onclick="showPage('dashboardPage')"
->
-← Back to Dashboard
-</button>
-
-
-<h2>
-Import Monthly Schedule
-</h2>
-
-
-<p>
-Upload the monthly Excel schedule.
-</p>
-
-
-<div class="status">
-
-<strong>
-Required format:
-</strong>
-
-<p>
-Column A = Date
-</p>
-
-<p>
-Columns B onward = Staff IDs
-</p>
-
-<p>
-Shift values:
-AM / PM / Support / OFF / Annual Leave
-</p>
-
-</div>
-
-
-<input
-type="file"
-id="excelFile"
-accept=".xlsx,.xls,.csv"
->
-
-
-<button
-class="primary"
-onclick="readExcel()"
->
-Preview Excel
-</button>
-
-
-<div
-id="excelPreview"
-style="margin-top:20px;"
->
-</div>
-
-</section>
-
-<!-- ================================================= -->
-<!-- SETTINGS -->
-<!-- ================================================= -->
-
-<section
-id="settingsPage"
-class="page"
->
-
-<button
-class="back"
-onclick="showPage('dashboardPage')"
->
-← Back to Dashboard
-</button>
-
-<h2>
-⚙️ Settings
-</h2>
-
-<div class="status">
-
-<h3>
-Employee Management
-</h3>
-
-<p>
-Add, edit or deactivate employees.
-</p>
-
-</div>
-<div class="status">
-
-    <h3>
-        🏢 Branch Management
-    </h3>
+    <h2>
+        Dashboard
+    </h2>
 
     <p>
-        Create and manage branch accounts.
+        Attendance Management System
     </p>
 
-    <input
-        type="text"
-        id="newBranchStoreId"
-        placeholder="Store ID"
-        style="width:100%;padding:12px;margin:6px 0;"
+
+    <!-- DASHBOARD CARDS -->
+
+    <div class="cards">
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Active Employees
+            </div>
+
+            <div
+                id="employeeCount"
+                class="card-value"
+            >
+                Loading...
+            </div>
+
+        </div>
+
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Today's Attendance
+            </div>
+
+            <div
+                id="attendanceCount"
+                class="card-value"
+            >
+                Loading...
+            </div>
+
+        </div>
+
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Branch
+            </div>
+
+            <div
+                id="branchName"
+                class="card-value"
+                style="font-size:20px;"
+            >
+                Loading...
+            </div>
+
+        </div>
+
+
+
+        <div class="card">
+
+            <div class="card-title">
+                Today's Date
+            </div>
+
+            <div
+                id="todayDate"
+                class="card-value"
+                style="font-size:20px;"
+            >
+                -
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- SYSTEM MANAGEMENT -->
+
+    <h2>
+        System Management
+    </h2>
+
+
+    <div
+        class="menu"
+        id="dashboardMenu"
     >
 
-    <input
-        type="text"
-        id="newBranchName"
-        placeholder="Branch Name"
-        style="width:100%;padding:12px;margin:6px 0;"
+
+        <button
+            id="employeesMenuButton"
+            onclick="showPage('employeesPage')"
+        >
+            👥 Employees
+        </button>
+
+
+        <button
+            id="branchesMenuButton"
+            onclick="showPage('branchesPage')"
+        >
+            🏢 Branches
+        </button>
+
+
+        <button
+            id="scheduleMenuButton"
+            onclick="showPage('schedulePage')"
+        >
+            📅 Shift Schedule
+        </button>
+
+
+        <button
+            id="importMenuButton"
+            onclick="showPage('importPage')"
+        >
+            📥 Import Excel
+        </button>
+
+
+        <button
+            id="exportMenuButton"
+            onclick="alert('Export Excel will be added next.')"
+        >
+            📤 Export Excel
+        </button>
+
+
+        <button
+            id="attendanceMenuButton"
+            onclick="showPage('attendancePage')"
+        >
+            🕐 Attendance
+        </button>
+
+
+        <button
+            id="reportsMenuButton"
+            onclick="alert('Reports will be added next.')"
+        >
+            📊 Reports
+        </button>
+
+
+        <button
+            id="settingsMenuButton"
+            onclick="showPage('settingsPage')"
+        >
+            ⚙️ Settings
+        </button>
+
+
+        <button
+            onclick="logoutUser()"
+            class="logout-button"
+        >
+            🚪 Logout
+        </button>
+
+    </div>
+
+
+
+    <!-- SYSTEM STATUS -->
+
+    <div class="status">
+
+        <strong>
+            System Status:
+        </strong>
+
+        <span
+            id="systemStatus"
+            class="loading"
+        >
+            Connecting...
+        </span>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     EMPLOYEES PAGE
+===================================================== -->
+
+<section
+    id="employeesPage"
+    class="page"
+>
+
+    <button
+        class="back"
+        onclick="showPage('dashboardPage')"
     >
+        ← Back to Dashboard
+    </button>
+
+
+    <h2>
+        👥 Employees
+    </h2>
+
+    <p>
+        Employee list and current status.
+    </p>
+
+
+    <div
+        id="employeesStatus"
+        class="status loading"
+    >
+        Loading...
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        #
+                    </th>
+
+                    <th>
+                        Staff ID
+                    </th>
+
+                    <th>
+                        Full Name
+                    </th>
+
+                    <th>
+                        Role
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody
+                id="employeesTable"
+            ></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     SHIFT SCHEDULE PAGE
+===================================================== -->
+
+<section
+    id="schedulePage"
+    class="page"
+>
+
+    <button
+        class="back"
+        onclick="showPage('dashboardPage')"
+    >
+        ← Back to Dashboard
+    </button>
+
+
+    <h2>
+        📅 Shift Schedule
+    </h2>
+
+    <p>
+        Monthly employee shift schedule.
+    </p>
+
+
+    <div
+        id="scheduleStatus"
+        class="status loading"
+    >
+        Loading schedule...
+    </div>
+
+
+    <div class="table-container">
+
+        <table
+            class="schedule-table"
+        >
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Date
+                    </th>
+
+                    <th>
+                        121090
+                    </th>
+
+                    <th>
+                        121040
+                    </th>
+
+                    <th>
+                        125453
+                    </th>
+
+                    <th>
+                        126439
+                    </th>
+
+                    <th>
+                        127981
+                    </th>
+
+                    <th>
+                        126225
+                    </th>
+
+                    <th>
+                        129776
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody
+                id="scheduleTable"
+            ></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     IMPORT EXCEL PAGE
+===================================================== -->
+
+<section
+    id="importPage"
+    class="page"
+>
+
+    <button
+        class="back"
+        onclick="showPage('dashboardPage')"
+    >
+        ← Back to Dashboard
+    </button>
+
+
+    <h2>
+        📥 Import Monthly Schedule
+    </h2>
+
+    <p>
+        Upload the monthly Excel schedule.
+    </p>
+
+
+    <div class="status">
+
+        <strong>
+            Required format
+        </strong>
+
+        <p>
+            Column A = Date
+        </p>
+
+        <p>
+            Columns B onward = Staff IDs
+        </p>
+
+        <p>
+            Shift values:
+            AM / PM / Support / OFF / Annual Leave
+        </p>
+
+    </div>
+
 
     <input
-        type="number"
-        id="newBranchLatitude"
-        placeholder="Latitude"
-        step="any"
-        style="width:100%;padding:12px;margin:6px 0;"
+        type="file"
+        id="excelFile"
+        accept=".xlsx,.xls,.csv"
     >
 
-    <input
-        type="number"
-        id="newBranchLongitude"
-        placeholder="Longitude"
-        step="any"
-        style="width:100%;padding:12px;margin:6px 0;"
-    >
-
-    <input
-        type="number"
-        id="newBranchRadius"
-        placeholder="Attendance Radius (meters)"
-        value="100"
-        min="10"
-        style="width:100%;padding:12px;margin:6px 0;"
-    >
 
     <button
         class="primary"
-        onclick="createBranchAccount()"
+        onclick="readExcel()"
     >
-        ➕ Create Branch Account
+        Preview Excel
     </button>
 
+
     <div
-        id="branchManagementMessage"
-        class="status"
-        style="margin-top:15px;"
+        id="excelPreview"
+        style="margin-top:20px;"
     ></div>
 
-</div>
+</section>
 
-<!-- ADD EMPLOYEE -->
 
-<div class="status">
 
-<h3>
-➕ Add Employee
-</h3>
+<!-- =====================================================
+     SETTINGS PAGE
+===================================================== -->
 
-<input
-type="text"
-id="newStaffId"
-placeholder="Staff ID"
-style="width:100%;padding:12px;margin:6px 0;"
+<section
+    id="settingsPage"
+    class="page"
 >
 
-<input
-type="text"
-id="newFullName"
-placeholder="Full Name"
-style="width:100%;padding:12px;margin:6px 0;"
->
-
-<input
-type="text"
-id="newRole"
-placeholder="Role"
-style="width:100%;padding:12px;margin:6px 0;"
->
-
-<button
-class="primary"
-onclick="addEmployee()"
->
-Add Employee
-</button>
-
-</div>
+    <button
+        class="back"
+        onclick="showPage('dashboardPage')"
+    >
+        ← Back to Dashboard
+    </button>
 
 
-<!-- EMPLOYEE LIST -->
+    <h2>
+        ⚙️ Settings
+    </h2>
 
-<div
-id="settingsEmployeesStatus"
-class="status loading"
->
-Loading employees...
-</div>
+    <p>
+        Manage employees and branch configuration.
+    </p>
 
 
-<div class="table-container">
 
-<table>
+    <!-- EMPLOYEE MANAGEMENT -->
 
-<thead>
+    <div class="status">
 
-<tr>
+        <h3>
+            Employee Management
+        </h3>
 
-<th>
-Staff ID
-</th>
+        <p>
+            Add, edit or deactivate employees.
+        </p>
 
-<th>
-Name
-</th>
+    </div>
 
-<th>
-Role
-</th>
 
-<th>
-Status
-</th>
 
-<th>
-Action
-</th>
+    <!-- BRANCH MANAGEMENT -->
 
-</tr>
+    <div class="status">
 
-</thead>
+        <h3>
+            🏢 Branch Management
+        </h3>
 
-<tbody
-id="settingsEmployeesTable"
->
-</tbody>
+        <p>
+            Create and manage branch accounts.
+        </p>
 
-</table>
 
-</div>
+        <input
+            type="text"
+            id="newBranchStoreId"
+            placeholder="Store ID"
+            style="width:100%;padding:12px;margin:6px 0;"
+        >
+
+
+        <input
+            type="text"
+            id="newBranchName"
+            placeholder="Branch Name"
+            style="width:100%;padding:12px;margin:6px 0;"
+        >
+
+
+        <input
+            type="number"
+            id="newBranchLatitude"
+            placeholder="Latitude"
+            step="any"
+            style="width:100%;padding:12px;margin:6px 0;"
+        >
+
+
+        <input
+            type="number"
+            id="newBranchLongitude"
+            placeholder="Longitude"
+            step="any"
+            style="width:100%;padding:12px;margin:6px 0;"
+        >
+
+
+        <input
+            type="number"
+            id="newBranchRadius"
+            placeholder="Attendance Radius (meters)"
+            value="100"
+            min="10"
+            style="width:100%;padding:12px;margin:6px 0;"
+        >
+
+
+        <button
+            class="primary"
+            onclick="createBranchAccount()"
+        >
+            ➕ Create Branch Account
+        </button>
+
+
+        <div
+            id="branchManagementMessage"
+            class="status"
+            style="margin-top:15px;"
+        ></div>
+
+    </div>
+
+
+
+    <!-- ADD EMPLOYEE -->
+
+    <div class="status">
+
+        <h3>
+            ➕ Add Employee
+        </h3>
+
+
+        <input
+            type="text"
+            id="newStaffId"
+            placeholder="Staff ID"
+            style="width:100%;padding:12px;margin:6px 0;"
+        >
+
+
+        <input
+            type="text"
+            id="newFullName"
+            placeholder="Full Name"
+            style="width:100%;padding:12px;margin:6px 0;"
+        >
+
+
+        <input
+            type="text"
+            id="newRole"
+            placeholder="Role"
+            style="width:100%;padding:12px;margin:6px 0;"
+        >
+
+
+        <button
+            class="primary"
+            onclick="addEmployee()"
+        >
+            Add Employee
+        </button>
+
+    </div>
+
+
+
+    <!-- EMPLOYEE LIST -->
+
+    <div
+        id="settingsEmployeesStatus"
+        class="status loading"
+    >
+        Loading employees...
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Staff ID
+                    </th>
+
+                    <th>
+                        Name
+                    </th>
+
+                    <th>
+                        Role
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                    <th>
+                        Action
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody
+                id="settingsEmployeesTable"
+            ></tbody>
+
+        </table>
+
+    </div>
 
 </section>
-</div>
+
+
+
 <!-- =====================================================
      ATTENDANCE PAGE
 ===================================================== -->
@@ -1034,6 +797,10 @@ id="settingsEmployeesTable"
     <h2>
         🕐 Attendance
     </h2>
+
+    <p>
+        Your attendance for today.
+    </p>
 
 
     <div class="cards">
@@ -1088,7 +855,6 @@ id="settingsEmployeesTable"
 
         </div>
 
-
     </div>
 
 
@@ -1121,2375 +887,47 @@ id="settingsEmployeesTable"
         Ready
     </div>
 
-
 </section>
+
+
+</div>
+<!-- END CONTAINER -->
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
 
 <footer>
 
-2026 @powered by Ahmed Sobhy 
+    2026 @powered by Ahmed Sobhy
 
 </footer>
 
 
 
-<script>
-
-
-// =====================================================
-// SUPABASE
-// =====================================================
-
-const SUPABASE_URL =
-"https://lwbyjnzpmtlflhsywtcw.supabase.co";
-
-
-const SUPABASE_KEY =
-"sb_publishable_BeMQaIT1VmSjOb9B4t8VdA_QQAkS-jF";
-
-// =====================================================
-// AUTHENTICATION
-// =====================================================
-
-async function loginUser() {
-
-    const username =
-        document
-            .getElementById("loginEmail")
-            .value
-            .trim();
-
-    const password =
-        document
-            .getElementById("loginPassword")
-            .value;
-
-    const errorBox =
-        document
-            .getElementById("loginError");
-
-    errorBox.textContent = "";
-
-    if (!username || !password) {
-        errorBox.textContent =
-            "Please enter username and password.";
-        return;
-    }
-
-    try {
-
-        // Find the Auth email linked to this username
-        const lookupResponse =
-            await fetch(
-                SUPABASE_URL +
-                "/rest/v1/rpc/get_login_email",
-                {
-                    method: "POST",
-
-                    headers: {
-                        "apikey": SUPABASE_KEY,
-                        "Content-Type":
-                        "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        p_login_id: username
-                    })
-                }
-            );
-
-        const authEmail =
-            await lookupResponse.json();
-
-        if (
-            !lookupResponse.ok ||
-            !authEmail
-        ) {
-            throw new Error(
-                "Username not found."
-            );
-        }
-
-        // Login to Supabase Auth
-        const loginResponse =
-            await fetch(
-                SUPABASE_URL +
-                "/auth/v1/token?grant_type=password",
-                {
-                    method: "POST",
-
-                    headers: {
-                        "apikey": SUPABASE_KEY,
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body: JSON.stringify({
-                        email: authEmail,
-                        password: password
-                    })
-                }
-            );
-
-        const data =
-            await loginResponse.json();
-
-        if (!loginResponse.ok) {
-            throw new Error(
-                data.error_description ||
-                "Invalid username or password."
-            );
-        }
-
-        // Save session
-        localStorage.setItem(
-            "access_token",
-            data.access_token
-        );
-
-        localStorage.setItem(
-            "refresh_token",
-            data.refresh_token
-        );
-
-        // Hide Login
-document.getElementById("loginPage").style.display = "none";
-
-// Show Dashboard
-const dashboard =
-    document.getElementById("dashboardPage");
-
-dashboard.style.display = "block";
-dashboard.classList.add("active");
-await loadBranchHeader();
-    } catch (error) {
-
-        console.error(error);
-
-        errorBox.textContent =
-            error.message;
-
-    }
-}
-
-// =====================================================
-// ATTENDANCE
-// =====================================================
-
-async function loadAttendancePage() {
-
-    const statusBox =
-        document.getElementById(
-            "attendancePageStatus"
-        );
-
-    if (!window.currentUserProfile) {
-
-        statusBox.textContent =
-            "User profile not found.";
-
-        return;
-    }
-
-
-    statusBox.textContent =
-        "Ready";
-
-
-    document.getElementById(
-        "myAttendanceStatus"
-    ).textContent = "Ready";
-
-    document.getElementById(
-        "myCheckInTime"
-    ).textContent = "-";
-
-    document.getElementById(
-        "myCheckOutTime"
-    ).textContent = "-";
-
-
-    await loadTodayAttendance();
-}
-
-
-// =====================================================
-// LOAD TODAY ATTENDANCE
-// =====================================================
-
-async function loadTodayAttendance() {
-
-    const accessToken =
-        localStorage.getItem(
-            "access_token"
-        );
-
-    const employeeId =
-        window.currentUserProfile &&
-        window.currentUserProfile.employee_id;
-
-
-    if (!employeeId) {
-        return;
-    }
-
-
-    const today =
-        new Date()
-            .toISOString()
-            .split("T")[0];
-
-
-    const response =
-        await fetch(
-            SUPABASE_URL +
-            "/rest/v1/attendance" +
-            "?employee_id=eq." +
-            employeeId +
-            "&recorded_at=gte." +
-            today +
-            "T00:00:00" +
-            "&select=*" +
-            "&order=recorded_at.asc",
-            {
-                method: "GET",
-
-                headers: {
-                    "apikey": SUPABASE_KEY,
-                    "Authorization":
-                        "Bearer " +
-                        accessToken
-                }
-            }
-        );
-
-
-    if (!response.ok) {
-        return;
-    }
-
-
-    const records =
-        await response.json();
-
-
-    let checkIn = null;
-    let checkOut = null;
-
-
-    records.forEach(
-        function(record) {
-
-            if (
-                record.attendance_type ===
-                "CHECK_IN" &&
-                record.status ===
-                "APPROVED"
-            ) {
-
-                checkIn = record;
-            }
-
-
-            if (
-                record.attendance_type ===
-                "CHECK_OUT" &&
-                record.status ===
-                "APPROVED"
-            ) {
-
-                checkOut = record;
-            }
-
-        }
-    );
-
-
-    if (checkIn) {
-
-        document.getElementById(
-            "myCheckInTime"
-        ).textContent =
-            new Date(
-                checkIn.recorded_at
-            ).toLocaleTimeString();
-
-
-        document.getElementById(
-            "myAttendanceStatus"
-        ).textContent =
-            checkOut
-                ? "Completed"
-                : "Checked In";
-    }
-
-
-    if (checkOut) {
-
-        document.getElementById(
-            "myCheckOutTime"
-        ).textContent =
-            new Date(
-                checkOut.recorded_at
-            ).toLocaleTimeString();
-    }
-
-
-    const checkInButton =
-        document.getElementById(
-            "checkInButton"
-        );
-
-    const checkOutButton =
-        document.getElementById(
-            "checkOutButton"
-        );
-
-
-    if (checkInButton) {
-
-        checkInButton.disabled =
-            !!checkIn;
-    }
-
-
-    if (checkOutButton) {
-
-        checkOutButton.disabled =
-            !checkIn || !!checkOut;
-    }
-}
-
-
-// =====================================================
-// GET CURRENT GPS POSITION
-// =====================================================
-
-function getCurrentLocation() {
-
-    return new Promise(
-        function(resolve, reject) {
-
-            if (
-                !navigator.geolocation
-            ) {
-
-                reject(
-                    new Error(
-                        "GPS is not supported by this device."
-                    )
-                );
-
-                return;
-            }
-
-
-            navigator.geolocation.getCurrentPosition(
-                function(position) {
-
-                    resolve({
-                        latitude:
-                            position.coords.latitude,
-
-                        longitude:
-                            position.coords.longitude,
-
-                        accuracy:
-                            position.coords.accuracy
-                    });
-
-                },
-
-                function(error) {
-
-                    let message =
-                        "Unable to get your location.";
-
-                    if (
-                        error.code ===
-                        error.PERMISSION_DENIED
-                    ) {
-
-                        message =
-                            "Location permission was denied.";
-                    }
-
-                    if (
-                        error.code ===
-                        error.POSITION_UNAVAILABLE
-                    ) {
-
-                        message =
-                            "Location is currently unavailable.";
-                    }
-
-                    if (
-                        error.code ===
-                        error.TIMEOUT
-                    ) {
-
-                        message =
-                            "Location request timed out.";
-                    }
-
-
-                    reject(
-                        new Error(message)
-                    );
-
-                },
-
-                {
-                    enableHighAccuracy: true,
-
-                    timeout: 15000,
-
-                    maximumAge: 0
-                }
-            );
-
-        }
-    );
-}
-
-
-// =====================================================
-// CHECK IN
-// =====================================================
-
-async function checkIn() {
-
-    const statusBox =
-        document.getElementById(
-            "attendancePageStatus"
-        );
-
-
-    statusBox.textContent =
-        "Getting your location...";
-
-
-    try {
-
-        const location =
-            await getCurrentLocation();
-
-
-        statusBox.textContent =
-            "Checking branch location...";
-
-
-        const accessToken =
-            localStorage.getItem(
-                "access_token"
-            );
-
-
-        const response =
-            await fetch(
-                SUPABASE_URL +
-                "/rest/v1/rpc/employee_check_in",
-                {
-                    method: "POST",
-
-                    headers: {
-                        "apikey":
-                            SUPABASE_KEY,
-
-                        "Authorization":
-                            "Bearer " +
-                            accessToken,
-
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            p_latitude:
-                                location.latitude,
-
-                            p_longitude:
-                                location.longitude,
-
-                            p_gps_accuracy_meters:
-                                location.accuracy
-
-                        })
-                }
-            );
-
-
-        const result =
-            await response.json();
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                result.message ||
-                "Check-in failed."
-            );
-        }
-
-
-        statusBox.textContent =
-            result.message;
-
-
-        if (result.success) {
-
-            statusBox.className =
-                "status success";
-
-        } else {
-
-            statusBox.className =
-                "status";
-        }
-
-
-        await loadTodayAttendance();
-
-
-    } catch (error) {
-
-        console.error(error);
-
-        statusBox.textContent =
-            error.message;
-
-        statusBox.className =
-            "status";
-    }
-}
-
-
-// =====================================================
-// CHECK OUT
-// =====================================================
-
-async function checkOut() {
-
-    const statusBox =
-        document.getElementById(
-            "attendancePageStatus"
-        );
-
-
-    statusBox.textContent =
-        "Getting your location...";
-
-
-    try {
-
-        const location =
-            await getCurrentLocation();
-
-
-        statusBox.textContent =
-            "Checking branch location...";
-
-
-        const accessToken =
-            localStorage.getItem(
-                "access_token"
-            );
-
-
-        const response =
-            await fetch(
-                SUPABASE_URL +
-                "/rest/v1/rpc/employee_check_out",
-                {
-                    method: "POST",
-
-                    headers: {
-                        "apikey":
-                            SUPABASE_KEY,
-
-                        "Authorization":
-                            "Bearer " +
-                            accessToken,
-
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify({
-
-                            p_latitude:
-                                location.latitude,
-
-                            p_longitude:
-                                location.longitude,
-
-                            p_gps_accuracy_meters:
-                                location.accuracy
-
-                        })
-                }
-            );
-
-
-        const result =
-            await response.json();
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                result.message ||
-                "Check-out failed."
-            );
-        }
-
-
-        statusBox.textContent =
-            result.message;
-
-
-        if (result.success) {
-
-            statusBox.className =
-                "status success";
-
-        } else {
-
-            statusBox.className =
-                "status";
-        }
-
-
-        await loadTodayAttendance();
-
-
-    } catch (error) {
-
-        console.error(error);
-
-        statusBox.textContent =
-            error.message;
-
-        statusBox.className =
-            "status";
-    }
-}
-// =====================================================
-// SUPABASE REQUEST
-// =====================================================
-
-async function supabaseRequest(
-    endpoint,
-    options = {}
-) {
-
-    const accessToken =
-        localStorage.getItem("access_token");
-
-
-    const response =
-        await fetch(
-            SUPABASE_URL + endpoint,
-            {
-
-                method:
-                    options.method || "GET",
-
-                headers: {
-
-                    "apikey":
-                        SUPABASE_KEY,
-
-                    "Authorization":
-                        "Bearer " +
-                        (
-                            accessToken ||
-                            SUPABASE_KEY
-                        ),
-
-                    "Content-Type":
-                        "application/json",
-
-                    ...(options.headers || {})
-
-                },
-
-                body:
-                    options.body || undefined
-
-            }
-        );
-
-
-    const text =
-        await response.text();
-
-
-    if (!response.ok) {
-
-        throw new Error(
-            "HTTP " +
-            response.status +
-            ": " +
-            text
-        );
-
-    }
-
-
-    if (!text) {
-
-        return [];
-
-    }
-
-
-    return JSON.parse(text);
-
-}
-
-    
-
-
-// =====================================================
-// PAGE
-// =====================================================
-function showPage(pageId) {
-
-    document
-        .querySelectorAll(".page")
-        .forEach(
-            page => page.classList.remove("active")
-        );
-
-    document
-        .getElementById(pageId)
-        .classList.add("active");
-
-
-    if (pageId === "employeesPage") {
-        loadEmployees();
-    }
-
-
-    if (pageId === "schedulePage") {
-        loadSchedule();
-    }
-
-}
-
- // =====================================================
-// SETTINGS - LOAD EMPLOYEES
-// =====================================================
-
-async function loadEmployeesSettings() {
-
-    const table =
-        document.getElementById(
-            "settingsEmployeesTable"
-        );
-
-    const status =
-        document.getElementById(
-            "settingsEmployeesStatus"
-        );
-
-    try {
-
-        status.textContent =
-            "Loading employees...";
-
-        status.className =
-            "status loading";
-
-
-        const employees =
-            await supabaseRequest(
-                "/rest/v1/employees" +
-                "?select=id,staff_id,full_name,role,active" +
-                "&order=staff_id.asc"
-            );
-
-
-        table.innerHTML = "";
-
-
-        employees.forEach(
-            employee => {
-
-                const row =
-                    document.createElement("tr");
-
-
-                row.innerHTML = `
-
-<td>
-${escapeHTML(employee.staff_id)}
-</td>
-
-<td>
-${escapeHTML(employee.full_name)}
-</td>
-
-<td>
-${escapeHTML(employee.role || "-")}
-</td>
-
-<td class="${
-    employee.active
-    ? "success"
-    : "error"
-}">
-${
-    employee.active
-    ? "Active"
-    : "Inactive"
-}
-</td>
-
-<td>
-
-${
-employee.active
-
-?
-
-`<button
-onclick="deactivateEmployee(${employee.id})"
-class="danger"
->
-Deactivate
-</button>`
-
-:
-
-`<button
-onclick="activateEmployee(${employee.id})"
-class="primary"
->
-Activate
-</button>`
-
-}
-
-</td>
-
-`;
-
-
-                table.appendChild(row);
-
-            }
-        );
-
-
-        status.textContent =
-            employees.length +
-            " employees loaded.";
-
-        status.className =
-            "status success";
-
-    }
-
-    catch(error) {
-
-        console.error(error);
-
-        status.textContent =
-            "Error: " +
-            error.message;
-
-        status.className =
-            "status error";
-
-    }
-
-}
-
-
-// =====================================================
-// ADD EMPLOYEE
-// =====================================================
-
-async function addEmployee() {
-
-    const staffId =
-        document.getElementById(
-            "newStaffId"
-        ).value.trim();
-
-
-    const fullName =
-        document.getElementById(
-            "newFullName"
-        ).value.trim();
-
-
-    const role =
-        document.getElementById(
-            "newRole"
-        ).value.trim();
-
-
-    if (!staffId || !fullName) {
-
-        alert(
-            "Staff ID and Full Name are required."
-        );
-
-        return;
-
-    }
-
-
-    try {
-
-        const branch =
-            await supabaseRequest(
-                "/rest/v1/branches" +
-                "?select=id" +
-                "&limit=1"
-            );
-
-
-        const branchId =
-            branch.length
-            ? branch[0].id
-            : null;
-
-
-        await supabaseRequest(
-            "/rest/v1/employees",
-            {
-                method: "POST",
-
-                headers: {
-                    "Prefer": "return=minimal"
-                },
-
-                body: JSON.stringify({
-
-                    staff_id: staffId,
-
-                    full_name: fullName,
-
-                    role: role || null,
-
-                    branch_id: branchId,
-
-                    active: true
-
-                })
-
-            }
-        );
-
-
-        alert(
-            "Employee added successfully."
-        );
-
-
-        document.getElementById(
-            "newStaffId"
-        ).value = "";
-
-
-        document.getElementById(
-            "newFullName"
-        ).value = "";
-
-
-        document.getElementById(
-            "newRole"
-        ).value = "";
-
-
-        loadEmployeesSettings();
-
-        loadEmployeeCount();
-
-    }
-
-    catch(error) {
-
-        console.error(error);
-
-        alert(
-            "Error adding employee:\n" +
-            error.message
-        );
-
-    }
-
-}
-
-
-// =====================================================
-// DEACTIVATE EMPLOYEE
-// =====================================================
-
-async function deactivateEmployee(id) {
-
-    const confirmed =
-        confirm(
-            "Are you sure you want to deactivate this employee?"
-        );
-
-
-    if (!confirmed) {
-        return;
-    }
-
-
-    try {
-
-        await supabaseRequest(
-
-            "/rest/v1/employees" +
-            "?id=eq." +
-            id,
-
-            {
-                method: "PATCH",
-
-                headers: {
-                    "Prefer": "return=minimal"
-                },
-
-                body: JSON.stringify({
-                    active: false
-                })
-
-            }
-
-        );
-
-
-        alert(
-            "Employee deactivated successfully."
-        );
-
-
-        loadEmployeesSettings();
-
-        loadEmployeeCount();
-
-    }
-
-    catch(error) {
-
-        console.error(error);
-
-        alert(
-            "Error:\n" +
-            error.message
-        );
-
-    }
-
-}
-
-
-// =====================================================
-// ACTIVATE EMPLOYEE
-// =====================================================
-
-async function activateEmployee(id) {
-
-    try {
-
-        await supabaseRequest(
-
-            "/rest/v1/employees" +
-            "?id=eq." +
-            id,
-
-            {
-                method: "PATCH",
-
-                headers: {
-                    "Prefer": "return=minimal"
-                },
-
-                body: JSON.stringify({
-                    active: true
-                })
-
-            }
-
-        );
-
-
-        alert(
-            "Employee activated successfully."
-        );
-
-
-        loadEmployeesSettings();
-
-        loadEmployeeCount();
-
-    }
-
-    catch(error) {
-
-        console.error(error);
-
-        alert(
-            "Error:\n" +
-            error.message
-        );
-
-    }
-
-}   
-// =====================================================
-// DATE
-// =====================================================
-
-const today =
-new Date();
-
-
-document.getElementById(
-    "todayDate"
-).textContent =
-today.toLocaleDateString("en-GB");
-
-
-// =====================================================
-// EMPLOYEES COUNT
-// =====================================================
-
-async function loadEmployeeCount() {
-
-    try {
-
-        const data =
-            await supabaseRequest(
-                "/rest/v1/employees" +
-                "?select=id" +
-                "&active=eq.true"
-            );
-
-
-        document.getElementById(
-            "employeeCount"
-        ).textContent =
-        data.length;
-
-        return true;
-
-    }
-
-    catch(error) {
-
-        console.error(error);
-
-        document.getElementById(
-            "employeeCount"
-        ).textContent =
-        "Error";
-
-        return false;
-
-    }
-
-}
-
-
-// =====================================================
-// ATTENDANCE
-// =====================================================
-
-async function loadAttendanceCount() {
-
-    try {
-
-        const start =
-            new Date();
-
-        start.setHours(
-            0,0,0,0
-        );
-
-
-        const end =
-            new Date(start);
-
-        end.setDate(
-            end.getDate() + 1
-        );
-
-
-        const data =
-            await supabaseRequest(
-
-                "/rest/v1/attendance" +
-
-                "?select=id" +
-
-                "&recorded_at=gte." +
-                encodeURIComponent(
-                    start.toISOString()
-                ) +
-
-                "&recorded_at=lt." +
-                encodeURIComponent(
-                    end.toISOString()
-                )
-
-            );
-
-
-        document.getElementById(
-            "attendanceCount"
-        ).textContent =
-        data.length;
-
-
-        return true;
-
-    }
-
-    catch(error) {
-
-        console.error(error);
-
-        document.getElementById(
-            "attendanceCount"
-        ).textContent =
-        "Error";
-
-        return false;
-
-    }
-
-}
-
-
-// =====================================================
-// BRANCH
-// =====================================================
-
-async function loadBranch() {
-
-    try {
-
-        const profileData =
-            await supabaseRequest(
-                "/rest/v1/profiles" +
-                "?select=role,branch_id" +
-                "&limit=1"
-            );
-
-
-        if (
-            !profileData ||
-            !profileData.length
-        ) {
-
-            document.getElementById(
-                "branchName"
-            ).textContent =
-                "Not Found";
-
-            return false;
-        }
-
-
-        const profile =
-            profileData[0];
-
-
-        // =========================================
-        // SUPER ADMIN
-        // =========================================
-
-        if (
-            profile.role ===
-            "Super Admin"
-        ) {
-
-            document.getElementById(
-                "branchName"
-            ).textContent =
-                "Quantech HR";
-
-            return true;
-        }
-
-
-        // =========================================
-        // BRANCH USER
-        // =========================================
-
-        if (!profile.branch_id) {
-
-            document.getElementById(
-                "branchName"
-            ).textContent =
-                "Not Found";
-
-            return false;
-        }
-
-
-        const data =
-            await supabaseRequest(
-                "/rest/v1/branches" +
-                "?select=name" +
-                "&id=eq." +
-                profile.branch_id +
-                "&limit=1"
-            );
-
-
-        document.getElementById(
-            "branchName"
-        ).textContent =
-            data.length
-            ? data[0].name
-            : "Not Found";
-
-
-        return true;
-
-    }
-
-    catch(error) {
-
-        console.error(
-            "loadBranch error:",
-            error
-        );
-
-        document.getElementById(
-            "branchName"
-        ).textContent =
-            "Error";
-
-        return false;
-
-    }
-
-}
-
-
-// =====================================================
-// EMPLOYEES TABLE
-// =====================================================
-
-async function loadEmployees() {
-
-    const table =
-        document.getElementById(
-            "employeesTable"
-        );
-
-
-    const status =
-        document.getElementById(
-            "employeesStatus"
-        );
-
-
-    try {
-
-        const employees =
-            await supabaseRequest(
-
-                "/rest/v1/employees" +
-                "?select=staff_id,full_name,role,active" +
-                "&order=staff_id.asc"
-
-            );
-
-
-        table.innerHTML = "";
-
-
-        employees.forEach(
-            (employee,index) => {
-
-                const row =
-                    document.createElement("tr");
-
-
-                row.innerHTML = `
-
-<td>
-${index + 1}
-</td>
-
-<td>
-${escapeHTML(employee.staff_id)}
-</td>
-
-<td>
-${escapeHTML(employee.full_name)}
-</td>
-
-<td>
-${escapeHTML(employee.role || "-")}
-</td>
-
-<td class="${
-employee.active
-? "success"
-: "error"
-}">
-${
-employee.active
-? "Active"
-: "Inactive"
-}
-</td>
-
-`;
-
-
-                table.appendChild(row);
-
-            }
-        );
-
-
-        status.textContent =
-        employees.length +
-        " employees loaded successfully.";
-
-
-        status.className =
-        "status success";
-
-
-    }
-
-    catch(error) {
-
-        status.textContent =
-        "Error: " +
-        error.message;
-
-
-        status.className =
-        "status error";
-
-    }
-
-}
-
-
-// =====================================================
-// LOAD SCHEDULE
-// =====================================================
-
-async function loadSchedule() {
-
-    const table =
-        document.getElementById(
-            "scheduleTable"
-        );
-
-
-    const status =
-        document.getElementById(
-            "scheduleStatus"
-        );
-
-
-    try {
-
-        const data =
-            await supabaseRequest(
-
-                "/rest/v1/monthly_schedule" +
-
-                "?select=schedule_date,shift_type,employee_id" +
-
-                "&order=schedule_date.asc"
-
-            );
-
-
-        table.innerHTML = "";
-
-
-        if (!data.length) {
-
-            status.textContent =
-            "No monthly schedule has been imported yet.";
-
-            status.className =
-            "status loading";
-
-            return;
-
-        }
-
-
-        const employees =
-            await supabaseRequest(
-                "/rest/v1/employees" +
-                "?select=id,staff_id"
-            );
-
-
-        const staffMap = {};
-
-
-        employees.forEach(
-            employee => {
-
-                staffMap[
-                    employee.id
-                ] =
-                employee.staff_id;
-
-            }
-        );
-
-
-        const dates = {};
-
-
-        data.forEach(
-            item => {
-
-                if (!dates[item.schedule_date]) {
-
-                    dates[item.schedule_date] =
-                    {};
-
-                }
-
-
-                dates[
-                    item.schedule_date
-                ][
-                    staffMap[item.employee_id]
-                ] =
-                item.shift_type;
-
-            }
-        );
-
-
-        Object.keys(dates)
-        .sort()
-        .forEach(
-            date => {
-
-                const row =
-                document.createElement("tr");
-
-
-                let html =
-                `<td>${date}</td>`;
-
-
-                const staffIds = [
-                    "121090",
-                    "121040",
-                    "125453",
-                    "126439",
-                    "127981",
-                    "126225",
-                    "129776"
-                ];
-
-
-                staffIds.forEach(
-                    staffId => {
-
-                        const shift =
-                        dates[date][staffId]
-                        || "-";
-
-
-                        let className =
-                        "";
-
-
-                        if (
-                            shift === "AM"
-                        )
-                            className =
-                            "shift-AM";
-
-
-                        else if (
-                            shift === "PM"
-                        )
-                            className =
-                            "shift-PM";
-
-
-                        else if (
-                            shift === "Support"
-                        )
-                            className =
-                            "shift-Support";
-
-
-                        else if (
-                            shift === "OFF"
-                        )
-                            className =
-                            "shift-OFF";
-
-
-                        else if (
-                            shift === "Annual Leave"
-                        )
-                            className =
-                            "shift-Annual";
-
-
-                        html +=
-                        `<td class="${className}">
-                        ${shift}
-                        </td>`;
-
-                    }
-                );
-
-
-                row.innerHTML =
-                html;
-
-
-                table.appendChild(row);
-
-            }
-        );
-
-
-        status.textContent =
-        data.length +
-        " schedule records loaded.";
-
-
-        status.className =
-        "status success";
-
-    }
-
-    catch(error) {
-
-        console.error(error);
-
-        status.textContent =
-        "Error: " +
-        error.message;
-
-
-        status.className =
-        "status error";
-
-    }
-
-}
-
-
-// =====================================================
-// EXCEL PREVIEW
-// =====================================================
-
-function readExcel() {
-
-    const file =
-        document.getElementById(
-            "excelFile"
-        ).files[0];
-
-
-    const preview =
-        document.getElementById(
-            "excelPreview"
-        );
-
-
-    if (!file) {
-
-        alert(
-            "Please select an Excel file first."
-        );
-
-        return;
-
-    }
-
-
-    preview.innerHTML = `
-
-<div class="status success">
-
-<strong>
-File selected successfully
-</strong>
-
-<p>
-File name:
-${escapeHTML(file.name)}
-</p>
-
-<p>
-The Excel import engine will be connected
-in the next step.
-</p>
-
-</div>
-
-`;
-
-}
-
-
-// =====================================================
-// ESCAPE
-// =====================================================
-
-function escapeHTML(value) {
-
-    if (
-        value === null ||
-        value === undefined
-    ) {
-
-        return "";
-
-    }
-
-
-    return String(value)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
-
-}
-
-
-// =====================================================
-// INITIALIZE
-// =====================================================
-
-async function initialize() {
-
-    const a =
-        await loadEmployeeCount();
-
-    const b =
-        await loadAttendanceCount();
-
-    const c =
-        await loadBranch();
-
-
-    const status =
-        document.getElementById(
-            "systemStatus"
-        );
-
-
-    if (a && b && c) {
-
-        status.textContent =
-        "Connected to Supabase successfully.";
-
-        status.className =
-        "success";
-
-    }
-
-    else {
-
-        status.textContent =
-        "Database connection error.";
-
-        status.className =
-        "error";
-
-    }
-
-}
-
-
-initialize();
-function logoutUser() {
-
-    localStorage.removeItem(
-        "access_token"
-    );
-
-    localStorage.removeItem(
-        "refresh_token"
-    );
-
-    document.getElementById(
-        "dashboardPage"
-    ).classList.remove("active");
-
-    document.getElementById(
-        "loginPage"
-    ).style.display = "flex";
-
-    document.getElementById(
-        "loginEmail"
-    ).value = "";
-
-    document.getElementById(
-        "loginPassword"
-    ).value = "";
-
-    document.getElementById(
-        "loginError"
-    ).textContent = "";
-}
-//last add
-async function loadBranchHeader() {
-
-    try {
-
-        const accessToken =
-            localStorage.getItem("access_token");
-
-        if (!accessToken) return;
-
-
-        const profileResponse =
-            await fetch(
-                SUPABASE_URL +
-                "/rest/v1/profiles?select=branch_id,role&limit=1",
-                {
-                    method: "GET",
-
-                    headers: {
-                        "apikey": SUPABASE_KEY,
-                        "Authorization":
-                            "Bearer " +
-                            accessToken
-                    }
-                }
-            );
-
-
-        if (!profileResponse.ok) {
-            console.error(
-                "Profile load failed"
-            );
-            return;
-        }
-
-
-        const profiles =
-            await profileResponse.json();
-
-
-        if (
-            !profiles ||
-            !profiles.length
-        ) {
-            return;
-        }
-
-
-        const profile =
-            profiles[0];
-
-
-        const header =
-            document.getElementById(
-                "branchHeaderName"
-            );
-
-
-        if (!header) return;
-
-
-        // Super Admin
-        if (
-            profile.role ===
-            "Super Admin"
-        ) {
-
-            header.textContent =
-                "HR Administration";
-
-            return;
-        }
-
-
-        // Branch Account
-        if (!profile.branch_id) {
-            return;
-        }
-
-
-        const branchResponse =
-            await fetch(
-                SUPABASE_URL +
-                "/rest/v1/branches?id=eq." +
-                profile.branch_id +
-                "&select=name&limit=1",
-                {
-                    method: "GET",
-
-                    headers: {
-                        "apikey":
-                            SUPABASE_KEY,
-
-                        "Authorization":
-                            "Bearer " +
-                            accessToken
-                    }
-                }
-            );
-
-
-        if (!branchResponse.ok) {
-            console.error(
-                "Branch load failed"
-            );
-            return;
-        }
-
-
-        const branches =
-            await branchResponse.json();
-
-
-        if (
-            branches &&
-            branches.length
-        ) {
-
-            header.textContent =
-                branches[0].name;
-
-        }
-
-    } catch (error) {
-
-        console.error(
-            "Header error:",
-            error
-        );
-
-    }
-}
-// to here
-async function checkLoginSession() {
-
-    const accessToken =
-        localStorage.getItem("access_token");
-
-    const loginPage =
-        document.getElementById("loginPage");
-
-    const dashboardPage =
-        document.getElementById("dashboardPage");
-
-
-    // =========================================
-    // No session
-    // =========================================
-
-    if (!accessToken) {
-
-        loginPage.style.display = "flex";
-
-        dashboardPage.style.display = "none";
-
-        dashboardPage.classList.remove("active");
-
-        return;
-    }
-
-
-    try {
-
-        // =========================================
-        // Get current user from Supabase Auth
-        // =========================================
-
-        const userResponse =
-            await fetch(
-                SUPABASE_URL +
-                "/auth/v1/user",
-                {
-                    method: "GET",
-
-                    headers: {
-                        "apikey": SUPABASE_KEY,
-                        "Authorization":
-                            "Bearer " + accessToken
-                    }
-                }
-            );
-
-
-        const user =
-            await userResponse.json();
-
-
-        if (!userResponse.ok || !user.id) {
-
-            throw new Error(
-                "Session expired."
-            );
-        }
-
-
-        // =========================================
-        // Get user profile
-        // =========================================
-
-        const profileResponse =
-            await fetch(
-                SUPABASE_URL +
-                "/rest/v1/profiles?id=eq." +
-                user.id +
-                "&select=*",
-                {
-                    method: "GET",
-
-                    headers: {
-                        "apikey": SUPABASE_KEY,
-                        "Authorization":
-                            "Bearer " + accessToken
-                    }
-                }
-            );
-
-
-        const profiles =
-            await profileResponse.json();
-
-
-        if (
-            !profileResponse.ok ||
-            !profiles.length
-        ) {
-
-            throw new Error(
-                "User profile not found."
-            );
-        }
-
-
-        const profile =
-            profiles[0];
-
-
-        // =========================================
-        // Check active account
-        // =========================================
-
-        if (profile.active !== true) {
-
-            throw new Error(
-                "This account has been deactivated."
-            );
-        }
-
-
-        // =========================================
-        // Save current user information
-        // =========================================
-
-        window.currentUserProfile =
-            profile;
-
-
-        // =========================================
-        // Hide Login
-        // =========================================
-
-        loginPage.style.display =
-            "none";
-
-        dashboardPage.style.display =
-            "block";
-
-        dashboardPage.classList.add(
-            "active"
-        );
-
-
-        // =========================================
-        // Apply permissions
-        // =========================================
-
-        applyRolePermissions(
-            profile.role
-        );
-
-
-        // =========================================
-        // Load Branch Header
-        // =========================================
-
-        if (
-            typeof loadBranchHeader ===
-            "function"
-        ) {
-
-            await loadBranchHeader();
-        }
-
-
-    } catch (error) {
-
-        console.error(error);
-
-
-        // Remove invalid session
-
-        localStorage.removeItem(
-            "access_token"
-        );
-
-        localStorage.removeItem(
-            "refresh_token"
-        );
-
-
-        loginPage.style.display =
-            "flex";
-
-        dashboardPage.style.display =
-            "none";
-
-        dashboardPage.classList.remove(
-            "active"
-        );
-
-
-        const errorBox =
-            document.getElementById(
-                "loginError"
-            );
-
-
-        if (errorBox) {
-
-            errorBox.textContent =
-                error.message;
-        }
-    }
-}
-
-
-// Check session when page loads
-document.addEventListener(
-    "DOMContentLoaded",
-    checkLoginSession
-);
-// =====================================================
-// ROLE-BASED DASHBOARD PERMISSIONS
-// =====================================================
-
-function applyRolePermissions(role) {
-
-    // =========================================
-    // Get dashboard buttons
-    // =========================================
-
-    const employeesButton =
-        document.getElementById("employeesMenuButton");
-
-    const branchesButton =
-        document.getElementById("branchesMenuButton");
-
-    const scheduleButton =
-        document.getElementById("scheduleMenuButton");
-
-    const importButton =
-        document.getElementById("importMenuButton");
-
-    const exportButton =
-        document.getElementById("exportMenuButton");
-
-    const attendanceButton =
-        document.getElementById("attendanceMenuButton");
-
-    const reportsButton =
-        document.getElementById("reportsMenuButton");
-
-    const settingsButton =
-        document.getElementById("settingsMenuButton");
-
-
-    // =========================================
-    // Hide everything first
-    // =========================================
-
-    if (employeesButton)
-        employeesButton.style.display = "none";
-
-    if (branchesButton)
-        branchesButton.style.display = "none";
-
-    if (scheduleButton)
-        scheduleButton.style.display = "none";
-
-    if (importButton)
-        importButton.style.display = "none";
-
-    if (exportButton)
-        exportButton.style.display = "none";
-
-    if (attendanceButton)
-        attendanceButton.style.display = "none";
-
-    if (reportsButton)
-        reportsButton.style.display = "none";
-
-    if (settingsButton)
-        settingsButton.style.display = "none";
-
-
-    // =========================================
-    // SUPER ADMIN
-    // =========================================
-
-    if (role === "Super Admin") {
-
-        if (employeesButton)
-            employeesButton.style.display = "block";
-
-        if (branchesButton)
-            branchesButton.style.display = "block";
-
-        if (scheduleButton)
-            scheduleButton.style.display = "block";
-
-        if (importButton)
-            importButton.style.display = "block";
-
-        if (exportButton)
-            exportButton.style.display = "block";
-
-        if (attendanceButton)
-            attendanceButton.style.display = "block";
-
-        if (reportsButton)
-            reportsButton.style.display = "block";
-
-        if (settingsButton)
-            settingsButton.style.display = "block";
-
-        return;
-    }
-
-
-    // =========================================
-    // BRANCH MANAGER
-    // =========================================
-
-    if (role === "Branch Manager") {
-
-        if (employeesButton)
-            employeesButton.style.display = "block";
-
-        if (scheduleButton)
-            scheduleButton.style.display = "block";
-
-        if (exportButton)
-            exportButton.style.display = "block";
-
-        if (attendanceButton)
-            attendanceButton.style.display = "block";
-
-        if (settingsButton)
-            settingsButton.style.display = "block";
-
-        // Branches intentionally hidden
-        if (branchesButton)
-            branchesButton.style.display = "none";
-
-        return;
-    }
-
-
-    // =========================================
-    // EMPLOYEE
-    // =========================================
-
-    if (role === "Employee") {
-
-        if (scheduleButton)
-            scheduleButton.style.display = "block";
-
-        if (attendanceButton)
-            attendanceButton.style.display = "block";
-
-        // Employees / Branches / Management hidden
-        if (employeesButton)
-            employeesButton.style.display = "none";
-
-        if (branchesButton)
-            branchesButton.style.display = "none";
-
-        return;
-    }
-
-
-    // =========================================
-    // Unknown role
-    // =========================================
-
-    console.warn(
-        "Unknown user role:",
-        role
-    );
-}
-    
-document.addEventListener(
-    "DOMContentLoaded",
-    checkLoginSession
-);
-async function logoutUser() {
-
-    localStorage.removeItem("access_token");
-
-    localStorage.removeItem("refresh_token");
-
-
-    document.getElementById(
-        "dashboardPage"
-    ).style.display = "none";
-
-    document.getElementById(
-        "dashboardPage"
-    ).classList.remove("active");
-
-
-    document.getElementById(
-        "loginPage"
-    ).style.display = "flex";
-
-
-    document.getElementById(
-        "loginEmail"
-    ).value = "";
-
-    document.getElementById(
-        "loginPassword"
-    ).value = "";
-
-}
-
-</script>
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"
+></script>
+
+<script
+    src="js/app.js"
+></script>
+
+<script
+    src="js/import.js"
+></script>
+
+<script
+    src="js/schedule.js"
+></script>
 
 
 </body>
 </html>
+```
