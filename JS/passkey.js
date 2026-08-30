@@ -149,6 +149,202 @@ async function registerCurrentUserPasskey() {
     }
 }
 
-// Make function available to HTML onclick
+
+// =====================================================
+// PASSKEY AUTHENTICATION
+// =====================================================
+
+async function authenticateCurrentUserPasskey() {
+
+    try {
+
+        // -------------------------------------------------
+        // Check current Supabase session
+        // -------------------------------------------------
+
+        const accessToken =
+            localStorage.getItem(
+                "access_token"
+            );
+
+        if (!accessToken) {
+            throw new Error(
+                "Please login first."
+            );
+        }
+
+
+        // -------------------------------------------------
+        // Start authentication
+        // -------------------------------------------------
+
+        const authResponse =
+            await fetch(
+                SUPABASE_URL +
+                "/functions/v1/create-passkey-authentication",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "apikey":
+                            SUPABASE_KEY,
+
+                        "Authorization":
+                            "Bearer " +
+                            accessToken,
+
+                        "Content-Type":
+                            "application/json"
+                    }
+                }
+            );
+
+
+        const options =
+            await authResponse.json();
+
+
+        if (!authResponse.ok) {
+
+            throw new Error(
+                options.error ||
+                "Failed to start passkey authentication."
+            );
+        }
+
+
+        console.log(
+            "Authentication options received:",
+            options
+        );
+
+
+        // -------------------------------------------------
+        // Start WebAuthn
+        // -------------------------------------------------
+
+        const {
+            startAuthentication
+        } = SimpleWebAuthnBrowser;
+
+
+        if (
+            typeof startAuthentication !==
+            "function"
+        ) {
+
+            throw new Error(
+                "SimpleWebAuthnBrowser.startAuthentication is not available."
+            );
+        }
+
+
+        const authenticationResponse =
+            await startAuthentication({
+                optionsJSON:
+                    options
+            });
+
+
+        console.log(
+            "WebAuthn authentication completed:",
+            authenticationResponse
+        );
+
+
+        // -------------------------------------------------
+        // Verify authentication
+        // -------------------------------------------------
+
+        const verifyResponse =
+            await fetch(
+                SUPABASE_URL +
+                "/functions/v1/verify-passkey",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "apikey":
+                            SUPABASE_KEY,
+
+                        "Authorization":
+                            "Bearer " +
+                            accessToken,
+
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+                            response:
+                                authenticationResponse
+                        })
+                }
+            );
+
+
+        const result =
+            await verifyResponse.json();
+
+
+        console.log(
+            "Passkey verification result:",
+            result
+        );
+
+
+        if (
+            !verifyResponse.ok ||
+            !result.success ||
+            result.verified !== true
+        ) {
+
+            throw new Error(
+                result.error ||
+                "Passkey authentication failed."
+            );
+        }
+
+
+        // -------------------------------------------------
+        // Success
+        // -------------------------------------------------
+
+        alert(
+            "Passkey authentication successful."
+        );
+
+
+        return true;
+
+
+    } catch (error) {
+
+        console.error(
+            "Passkey authentication error:",
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "Passkey authentication failed."
+        );
+
+
+        return false;
+    }
+}
+
+
+// =====================================================
+// Make functions available to HTML onclick
+// =====================================================
+
 window.registerCurrentUserPasskey =
     registerCurrentUserPasskey;
+
+window.authenticateCurrentUserPasskey =
+    authenticateCurrentUserPasskey;
+
