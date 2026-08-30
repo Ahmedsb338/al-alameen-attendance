@@ -13,32 +13,26 @@ async function registerCurrentUserPasskey() {
             );
 
         if (!accessToken) {
-
             throw new Error(
                 "Please login first."
             );
         }
-
 
         // Get current profile
         const profile =
             window.currentUserProfile;
 
         if (!profile) {
-
             throw new Error(
                 "User profile not loaded."
             );
         }
 
-
         if (!profile.employee_id) {
-
             throw new Error(
                 "This account is not linked to an employee."
             );
         }
-
 
         // Start registration
         const registerResponse =
@@ -46,11 +40,9 @@ async function registerCurrentUserPasskey() {
                 SUPABASE_URL +
                 "/functions/v1/register-passkey",
                 {
-
                     method: "POST",
 
                     headers: {
-
                         "apikey":
                             SUPABASE_KEY,
 
@@ -64,32 +56,30 @@ async function registerCurrentUserPasskey() {
                 }
             );
 
-
         const options =
             await registerResponse.json();
 
-
         if (!registerResponse.ok) {
-
             throw new Error(
                 options.error ||
                 "Failed to start passkey registration."
             );
         }
 
-
         // Start WebAuthn
-    const registrationResponse =
-        await SimpleWebAuthnBrowser.startRegistration({
-        optionsJSON:
-            options
-    });
+        const {
+            startRegistration
+        } = SimpleWebAuthnBrowser;
 
+        const registrationResponse =
+            await startRegistration({
+                optionsJSON:
+                    options
+            });
 
         console.log(
             "WebAuthn registration completed."
         );
-
 
         // Complete registration
         const completeResponse =
@@ -97,11 +87,9 @@ async function registerCurrentUserPasskey() {
                 SUPABASE_URL +
                 "/functions/v1/complete-passkey-registration",
                 {
-
                     method: "POST",
 
                     headers: {
-
                         "apikey":
                             SUPABASE_KEY,
 
@@ -115,60 +103,52 @@ async function registerCurrentUserPasskey() {
 
                     body:
                         JSON.stringify({
-
                             response:
                                 registrationResponse
-
                         })
                 }
             );
 
-
         const result =
             await completeResponse.json();
-
 
         if (
             !completeResponse.ok ||
             !result.success
         ) {
-
             throw new Error(
                 result.error ||
                 "Failed to complete passkey registration."
             );
         }
 
-
         alert(
             "Passkey registered successfully."
         );
-
 
         console.log(
             "Passkey registration result:",
             result
         );
 
-
         return true;
 
-    }
-
-    catch (error) {
+    } catch (error) {
 
         console.error(
             "Passkey registration error:",
             error
         );
 
-
         alert(
             error.message ||
             "Passkey registration failed."
         );
 
-
         return false;
     }
 }
+
+// Make function available to HTML onclick
+window.registerCurrentUserPasskey =
+    registerCurrentUserPasskey;
