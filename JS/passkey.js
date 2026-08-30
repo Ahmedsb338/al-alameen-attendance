@@ -1,4 +1,54 @@
 // =====================================================
+// PASSKEY - PRODUCTION
+// Registration + Authentication
+// =====================================================
+
+
+// =====================================================
+// GET ACCESS TOKEN
+// =====================================================
+
+function getPasskeyAccessToken() {
+
+    const accessToken =
+        localStorage.getItem("access_token");
+
+    if (!accessToken) {
+        throw new Error(
+            "Your session has expired. Please login again."
+        );
+    }
+
+    return accessToken;
+}
+
+
+// =====================================================
+// GET CURRENT PROFILE
+// =====================================================
+
+function getPasskeyProfile() {
+
+    const profile =
+        window.currentUserProfile;
+
+    if (!profile) {
+        throw new Error(
+            "User profile is not available. Please refresh and try again."
+        );
+    }
+
+    if (!profile.employee_id) {
+        throw new Error(
+            "This account is not linked to an employee."
+        );
+    }
+
+    return profile;
+}
+
+
+// =====================================================
 // PASSKEY REGISTRATION
 // =====================================================
 
@@ -6,35 +56,16 @@ async function registerCurrentUserPasskey() {
 
     try {
 
-        // Check current Supabase session
         const accessToken =
-            localStorage.getItem(
-                "access_token"
-            );
+            getPasskeyAccessToken();
 
-        if (!accessToken) {
-            throw new Error(
-                "Please login first."
-            );
-        }
+        getPasskeyProfile();
 
-        // Get current profile
-        const profile =
-            window.currentUserProfile;
 
-        if (!profile) {
-            throw new Error(
-                "User profile not loaded."
-            );
-        }
+        // -------------------------------------------------
+        // START REGISTRATION
+        // -------------------------------------------------
 
-        if (!profile.employee_id) {
-            throw new Error(
-                "This account is not linked to an employee."
-            );
-        }
-
-        // Start registration
         const registerResponse =
             await fetch(
                 SUPABASE_URL +
@@ -56,32 +87,60 @@ async function registerCurrentUserPasskey() {
                 }
             );
 
-        const options =
-            await registerResponse.json();
 
-        if (!registerResponse.ok) {
+        let options;
+
+        try {
+            options =
+                await registerResponse.json();
+        } catch {
             throw new Error(
-                options.error ||
-                "Failed to start passkey registration."
+                "Invalid response from passkey registration service."
             );
         }
 
-        // Start WebAuthn
-        const {
-            startRegistration
-        } = SimpleWebAuthnBrowser;
+
+        if (!registerResponse.ok) {
+
+            throw new Error(
+                options.error ||
+                "Unable to start passkey registration."
+            );
+        }
+
+
+        // -------------------------------------------------
+        // CHECK WEBAUTHN LIBRARY
+        // -------------------------------------------------
+
+        if (
+            !window.SimpleWebAuthnBrowser ||
+            typeof
+                window.SimpleWebAuthnBrowser.startRegistration !==
+                "function"
+        ) {
+
+            throw new Error(
+                "Passkey service is not available. Please refresh the page and try again."
+            );
+        }
+
+
+        // -------------------------------------------------
+        // CREATE PASSKEY
+        // -------------------------------------------------
 
         const registrationResponse =
-            await startRegistration({
+            await window.SimpleWebAuthnBrowser.startRegistration({
                 optionsJSON:
                     options
             });
 
-        console.log(
-            "WebAuthn registration completed."
-        );
 
-        // Complete registration
+        // -------------------------------------------------
+        // COMPLETE REGISTRATION
+        // -------------------------------------------------
+
         const completeResponse =
             await fetch(
                 SUPABASE_URL +
@@ -109,29 +168,37 @@ async function registerCurrentUserPasskey() {
                 }
             );
 
-        const result =
-            await completeResponse.json();
+
+        let result;
+
+        try {
+            result =
+                await completeResponse.json();
+        } catch {
+            throw new Error(
+                "Invalid response from passkey registration service."
+            );
+        }
+
 
         if (
             !completeResponse.ok ||
             !result.success
         ) {
+
             throw new Error(
                 result.error ||
-                "Failed to complete passkey registration."
+                "Failed to save passkey."
             );
         }
+
 
         alert(
             "Passkey registered successfully."
         );
 
-        console.log(
-            "Passkey registration result:",
-            result
-        );
-
         return true;
+
 
     } catch (error) {
 
@@ -140,9 +207,38 @@ async function registerCurrentUserPasskey() {
             error
         );
 
+
+        // User cancelled Windows Hello / biometric prompt
+        if (
+            error &&
+            error.name === "NotAllowedError"
+        ) {
+
+            alert(
+                "Passkey registration was cancelled or timed out."
+            );
+
+            return false;
+        }
+
+
+        // Credential already exists
+        if (
+            error &&
+            error.name === "InvalidStateError"
+        ) {
+
+            alert(
+                "This passkey is already registered."
+            );
+
+            return false;
+        }
+
+
         alert(
             error.message ||
-            "Passkey registration failed."
+            "Passkey registration failed. Please try again."
         );
 
         return false;
@@ -158,24 +254,14 @@ async function authenticateCurrentUserPasskey() {
 
     try {
 
-        // -------------------------------------------------
-        // Check current Supabase session
-        // -------------------------------------------------
-
         const accessToken =
-            localStorage.getItem(
-                "access_token"
-            );
+            getPasskeyAccessToken();
 
-        if (!accessToken) {
-            throw new Error(
-                "Please login first."
-            );
-        }
+        getPasskeyProfile();
 
 
         // -------------------------------------------------
-        // Start authentication
+        // START AUTHENTICATION
         // -------------------------------------------------
 
         const authResponse =
@@ -200,60 +286,60 @@ async function authenticateCurrentUserPasskey() {
             );
 
 
-        const options =
-            await authResponse.json();
+        let options;
+
+        try {
+            options =
+                await authResponse.json();
+        } catch {
+            throw new Error(
+                "Invalid response from passkey authentication service."
+            );
+        }
 
 
         if (!authResponse.ok) {
 
             throw new Error(
                 options.error ||
-                "Failed to start passkey authentication."
+                "Unable to start passkey authentication."
             );
         }
 
 
-        console.log(
-            "Authentication options received:",
-            options
-        );
-
-
         // -------------------------------------------------
-        // Start WebAuthn
+        // CHECK WEBAUTHN LIBRARY
         // -------------------------------------------------
-
-        const {
-            startAuthentication
-        } = SimpleWebAuthnBrowser;
-
 
         if (
-            typeof startAuthentication !==
-            "function"
+            !window.SimpleWebAuthnBrowser ||
+            typeof
+                window.SimpleWebAuthnBrowser.startAuthentication !==
+                "function"
         ) {
 
             throw new Error(
-                "SimpleWebAuthnBrowser.startAuthentication is not available."
+                "Passkey service is not available. Please refresh the page and try again."
             );
         }
 
 
+        // -------------------------------------------------
+        // AUTHENTICATE PASSKEY
+        // -------------------------------------------------
+
         const authenticationResponse =
-            await startAuthentication({
+            await window.SimpleWebAuthnBrowser.startAuthentication({
                 optionsJSON:
                     options
             });
 
 
-        console.log(
-            "WebAuthn authentication completed:",
-            authenticationResponse
-        );
-
-
         // -------------------------------------------------
-        // Verify authentication
+        // VERIFY AUTHENTICATION
+        // IMPORTANT:
+        // verify-passkey expects BOTH:
+        // response + credential id
         // -------------------------------------------------
 
         const verifyResponse =
@@ -277,6 +363,10 @@ async function authenticateCurrentUserPasskey() {
 
                     body:
                         JSON.stringify({
+
+                            id:
+                                authenticationResponse.id,
+
                             response:
                                 authenticationResponse
                         })
@@ -284,14 +374,16 @@ async function authenticateCurrentUserPasskey() {
             );
 
 
-        const result =
-            await verifyResponse.json();
+        let result;
 
-
-        console.log(
-            "Passkey verification result:",
-            result
-        );
+        try {
+            result =
+                await verifyResponse.json();
+        } catch {
+            throw new Error(
+                "Invalid response from passkey verification service."
+            );
+        }
 
 
         if (
@@ -308,13 +400,8 @@ async function authenticateCurrentUserPasskey() {
 
 
         // -------------------------------------------------
-        // Success
+        // SUCCESS
         // -------------------------------------------------
-
-        alert(
-            "Passkey authentication successful."
-        );
-
 
         return true;
 
@@ -327,11 +414,38 @@ async function authenticateCurrentUserPasskey() {
         );
 
 
+        // User cancelled or authentication timed out
+        if (
+            error &&
+            error.name === "NotAllowedError"
+        ) {
+
+            alert(
+                "Passkey verification was cancelled or timed out."
+            );
+
+            return false;
+        }
+
+
+        // Passkey no longer exists on device
+        if (
+            error &&
+            error.name === "NotFoundError"
+        ) {
+
+            alert(
+                "No registered passkey was found on this device."
+            );
+
+            return false;
+        }
+
+
         alert(
             error.message ||
-            "Passkey authentication failed."
+            "Passkey authentication failed. Please try again."
         );
-
 
         return false;
     }
@@ -339,7 +453,7 @@ async function authenticateCurrentUserPasskey() {
 
 
 // =====================================================
-// Make functions available to HTML onclick
+// GLOBAL FUNCTIONS
 // =====================================================
 
 window.registerCurrentUserPasskey =
@@ -347,4 +461,3 @@ window.registerCurrentUserPasskey =
 
 window.authenticateCurrentUserPasskey =
     authenticateCurrentUserPasskey;
-
