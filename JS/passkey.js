@@ -79,12 +79,11 @@ async function registerCurrentUserPasskey() {
 
 
         // Start WebAuthn
-        const registrationResponse =
-            await SimpleWebAuthnBrowser
-                .startRegistration({
-                    optionsJSON:
-                        options
-                });
+const registrationResponse =
+    await window.startPasskeyRegistration({
+        optionsJSON:
+            options
+    });
 
 
         console.log(
