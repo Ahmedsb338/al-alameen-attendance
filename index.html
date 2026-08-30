@@ -21,14 +21,6 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 >
     
-<script type="module">
-    import {
-        startRegistration
-    } from "https://cdn.jsdelivr.net/npm/@simplewebauthn/browser@13.3.3/+esm";
-
-    window.startPasskeyRegistration =
-        startRegistration;
-</script>
     
 </head>
 
@@ -1206,7 +1198,14 @@
 <script
     src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"
 ></script>
+<script type="module">
+    import {
+        startRegistration
+    } from "https://cdn.jsdelivr.net/npm/@simplewebauthn/browser@13.3.3/+esm";
 
+    window.startPasskeyRegistration =
+        startRegistration;
+</script>
 <script
     src="JS/app.js"
 ></script>
