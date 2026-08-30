@@ -350,18 +350,66 @@ async function checkIn() {
         );
 
 
-    statusBox.textContent =
-        "Getting your location...";
-
-    statusBox.className =
-        "status loading";
-
-
     try {
+
+        // =============================================
+        // PASSKEY AUTHENTICATION
+        // =============================================
+
+        statusBox.textContent =
+            "Verify your identity with Passkey...";
+
+        statusBox.className =
+            "status loading";
+
+
+        if (
+            typeof window
+                .authenticateCurrentUserPasskey !==
+            "function"
+        ) {
+
+            throw new Error(
+                "Passkey authentication is not available."
+            );
+        }
+
+
+        const passkeyVerified =
+            await window
+                .authenticateCurrentUserPasskey();
+
+
+        if (!passkeyVerified) {
+
+            statusBox.textContent =
+                "Passkey verification failed.";
+
+            statusBox.className =
+                "status error";
+
+            return;
+        }
+
+
+        // =============================================
+        // GPS
+        // =============================================
+
+        statusBox.textContent =
+            "Getting your location...";
+
+        statusBox.className =
+            "status loading";
+
 
         const location =
             await getCurrentLocation();
 
+
+        // =============================================
+        // CHECK BRANCH LOCATION
+        // =============================================
 
         statusBox.textContent =
             "Checking branch location...";
@@ -372,6 +420,18 @@ async function checkIn() {
                 "access_token"
             );
 
+
+        if (!accessToken) {
+
+            throw new Error(
+                "Session expired. Please login again."
+            );
+        }
+
+
+        // =============================================
+        // CHECK IN
+        // =============================================
 
         const response =
             await fetch(
@@ -445,11 +505,15 @@ async function checkIn() {
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "Check-in error:",
+            error
+        );
 
 
         statusBox.textContent =
-            error.message;
+            error.message ||
+            "Check-in failed.";
 
         statusBox.className =
             "status error";
@@ -469,18 +533,66 @@ async function checkOut() {
         );
 
 
-    statusBox.textContent =
-        "Getting your location...";
-
-    statusBox.className =
-        "status loading";
-
-
     try {
+
+        // =============================================
+        // PASSKEY AUTHENTICATION
+        // =============================================
+
+        statusBox.textContent =
+            "Verify your identity with Passkey...";
+
+        statusBox.className =
+            "status loading";
+
+
+        if (
+            typeof window
+                .authenticateCurrentUserPasskey !==
+            "function"
+        ) {
+
+            throw new Error(
+                "Passkey authentication is not available."
+            );
+        }
+
+
+        const passkeyVerified =
+            await window
+                .authenticateCurrentUserPasskey();
+
+
+        if (!passkeyVerified) {
+
+            statusBox.textContent =
+                "Passkey verification failed.";
+
+            statusBox.className =
+                "status error";
+
+            return;
+        }
+
+
+        // =============================================
+        // GPS
+        // =============================================
+
+        statusBox.textContent =
+            "Getting your location...";
+
+        statusBox.className =
+            "status loading";
+
 
         const location =
             await getCurrentLocation();
 
+
+        // =============================================
+        // CHECK BRANCH LOCATION
+        // =============================================
 
         statusBox.textContent =
             "Checking branch location...";
@@ -491,6 +603,18 @@ async function checkOut() {
                 "access_token"
             );
 
+
+        if (!accessToken) {
+
+            throw new Error(
+                "Session expired. Please login again."
+            );
+        }
+
+
+        // =============================================
+        // CHECK OUT
+        // =============================================
 
         const response =
             await fetch(
@@ -564,13 +688,32 @@ async function checkOut() {
 
     } catch (error) {
 
-        console.error(error);
+        console.error(
+            "Check-out error:",
+            error
+        );
 
 
         statusBox.textContent =
-            error.message;
+            error.message ||
+            "Check-out failed.";
 
         statusBox.className =
             "status error";
     }
 }
+
+
+// =====================================================
+// MAKE FUNCTIONS AVAILABLE TO HTML
+// =====================================================
+
+window.checkIn =
+    checkIn;
+
+window.checkOut =
+    checkOut;
+
+window.loadAttendancePage =
+    loadAttendancePage;
+
