@@ -63,7 +63,7 @@
                 class="logout-button"
                 onclick="logoutUser()"
             >
-                🚪 Logout
+                ðŸšª Logout
             </button>
 
         </div>
@@ -153,20 +153,6 @@
 
     </div>
 
-        <div class="card">
-
-            <div class="card-title" id="primaryStatTitle">
-    Loading...
-</div>
-
-<div
-    id="primaryStatValue"
-    class="card-value"
->
-    Loading...
-</div>
-
-        </div>
 
         <div class="card">
 
@@ -210,56 +196,56 @@
             id="employeesMenuButton"
             onclick="showPage('employeesPage')"
         >
-            👥 Employees
+            ðŸ‘¥ Employees
         </button>
 
         <button
             id="branchesMenuButton"
             onclick="showPage('branchesPage')"
         >
-            🏢 Branches
+            ðŸ¢ Branches
         </button>
 
         <button
             id="attendanceMenuButton"
             onclick="showPage('attendancePage')"
         >
-            🕐 Attendance
+            ðŸ• Attendance
         </button>
 
         <button
             id="scheduleMenuButton"
             onclick="showPage('schedulePage')"
         >
-            📅 Schedule
+            ðŸ“… Schedule
         </button>
 
         <button
             id="importMenuButton"
             onclick="showPage('importPage')"
         >
-            📥 Import Excel
+            ðŸ“¥ Import Excel
         </button>
 
         <button
             id="exportMenuButton"
             onclick="openExportDialog()"
         >
-            📤 Export Excel
+            ðŸ“¤ Export Excel
         </button>
 
         <button
             id="reportsMenuButton"
             onclick="showPage('reportsPage')"
         >
-            📊 Reports
+            ðŸ“Š Reports
         </button>
 
         <button
             id="settingsMenuButton"
             onclick="showPage('settingsPage')"
         >
-            ⚙️ Settings
+            âš™ï¸ Settings
         </button>
 
 
@@ -292,12 +278,12 @@
         class="back"
         onclick="showPage('dashboardPage')"
     >
-        ← Back to Dashboard
+        â† Back to Dashboard
     </button>
 
     <div class="page-header">
 
-        <h2>👥 Employees</h2>
+        <h2>ðŸ‘¥ Employees</h2>
 
         <p>
             Manage employees and employee accounts.
@@ -307,7 +293,7 @@
 
     <div class="card">
 
-        <h3>➕ Add New Employee</h3>
+        <h3>âž• Add New Employee</h3>
 
         <div class="form-grid">
 
@@ -409,7 +395,7 @@
             class="primary"
             onclick="addEmployee()"
         >
-            ➕ Add Employee
+            âž• Add Employee
         </button>
 
     </div>
@@ -437,6 +423,7 @@
                         <th>Full Name</th>
                         <th>Role</th>
                         <th>Status</th>
+                        <th>Actions</th>
 
                     </tr>
 
@@ -461,12 +448,12 @@
         class="back"
         onclick="showPage('dashboardPage')"
     >
-        ← Back to Dashboard
+        â† Back to Dashboard
     </button>
 
     <div class="page-header">
 
-        <h2>🏢 Branch Management</h2>
+        <h2>ðŸ¢ Branch Management</h2>
 
         <p>
             Create and manage company branches.
@@ -476,7 +463,7 @@
 
     <div class="card">
 
-        <h3>➕ Create New Branch</h3>
+        <h3>âž• Create New Branch</h3>
 
         <div class="form-grid">
 
@@ -607,7 +594,7 @@
             class="primary"
             onclick="createBranch()"
         >
-            ➕ Create Branch
+            âž• Create Branch
         </button>
 
     </div>
@@ -619,7 +606,7 @@
     >
 
         <h3>
-            ✅ Branch Created Successfully
+            âœ… Branch Created Successfully
         </h3>
 
         <p>
@@ -661,7 +648,7 @@
             class="primary"
             onclick="copyManagerActivationLink()"
         >
-            📋 Copy Activation Link
+            ðŸ“‹ Copy Activation Link
         </button>
 
     </div>
@@ -714,12 +701,12 @@
         class="back"
         onclick="showPage('dashboardPage')"
     >
-        ← Back to Dashboard
+        â† Back to Dashboard
     </button>
 
     <div class="page-header">
 
-        <h2>🕐 Attendance</h2>
+        <h2>ðŸ• Attendance</h2>
 
         <p>
             Attendance and check-in/check-out management.
@@ -787,14 +774,14 @@
             id="checkInButton"
             onclick="checkIn()"
         >
-            🟢 Check In
+            ðŸŸ¢ Check In
         </button>
 
         <button
             id="checkOutButton"
             onclick="checkOut()"
         >
-            🔴 Check Out
+            ðŸ”´ Check Out
         </button>
 
     </div>
@@ -853,12 +840,12 @@
         class="back"
         onclick="showPage('dashboardPage')"
     >
-        ← Back to Dashboard
+        â† Back to Dashboard
     </button>
 
     <div class="page-header">
 
-        <h2>📅 Shift Schedule</h2>
+        <h2>ðŸ“… Shift Schedule</h2>
 
         <p>
             Monthly employee shift schedule.
@@ -912,12 +899,12 @@
         class="back"
         onclick="showPage('dashboardPage')"
     >
-        ← Back to Dashboard
+        â† Back to Dashboard
     </button>
 
     <div class="page-header">
 
-        <h2>📥 Import Monthly Schedule</h2>
+        <h2>ðŸ“¥ Import Monthly Schedule</h2>
 
         <p>
             Upload the monthly Excel schedule.
@@ -973,12 +960,12 @@
         class="back"
         onclick="showPage('dashboardPage')"
     >
-        ← Back to Dashboard
+        â† Back to Dashboard
     </button>
 
     <div class="page-header">
 
-        <h2>📊 Reports</h2>
+        <h2>ðŸ“Š Reports</h2>
 
         <p>
             Reports will be added later.
@@ -1007,13 +994,13 @@
         class="back"
         onclick="showPage('dashboardPage')"
     >
-        ← Back to Dashboard
+        â† Back to Dashboard
     </button>
 
     <div class="page-header">
 
         <h2>
-            ⚙️ Settings
+            âš™ï¸ Settings
         </h2>
 
         <p>
@@ -1029,7 +1016,7 @@
     >
 
         <h3>
-            🏢 Branch Settings
+            ðŸ¢ Branch Settings
         </h3>
 
 
@@ -1173,7 +1160,7 @@
             class="primary"
             onclick="saveBranchSettings()"
         >
-            💾 Save Changes
+            ðŸ’¾ Save Changes
         </button>
 
     </div>
@@ -1192,7 +1179,7 @@
 </div>
     
 <footer>
-    © 2026 Ahmed Sobhy. All rights reserved.
+    Â© 2026 Ahmed Sobhy. All rights reserved.
 </footer>
 
 <script
