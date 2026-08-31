@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Quantech Attendance System</title>
+
+<link
+    rel="stylesheet"
+    href="CSS/style.css"
+>
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+>
+    
+    
+</head>
+
+<body>
+
+<header>
+
+    <div class="header-content">
+
+        <div class="header-brand">
+
+            <h1>
+                Quantech Attendance System
+            </h1>
+
+            <p>
+                <span id="branchHeaderName">
+                    
+                </span>
+            </p>
+
+            <div class="user-header-info">
+
+                <span id="headerUserName">
+                    -
+                </span>
+
+                <span id="headerUserRole">
+                    -
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="header-actions">
+
+            <button
+                type="button"
+                class="logout-button"
+                onclick="logoutUser()"
+            >
+                ÃƒÂ°Ã…Â¸Ã…Â¡Ã‚Âª Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+<section
+    id="branchesPage"
+    class="page"
+>
+
+    <button
+        class="back"
+        onclick="window.location.href='index.html'"
+    >
+        ÃƒÂ¢Ã¢â‚¬Â Ã‚Â Back to Dashboard
+    </button>
+
+    <div class="page-header">
+
+        <h2>ÃƒÂ°Ã…Â¸Ã‚ÂÃ‚Â¢ Branch Management</h2>
+
+        <p>
+            Create and manage company branches.
+        </p>
+
+    </div>
+
+    <div class="card">
+
+        <h3>ÃƒÂ¢Ã…Â¾Ã¢â‚¬Â¢ Create New Branch</h3>
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label for="branchNameInput">
+                    Branch Name
+                </label>
+
+                <input
+                    type="text"
+                    id="branchNameInput"
+                    placeholder="Enter branch name"
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="branchCodeInput">
+                    Branch Code
+                </label>
+
+                <input
+                    type="text"
+                    id="branchCodeInput"
+                    placeholder="e.g. 1706"
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="managerNameInput">
+                    Manager Name
+                </label>
+
+                <input
+                    type="text"
+                    id="managerNameInput"
+                    placeholder="Enter manager name"
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="managerEmailInput">
+                    Manager Email
+                </label>
+
+                <input
+                    type="email"
+                    id="managerEmailInput"
+                    placeholder="manager@example.com"
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="managerPhoneInput">
+                    Manager Phone
+                </label>
+
+                <input
+                    type="tel"
+                    id="managerPhoneInput"
+                    placeholder="01xxxxxxxxx"
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="branchLatitudeInput">
+                    Latitude
+                </label>
+
+                <input
+                    type="number"
+                    id="branchLatitudeInput"
+                    step="any"
+                    placeholder="31.2001"
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="branchLongitudeInput">
+                    Longitude
+                </label>
+
+                <input
+                    type="number"
+                    id="branchLongitudeInput"
+                    step="any"
+                    placeholder="29.9187"
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="branchRadiusInput">
+                    Allowed Radius (meters)
+                </label>
+
+                <input
+                    type="number"
+                    id="branchRadiusInput"
+                    value="50"
+                    min="1"
+                >
+
+            </div>
+
+        </div>
+
+        <div
+            id="createBranchStatus"
+            class="status"
+        ></div>
+
+        <button
+            type="button"
+            class="primary"
+            onclick="createBranch()"
+        >
+            ÃƒÂ¢Ã…Â¾Ã¢â‚¬Â¢ Create Branch
+        </button>
+
+    </div>
+
+    <div
+        class="card"
+        id="branchActivationResult"
+        style="display:none;"
+    >
+
+        <h3>
+            ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Branch Created Successfully
+        </h3>
+
+        <p>
+            <strong>Branch Name:</strong>
+            <span id="createdBranchName">-</span>
+        </p>
+
+        <p>
+            <strong>Branch Code:</strong>
+            <span id="createdBranchCode">-</span>
+        </p>
+
+        <p>
+            <strong>Manager Username:</strong>
+            <span id="createdManagerLogin">-</span>
+        </p>
+
+        <p>
+            <strong>Manager:</strong>
+            <span id="createdManagerName">-</span>
+        </p>
+
+        <div class="form-group">
+
+            <label>
+                Manager Activation Link
+            </label>
+
+            <textarea
+                id="managerActivationLink"
+                readonly
+                rows="3"
+            ></textarea>
+
+        </div>
+
+        <button
+            type="button"
+            class="primary"
+            onclick="copyManagerActivationLink()"
+        >
+            ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Â¹ Copy Activation Link
+        </button>
+
+    </div>
+
+    <div class="card">
+
+        <h3>Existing Branches</h3>
+
+        <div
+            id="branchesStatus"
+            class="status loading"
+        >
+            Loading branches...
+        </div>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>#</th>
+                        <th>Branch Code</th>
+                        <th>Branch Name</th>
+                        <th>Manager</th>
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="branchesTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+<footer>
+    Â© 2026 Ahmed Sobhy. All rights reserved.
+</footer>
+
+<script src="JS/app.js"></script><script src="https://unpkg.com/@simplewebauthn/browser@13.3.0/dist/bundle/index.umd.min.js"></script>
+<script src="JS/passkey.js"></script>
+
+</body>
+</html>

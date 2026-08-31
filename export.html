@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Export Attendance - Quantech Attendance System</title>
+
+    <link rel="stylesheet" href="CSS/style.css">
+</head>
+
+<body>
+
+<header>
+    <div class="header-content">
+        <div class="header-brand">
+            <h1>Quantech Attendance System</h1>
+            <p>Attendance Management System</p>
+
+            <div class="user-header-info">
+                <span id="headerUserName"></span>
+                <span id="headerUserRole"></span>
+            </div>
+        </div>
+
+        <div class="header-actions">
+            <button
+                type="button"
+                class="logout-button header-logout"
+                onclick="logout()">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Logout
+            </button>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="page active" id="exportPage">
+
+        <button
+            type="button"
+            class="back"
+            onclick="window.location.href='index.html'">
+            <i class="fa-solid fa-arrow-left"></i>
+            Back to Dashboard
+        </button>
+
+        <div class="page-header">
+            <h2>
+                <i class="fa-solid fa-file-export"></i>
+                Export Attendance
+            </h2>
+
+            <p>
+                Export attendance records to Excel.
+            </p>
+        </div>
+
+        <div class="card export-panel">
+
+            <h3>Attendance Export</h3>
+
+            <p>
+                Select the attendance period you want to export.
+            </p>
+
+            <div class="export-actions">
+
+                <button
+                    type="button"
+                    class="primary"
+                    onclick="openExportDialog()">
+
+                    <i class="fa-solid fa-file-excel"></i>
+                    Export Attendance Excel
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer>
+    © 2026 Ahmed Sobhy. All rights reserved.
+</footer>
+
+<script src="JS/app.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+<script src="JS/export.js"></script>
+
+</body>
+</html>

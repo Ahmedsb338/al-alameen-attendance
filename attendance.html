@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Quantech Attendance System</title>
+
+<link
+    rel="stylesheet"
+    href="CSS/style.css"
+>
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+>
+    
+    
+</head>
+
+<body>
+
+<header>
+
+    <div class="header-content">
+
+        <div class="header-brand">
+
+            <h1>
+                Quantech Attendance System
+            </h1>
+
+            <p>
+                <span id="branchHeaderName">
+                    
+                </span>
+            </p>
+
+            <div class="user-header-info">
+
+                <span id="headerUserName">
+                    -
+                </span>
+
+                <span id="headerUserRole">
+                    -
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="header-actions">
+
+            <button
+                type="button"
+                class="logout-button"
+                onclick="logoutUser()"
+            >
+                ÃƒÂ°Ã…Â¸Ã…Â¡Ã‚Âª Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+<section
+    id="attendancePage"
+    class="page"
+>
+
+    <button
+        class="back"
+        onclick="window.location.href='index.html'"
+    >
+        ÃƒÂ¢Ã¢â‚¬Â Ã‚Â Back to Dashboard
+    </button>
+
+    <div class="page-header">
+
+        <h2>ÃƒÂ°Ã…Â¸Ã¢â‚¬Â¢Ã‚Â Attendance</h2>
+
+        <p>
+            Attendance and check-in/check-out management.
+        </p>
+
+    </div>
+
+    <div class="cards">
+
+        <div class="card">
+
+            <div class="card-title">
+                Today's Status
+            </div>
+
+            <div
+                id="myAttendanceStatus"
+                class="card-value"
+            >
+                -
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <div class="card-title">
+                Check In
+            </div>
+
+            <div
+                id="myCheckInTime"
+                class="card-value"
+                style="font-size:20px;"
+            >
+                -
+            </div>
+
+        </div>
+
+        <div class="card">
+
+            <div class="card-title">
+                Check Out
+            </div>
+
+            <div
+                id="myCheckOutTime"
+                class="card-value"
+                style="font-size:20px;"
+            >
+                -
+            </div>
+
+        </div>
+
+    </div>
+
+    <div
+        class="menu"
+        id="attendanceActions"
+    >
+
+        <button
+            id="checkInButton"
+            onclick="checkIn()"
+        >
+            ÃƒÂ°Ã…Â¸Ã…Â¸Ã‚Â¢ Check In
+        </button>
+
+        <button
+            id="checkOutButton"
+            onclick="checkOut()"
+        >
+            ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â´ Check Out
+        </button>
+
+    </div>
+
+    <div
+        id="attendancePageStatus"
+        class="status"
+    >
+        Ready
+    </div>
+
+    <div
+        class="card"
+        id="attendanceDataCard"
+    >
+
+        <h3>Attendance Records</h3>
+
+        <div id="attendanceFilters"></div>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Date</th>
+                        <th>Staff ID</th>
+                        <th>Employee</th>
+                        <th>Branch</th>
+                        <th>Check In</th>
+                        <th>Check Out</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="attendanceTable"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+<footer>
+    Â© 2026 Ahmed Sobhy. All rights reserved.
+</footer>
+
+<script src="JS/app.js"></script><script src="JS/attendance.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Quantech Attendance System</title>
+
+<link
+    rel="stylesheet"
+    href="CSS/style.css"
+>
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+>
+    
+    
+</head>
+
+<body>
+
+<header>
+
+    <div class="header-content">
+
+        <div class="header-brand">
+
+            <h1>
+                Quantech Attendance System
+            </h1>
+
+            <p>
+                <span id="branchHeaderName">
+                    
+                </span>
+            </p>
+
+            <div class="user-header-info">
+
+                <span id="headerUserName">
+                    -
+                </span>
+
+                <span id="headerUserRole">
+                    -
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="header-actions">
+
+            <button
+                type="button"
+                class="logout-button"
+                onclick="logoutUser()"
+            >
+                ÃƒÂ°Ã…Â¸Ã…Â¡Ã‚Âª Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+<section
+    id="schedulePage"
+    class="page"
+>
+
+    <button
+        class="back"
+        onclick="window.location.href='index.html'"
+    >
+        ÃƒÂ¢Ã¢â‚¬Â Ã‚Â Back to Dashboard
+    </button>
+
+    <div class="page-header">
+
+        <h2>ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Â¦ Shift Schedule</h2>
+
+        <p>
+            Monthly employee shift schedule.
+        </p>
+
+    </div>
+
+    <div
+        id="scheduleStatus"
+        class="status loading"
+    >
+        Loading schedule...
+    </div>
+
+    <div class="table-container">
+
+        <table class="schedule-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Date</th>
+
+                    <th>121090</th>
+                    <th>121040</th>
+                    <th>125453</th>
+                    <th>126439</th>
+                    <th>127981</th>
+                    <th>126225</th>
+                    <th>129776</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody id="scheduleTable"></tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+<footer>
+    Â© 2026 Ahmed Sobhy. All rights reserved.
+</footer>
+
+<script src="JS/app.js"></script><script src="JS/schedule.js"></script>
+
+</body>
+</html>

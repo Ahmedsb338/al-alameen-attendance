@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>Quantech Attendance System</title>
+
+<link
+    rel="stylesheet"
+    href="CSS/style.css"
+>
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+>
+    
+    
+</head>
+
+<body>
+
+<header>
+
+    <div class="header-content">
+
+        <div class="header-brand">
+
+            <h1>
+                Quantech Attendance System
+            </h1>
+
+            <p>
+                <span id="branchHeaderName">
+                    
+                </span>
+            </p>
+
+            <div class="user-header-info">
+
+                <span id="headerUserName">
+                    -
+                </span>
+
+                <span id="headerUserRole">
+                    -
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="header-actions">
+
+            <button
+                type="button"
+                class="logout-button"
+                onclick="logoutUser()"
+            >
+                ÃƒÂ°Ã…Â¸Ã…Â¡Ã‚Âª Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+<section
+    id="settingsPage"
+    class="page"
+>
+
+    <button
+        class="back"
+        onclick="window.location.href='index.html'"
+    >
+        ÃƒÂ¢Ã¢â‚¬Â Ã‚Â Back to Dashboard
+    </button>
+
+    <div class="page-header">
+
+        <h2>
+            ÃƒÂ¢Ã…Â¡Ã¢â€žÂ¢ÃƒÂ¯Ã‚Â¸Ã‚Â Settings
+        </h2>
+
+        <p>
+            Manage your branch settings.
+        </p>
+
+    </div>
+
+
+    <div
+        id="branchSettingsCard"
+        class="card"
+    >
+
+        <h3>
+            ÃƒÂ°Ã…Â¸Ã‚ÂÃ‚Â¢ Branch Settings
+        </h3>
+
+
+        <div class="form-grid">
+
+
+            <div class="form-group">
+
+                <label for="settingsBranchName">
+                    Branch Name
+                </label>
+
+                <input
+                    type="text"
+                    id="settingsBranchName"
+                    placeholder="Branch Name"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="settingsBranchCode">
+                    Branch Code
+                </label>
+
+                <input
+                    type="text"
+                    id="settingsBranchCode"
+                    placeholder="Branch Code"
+                    readonly
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="settingsManagerName">
+                    Manager Name
+                </label>
+
+                <input
+                    type="text"
+                    id="settingsManagerName"
+                    placeholder="Manager Name"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="settingsManagerEmail">
+                    Manager Email
+                </label>
+
+                <input
+                    type="email"
+                    id="settingsManagerEmail"
+                    placeholder="Manager Email"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="settingsManagerPhone">
+                    Manager Phone
+                </label>
+
+                <input
+                    type="tel"
+                    id="settingsManagerPhone"
+                    placeholder="Manager Phone"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="settingsLatitude">
+                    Latitude
+                </label>
+
+                <input
+                    type="number"
+                    id="settingsLatitude"
+                    step="any"
+                    placeholder="Latitude"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="settingsLongitude">
+                    Longitude
+                </label>
+
+                <input
+                    type="number"
+                    id="settingsLongitude"
+                    step="any"
+                    placeholder="Longitude"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="settingsRadius">
+                    Allowed Radius (meters)
+                </label>
+
+                <input
+                    type="number"
+                    id="settingsRadius"
+                    min="1"
+                    placeholder="50"
+                >
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="branchSettingsStatus"
+            class="status"
+        ></div>
+
+
+        <button
+            type="button"
+            class="primary"
+            onclick="saveBranchSettings()"
+        >
+            ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â¾ Save Changes
+        </button>
+
+    </div>
+
+</section>
+
+<footer>
+    Â© 2026 Ahmed Sobhy. All rights reserved.
+</footer>
+
+<script src="JS/app.js"></script><script src="https://unpkg.com/@simplewebauthn/browser@13.3.0/dist/bundle/index.umd.min.js"></script>
+<script src="JS/passkey.js"></script>
+
+</body>
+</html>
