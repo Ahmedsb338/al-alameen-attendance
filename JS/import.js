@@ -686,6 +686,10 @@ function convertExcelDate(value) {
         return null;
     }
 
+    if (value instanceof Date && !isNaN(value.getTime())) {
+        return formatDate(value);
+    }
+
     const text = String(value).trim();
 
     if (!text) {
@@ -834,4 +838,6 @@ function formatDate(date) {
 
     return `${year}-${month}-${day}`;
 }
+
+
 

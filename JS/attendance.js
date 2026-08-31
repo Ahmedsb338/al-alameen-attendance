@@ -132,9 +132,9 @@ async function loadTodayAttendance() {
 
                 if (
                     record.attendance_type ===
-                        "CHECK_IN" &&
+                        "check_in" &&
                     record.status ===
-                        "APPROVED"
+                        "accepted"
                 ) {
 
                     checkIn = record;
@@ -143,9 +143,9 @@ async function loadTodayAttendance() {
 
                 if (
                     record.attendance_type ===
-                        "CHECK_OUT" &&
+                        "check_out" &&
                     record.status ===
-                        "APPROVED"
+                        "accepted"
                 ) {
 
                     checkOut = record;
@@ -716,4 +716,5 @@ window.checkOut =
 
 window.loadAttendancePage =
     loadAttendancePage;
+
 

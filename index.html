@@ -20,8 +20,13 @@
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 >
-    
-    
+ <script
+    src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"
+></script>
+<script 
+    src="https://unpkg.com/@simplewebauthn/browser@13.3.0/dist/bundle/index.umd.min.js"
+></script>
+
 </head>
 
 <body>
@@ -63,7 +68,7 @@
                 class="logout-button"
                 onclick="logoutUser()"
             >
-                Ã°Å¸Å¡Âª Logout
+                Logout
             </button>
 
         </div>
@@ -194,58 +199,58 @@
 
         <button
             id="employeesMenuButton"
-            onclick="window.location.href='employees.html'"
+            onclick="showPage('employeesPage')"
         >
-            Ã°Å¸â€˜Â¥ Employees
+            Employees
         </button>
 
         <button
             id="branchesMenuButton"
-            onclick="window.location.href='branches.html'"
+            onclick="showPage('branchesPage')"
         >
-            Ã°Å¸ÂÂ¢ Branches
+            Branches
         </button>
 
         <button
             id="attendanceMenuButton"
-            onclick="window.location.href='attendance.html'"
+            onclick="showPage('attendancePage')"
         >
-            Ã°Å¸â€¢Â Attendance
+            Attendance
         </button>
 
         <button
             id="scheduleMenuButton"
-            onclick="window.location.href='schedule.html'"
+            onclick="showPage('schedulePage')"
         >
-            Ã°Å¸â€œâ€¦ Schedule
+            Schedule
         </button>
 
         <button
             id="importMenuButton"
-            onclick="window.location.href='import.html'"
+            onclick="showPage('importPage')"
         >
-            Ã°Å¸â€œÂ¥ Import Excel
+            Import Excel
         </button>
 
         <button
             id="exportMenuButton"
-            onclick="window.location.href='export.html'"
+            onclick="openExportDialog()"
         >
-            Ã°Å¸â€œÂ¤ Export Excel
+            Export Excel
         </button>
 
         <button
             id="reportsMenuButton"
-            onclick="window.location.href='reports.html'"
+            onclick="showPage('reportsPage')"
         >
-            Ã°Å¸â€œÅ  Reports
+            Reports
         </button>
 
         <button
             id="settingsMenuButton"
-            onclick="window.location.href='settings.html'"
+            onclick="showPage('settingsPage')"
         >
-            Ã¢Å¡â„¢Ã¯Â¸Â Settings
+             Settings
         </button>
 
 
@@ -278,12 +283,12 @@
         class="back"
         onclick="showPage('dashboardPage')"
     >
-        Ã¢â€ Â Back to Dashboard
+        Back to Dashboard
     </button>
 
     <div class="page-header">
 
-        <h2>Ã°Å¸â€˜Â¥ Employees</h2>
+        <h2>Employees</h2>
 
         <p>
             Manage employees and employee accounts.
@@ -293,7 +298,7 @@
 
     <div class="card">
 
-        <h3>Ã¢Å¾â€¢ Add New Employee</h3>
+        <h3>Add New Employee</h3>
 
         <div class="form-grid">
 
@@ -395,7 +400,7 @@
             class="primary"
             onclick="addEmployee()"
         >
-            Ã¢Å¾â€¢ Add Employee
+             Add Employee
         </button>
 
     </div>
@@ -448,12 +453,12 @@
         class="back"
         onclick="showPage('dashboardPage')"
     >
-        Ã¢â€ Â Back to Dashboard
+        Back to Dashboard
     </button>
 
     <div class="page-header">
 
-        <h2>Ã°Å¸ÂÂ¢ Branch Management</h2>
+        <h2>Branch Management</h2>
 
         <p>
             Create and manage company branches.
@@ -463,7 +468,7 @@
 
     <div class="card">
 
-        <h3>Ã¢Å¾â€¢ Create New Branch</h3>
+        <h3>Create New Branch</h3>
 
         <div class="form-grid">
 
@@ -594,7 +599,7 @@
             class="primary"
             onclick="createBranch()"
         >
-            Ã¢Å¾â€¢ Create Branch
+             Create Branch
         </button>
 
     </div>
@@ -606,7 +611,7 @@
     >
 
         <h3>
-            Ã¢Å“â€¦ Branch Created Successfully
+            Branch Created Successfully
         </h3>
 
         <p>
@@ -648,7 +653,7 @@
             class="primary"
             onclick="copyManagerActivationLink()"
         >
-            Ã°Å¸â€œâ€¹ Copy Activation Link
+            Copy Activation Link
         </button>
 
     </div>
@@ -701,12 +706,12 @@
         class="back"
         onclick="showPage('dashboardPage')"
     >
-        Ã¢â€ Â Back to Dashboard
+        Back to Dashboard
     </button>
 
     <div class="page-header">
 
-        <h2>Ã°Å¸â€¢Â Attendance</h2>
+        <h2>Attendance</h2>
 
         <p>
             Attendance and check-in/check-out management.
@@ -774,14 +779,14 @@
             id="checkInButton"
             onclick="checkIn()"
         >
-            Ã°Å¸Å¸Â¢ Check In
+            Check In
         </button>
 
         <button
             id="checkOutButton"
             onclick="checkOut()"
         >
-            Ã°Å¸â€Â´ Check Out
+            Check Out
         </button>
 
     </div>
@@ -840,12 +845,12 @@
         class="back"
         onclick="showPage('dashboardPage')"
     >
-        Ã¢â€ Â Back to Dashboard
+        Back to Dashboard
     </button>
 
     <div class="page-header">
 
-        <h2>Ã°Å¸â€œâ€¦ Shift Schedule</h2>
+        <h2>Shift Schedule</h2>
 
         <p>
             Monthly employee shift schedule.
@@ -899,12 +904,12 @@
         class="back"
         onclick="showPage('dashboardPage')"
     >
-        Ã¢â€ Â Back to Dashboard
+        Back to Dashboard
     </button>
 
     <div class="page-header">
 
-        <h2>Ã°Å¸â€œÂ¥ Import Monthly Schedule</h2>
+        <h2>Import Monthly Schedule</h2>
 
         <p>
             Upload the monthly Excel schedule.
@@ -960,12 +965,12 @@
         class="back"
         onclick="showPage('dashboardPage')"
     >
-        Ã¢â€ Â Back to Dashboard
+        Back to Dashboard
     </button>
 
     <div class="page-header">
 
-        <h2>Ã°Å¸â€œÅ  Reports</h2>
+        <h2>Reports</h2>
 
         <p>
             Reports will be added later.
@@ -994,13 +999,13 @@
         class="back"
         onclick="showPage('dashboardPage')"
     >
-        Ã¢â€ Â Back to Dashboard
+        Back to Dashboard
     </button>
 
     <div class="page-header">
 
         <h2>
-            Ã¢Å¡â„¢Ã¯Â¸Â Settings
+            Settings
         </h2>
 
         <p>
@@ -1016,7 +1021,7 @@
     >
 
         <h3>
-            Ã°Å¸ÂÂ¢ Branch Settings
+            Branch Settings
         </h3>
 
 
@@ -1160,7 +1165,7 @@
             class="primary"
             onclick="saveBranchSettings()"
         >
-            Ã°Å¸â€™Â¾ Save Changes
+            Save Changes
         </button>
 
     </div>
@@ -1168,55 +1173,42 @@
 </section>
     
 </div>
-<div style="margin: 20px 0; text-align: center;">
-    <button
-        type="button"
-        class="primary"
-        onclick="registerCurrentUserPasskey()"
-    >
-        ðŸ” Register Passkey
-    </button>
-</div>
+
     
 <footer>
-    Ã‚Â© 2026 Ahmed Sobhy. All rights reserved.
+    © 2026 Ahmed Sobhy. All rights reserved.
 </footer>
 
-<script
-    src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"
-></script>
-
+    <script
+        src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"
+    ></script>
     
     <script
-    src="JS/app.js"
-></script>
+        src="JS/app.js"
+    ></script>
 
-<script
-    src="JS/import.js"
-></script>
+    <script
+        src="JS/import.js"
+    ></script>
 
-<script
-    src="JS/schedule.js"
-></script>
+    <script
+        src="JS/schedule.js"
+    ></script>
 
-<script
-    src="JS/export.js"
-></script>
-    
-<script 
-    src="https://unpkg.com/@simplewebauthn/browser@13.3.0/dist/bundle/index.umd.min.js"
-></script>
-    
-<script
-    src="JS/passkey.js"
-></script>
-<script src="JS/attendance.js"></script>
+    <script
+        src="JS/export.js"
+    ></script>
+        
+    <script 
+        src="https://unpkg.com/@simplewebauthn/browser@13.3.0/dist/bundle/index.umd.min.js"
+    ></script>
+        
+    <script
+        src="JS/passkey.js"
+    ></script>
 
-</body>
+    <script src="JS/attendance.js"></script>
 
-    
 </body>
 
 </html>
-
-

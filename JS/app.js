@@ -3479,12 +3479,141 @@ async function loadAttendancePage() {
     }
 
     await loadTodayAttendance();
+    await loadAttendanceHistory();
 
     statusBox.textContent =
         "Attendance loaded.";
 
     statusBox.className =
         "status success";
+}
+
+async function loadAttendanceHistory() {
+
+    const table = document.getElementById("attendanceTable");
+
+    const employeeId =
+        window.currentUserProfile &&
+        window.currentUserProfile.employee_id;
+
+    const accessToken =
+        localStorage.getItem("access_token");
+
+    if (!table || !employeeId || !accessToken) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch(
+            SUPABASE_URL +
+            "/rest/v1/attendance" +
+            "?employee_id=eq." +
+            employeeId +
+            "&status=eq.accepted" +
+            "&select=recorded_at,attendance_type" +
+            "&order=recorded_at.desc",
+            {
+                headers: {
+                    "apikey": SUPABASE_KEY,
+                    "Authorization":
+                        "Bearer " + accessToken
+                }
+            }
+        );
+
+        if (!response.ok) {
+            return;
+        }
+
+        const records = await response.json();
+
+        const days = {};
+
+        records.forEach(record => {
+
+            const date =
+                new Date(record.recorded_at)
+                    .toLocaleDateString(
+                        "en-CA",
+                        {
+                            timeZone: "Africa/Cairo"
+                        }
+                    );
+
+            if (!days[date]) {
+                days[date] = {
+                    checkIn: null,
+                    checkOut: null
+                };
+            }
+
+            if (
+                record.attendance_type === "check_in"
+            ) {
+                days[date].checkIn =
+                    record.recorded_at;
+            }
+
+            if (
+                record.attendance_type === "check_out"
+            ) {
+                days[date].checkOut =
+                    record.recorded_at;
+            }
+        });
+
+        table.innerHTML = "";
+
+        Object.keys(days).forEach(date => {
+
+            const row =
+                document.createElement("tr");
+
+            const checkIn =
+                days[date].checkIn
+                    ? new Date(
+                        days[date].checkIn
+                    ).toLocaleTimeString(
+                        "en-GB",
+                        {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            timeZone: "Africa/Cairo"
+                        }
+                    )
+                    : "-";
+
+            const checkOut =
+                days[date].checkOut
+                    ? new Date(
+                        days[date].checkOut
+                    ).toLocaleTimeString(
+                        "en-GB",
+                        {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            timeZone: "Africa/Cairo"
+                        }
+                    )
+                    : "-";
+
+            row.innerHTML =
+                "<td>" + date + "</td>" +
+                "<td>-</td>" +
+                "<td>" + checkIn + "</td>" +
+                "<td>" + checkOut + "</td>";
+
+            table.appendChild(row);
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Attendance history error:",
+            error
+        );
+    }
 }
 // =====================================================
 // LOAD TODAY ATTENDANCE
