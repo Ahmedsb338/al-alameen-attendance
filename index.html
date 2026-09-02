@@ -5,33 +5,45 @@
 <head>
     <meta charset="UTF-8">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<title>Quantech Attendance System</title>
+    <title>Quantech Attendance System</title>
 
-<link
-    rel="stylesheet"
-    href="CSS/style.css"
->
-<link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
->
- <script
-    src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"
-></script>
-<script 
-    src="https://unpkg.com/@simplewebauthn/browser@13.3.0/dist/bundle/index.umd.min.js"
-></script>
+    <link
+        rel="stylesheet"
+        href="CSS/style.css"
+    >
 
 </head>
 
 <body>
 
-<header>
+    <!-- =====================================================
+     SECURE SESSION LOADING SCREEN
+     ===================================================== -->
+
+    <div id="sessionLoader" class="session-loader">
+
+        <div class="session-loader-content">
+
+            <div class="loader-spinner"></div>
+
+            <h2>
+                Quantech Attendance System
+            </h2>
+
+            <p>
+                Loading secure session...
+            </p>
+
+        </div>
+
+    </div>
+
+    <header>
 
     <div class="header-content">
 
@@ -80,6 +92,7 @@
 <div
     id="loginPage"
     class="login-page"
+    style="display: none;"
 >
 
     <div class="login-box">
@@ -419,7 +432,7 @@
             class="status loading"
         >
         </div>
-
+        
         <div class="table-container">
 
             <table>
@@ -1184,39 +1197,31 @@
     © 2026 Ahmed Sobhy. All rights reserved.
 </footer>
 
-   <script
-    src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"
-></script>
+    <script src="JS/config.js"></script>
 
-<script src="JS/config.js"></script>
+    <script src="JS/api.js"></script>
 
-<script src="JS/api.js"></script>
+    <script src="JS/auth.js"></script>
 
-<script src="JS/auth.js"></script>
+    <script src="JS/app.js"></script>
 
-<script src="JS/app.js"></script>
+    <script
+        src="JS/import.js"
+    ></script>
 
-<script
-    src="JS/import.js"
-></script>
+    <script
+        src="JS/schedule.js"
+    ></script>
 
-<script
-    src="JS/schedule.js"
-></script>
+    <script
+        src="JS/export.js"
+    ></script>
 
-<script
-    src="JS/export.js"
-></script>
+    <script
+        src="JS/passkey.js"
+    ></script>
 
-<script 
-    src="https://unpkg.com/@simplewebauthn/browser@13.3.0/dist/bundle/index.umd.min.js"
-></script>
-
-<script
-    src="JS/passkey.js"
-></script>
-
-<script src="JS/attendance.js"></script>
+    <script src="JS/attendance.js"></script>
 
 </body>
 

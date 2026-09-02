@@ -15,10 +15,10 @@
     rel="stylesheet"
     href="CSS/style.css"
 >
-<!-- <link
+<link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-> -->
+>
     
     
 </head>
@@ -99,7 +99,7 @@
     >
         Loading schedule...
     </div>
-
+        
     <div class="table-container">
 
         <table class="schedule-table">
@@ -128,13 +128,25 @@
 
     </div>
 
+    <div class="schedule-save-container">
+    <button
+        type="button"
+        id="saveScheduleButton"
+        class="schedule-save-button"
+        onclick="saveScheduleChanges()"
+    >
+        Save Changes
+    </button>
+    </div>
+
 </section>
 
 <footer>
     Ã‚Â© 2026 Ahmed Sobhy. All rights reserved.
 </footer>
 
-<script src="JS/app.js"></script><script src="JS/schedule.js"></script>
+    <script src="JS/app.js"></script>
+    <script src="JS/schedule.js"></script>
 
 </body>
 </html>
