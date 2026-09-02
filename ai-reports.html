@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AI Reports & Analytics | Quantech</title>
+
+    <link rel="stylesheet" href="CSS/style.css">
+
+    <style>
+        .ai-reports-page {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .ai-hero {
+            background: linear-gradient(135deg, #7f1d1d, #991b1b);
+            color: white;
+            padding: 28px;
+            border-radius: 18px;
+            margin-bottom: 24px;
+        }
+
+        .ai-hero h1 {
+            margin: 0 0 8px;
+            font-size: 28px;
+        }
+
+        .ai-hero p {
+            margin: 0;
+            opacity: .9;
+        }
+
+        .report-filters {
+            background: #fff;
+            padding: 22px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,.06);
+            margin-bottom: 24px;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .filter-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            height: 44px;
+            border: 1px solid #dbe2ea;
+            border-radius: 10px;
+            padding: 0 12px;
+            font-size: 14px;
+            background: #fff;
+        }
+
+        .quick-ranges {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .quick-ranges button {
+            border: 1px solid #dbe2ea;
+            background: #f8fafc;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .quick-ranges button:hover {
+            background: #f1f5f9;
+        }
+
+        .generate-btn {
+            margin-top: 18px;
+            background: #7f1d1d;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 22px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .generate-btn:hover {
+            background: #5f1515;
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .metric-card {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 18px rgba(0,0,0,.05);
+        }
+
+        .metric-title {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .metric-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-top: 8px;
+            color: #0f172a;
+        }
+
+        .ai-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .ai-card {
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 4px 18px rgba(0,0,0,.05);
+        }
+
+        .ai-card h2 {
+            margin-top: 0;
+            font-size: 18px;
+        }
+
+        .ai-summary {
+            line-height: 1.7;
+            color: #475569;
+        }
+
+        .insight {
+            padding: 12px 14px;
+            background: #f8fafc;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .ask-ai {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .ask-ai input {
+            flex: 1;
+            height: 44px;
+            border: 1px solid #dbe2ea;
+            border-radius: 10px;
+            padding: 0 12px;
+        }
+
+        .ask-ai button {
+            border: none;
+            background: #0f172a;
+            color: white;
+            border-radius: 10px;
+            padding: 0 18px;
+            cursor: pointer;
+        }
+
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 18px;
+        }
+
+        .report-table th,
+        .report-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eef2f7;
+        }
+
+        .report-table th {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        @media (max-width: 1000px) {
+            .filter-grid,
+            .analytics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 650px) {
+            .filter-grid,
+            .analytics-grid,
+            .ai-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ai-reports-page {
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="ai-reports-page">
+
+    <section class="ai-hero">
+        <h1>AI Reports & Analytics</h1>
+        <p>
+            Analyze employee attendance and branch performance
+            using intelligent insights.
+        </p>
+    </section>
+
+    <section class="report-filters">
+
+        <div class="filter-grid">
+
+            <div class="filter-group">
+                <label>Report Type</label>
+
+                <select id="reportType">
+                    <option value="employee">Employee Report</option>
+                    <option value="branch">Branch Report</option>
+                    <option value="overall">Overall Report</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Branch</label>
+
+                <select id="branchFilter">
+                    <option value="all">All Branches</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Employee</label>
+
+                <select id="employeeFilter">
+                    <option value="all">All Employees</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Status</label>
+
+                <select id="statusFilter">
+                    <option value="all">All</option>
+                    <option value="present">Present</option>
+                    <option value="late">Late</option>
+                    <option value="absent">Absent</option>
+                    <option value="leave">Leave</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>From Date</label>
+                <input type="date" id="fromDate">
+            </div>
+
+            <div class="filter-group">
+                <label>To Date</label>
+                <input type="date" id="toDate">
+            </div>
+
+        </div>
+
+        <div class="quick-ranges">
+
+            <button onclick="setRange('today')">
+                Today
+            </button>
+
+            <button onclick="setRange('week')">
+                This Week
+            </button>
+
+            <button onclick="setRange('month')">
+                This Month
+            </button>
+
+            <button onclick="setRange('lastMonth')">
+                Last Month
+            </button>
+
+        </div>
+
+        <button
+            class="generate-btn"
+            onclick="generateReport()">
+
+            Generate Report
+
+        </button>
+
+    </section>
+
+
+    <!-- KPI CARDS -->
+
+    <section class="analytics-grid">
+
+        <div class="metric-card">
+
+            <div class="metric-title">
+                Attendance Rate
+            </div>
+
+            <div
+                class="metric-value"
+                id="attendanceRate">
+
+                --
+
+            </div>
+
+        </div>
+
+
+        <div class="metric-card">
+
+            <div class="metric-title">
+                Absence Rate
+            </div>
+
+            <div
+                class="metric-value"
+                id="absenceRate">
+
+                --
+
+            </div>
+
+        </div>
+
+
+        <div class="metric-card">
+
+            <div class="metric-title">
+                Late Minutes
+            </div>
+
+            <div
+                class="metric-value"
+                id="lateMinutes">
+
+                --
+
+            </div>
+
+        </div>
+
+
+        <div class="metric-card">
+
+            <div class="metric-title">
+                Working Hours
+            </div>
+
+            <div
+                class="metric-value"
+                id="workingHours">
+
+                --
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- AI -->
+
+    <section class="ai-grid">
+
+        <div class="ai-card">
+
+            <h2>🤖 AI Summary</h2>
+
+            <div
+                id="aiSummary"
+                class="ai-summary">
+
+                Generate a report to see AI analysis.
+
+            </div>
+
+        </div>
+
+
+        <div class="ai-card">
+
+            <h2>💡 AI Insights</h2>
+
+            <div id="aiInsights">
+
+                <div class="insight">
+
+                    No insights available yet.
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- TABLE -->
+
+    <section
+        class="ai-card"
+        style="margin-top:20px">
+
+        <h2>📊 Detailed Report</h2>
+
+        <div style="overflow-x:auto">
+
+            <table class="report-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Employee</th>
+                        <th>Present</th>
+                        <th>Absent</th>
+                        <th>Late</th>
+                        <th>Late Minutes</th>
+                        <th>Attendance %</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="reportTableBody">
+
+                    <tr>
+
+                        <td colspan="6">
+
+                            Generate a report to view data.
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- ASK AI -->
+
+    <section
+        class="ai-card"
+        style="margin-top:20px">
+
+        <h2>💬 Ask AI</h2>
+
+        <div class="ask-ai">
+
+            <input
+                type="text"
+                id="aiQuestion"
+                placeholder="Ask something about this report...">
+
+            <button onclick="askAI()">
+                Ask
+            </button>
+
+        </div>
+
+        <div
+            id="aiAnswer"
+            class="ai-summary"
+            style="margin-top:15px">
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<script src="JS/ai-reports.js"></script>
+
+</body>
+</html>
