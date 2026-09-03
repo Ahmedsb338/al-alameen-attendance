@@ -3,24 +3,17 @@
 
 <head>
     <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
-
-<title>Quantech Attendance System</title>
-
-<link
-    rel="stylesheet"
-    href="CSS/style.css"
->
-<link
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+    <title>Quantech Attendance System</title>
+    <link rel="stylesheet" href="CSS/style.css">
+    <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 >
-    
-    
+       
 </head>
 
 <body>
@@ -62,7 +55,7 @@
                 class="logout-button"
                 onclick="logoutUser()"
             >
-                ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Âª Logout
+                Logout
             </button>
 
         </div>
@@ -76,16 +69,10 @@
     class="page active"
 >
 
-    <button
-        class="back"
-        onclick="window.location.href='index.html'"
-    >
-        ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Ãƒâ€šÃ‚Â Back to Dashboard
-    </button>
 
     <div class="page-header">
 
-        <h2>ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Shift Schedule</h2>
+        <h2>Shift Schedule</h2>
 
         <p>
             Monthly employee shift schedule.
@@ -142,11 +129,45 @@
 </section>
 
 <footer>
-    Ã‚Â© 2026 Ahmed Sobhy. All rights reserved.
+    © 2026 Ahmed Sobhy. All rights reserved.
 </footer>
+    <!-- =====================================================
+        JAVASCRIPT
+    ====================================================== -->
+        <script src="JS/config.js"></script>
+        <script src="JS/api.js"></script>
+        <script src="JS/auth.js"></script>
+        <script src="JS/app.js"></script>
 
-    <script src="JS/app.js"></script>
-    <script src="JS/schedule.js"></script>
+        <script src="JS/schedule.js"></script>
+
+        <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+
+            if (!localStorage.getItem("access_token")) {
+                return;
+            }
+
+            // Wait until auth.js finishes loading the user profile
+            let attempts = 0;
+
+            while (
+                !window.currentUserProfile &&
+                attempts < 50
+            ) {
+                await new Promise(resolve =>
+                    setTimeout(resolve, 100)
+                );
+
+                attempts++;
+            }
+
+            if (typeof loadSchedule === "function") {
+                await loadSchedule();
+            }
+
+        });
+        </script>
 
 </body>
 </html>

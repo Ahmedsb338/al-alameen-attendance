@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Add Employee - Quantech Attendance System"> </title>
+
+    <link
+        rel="stylesheet"
+        href="CSS/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     HEADER
+====================================================== -->
+
+<header>
+
+    <div class="header-content">
+
+
+        <div class="header-brand">
+
+            <h1>
+                Quantech Attendance System
+            </h1>
+
+
+            <p>
+
+                <span id="branchHeaderName">
+                    -
+                </span>
+
+            </p>
+
+
+            <div class="user-header-info">
+
+                <span id="headerUserName">
+                    -
+                </span>
+
+                <span id="headerUserRole">
+                    -
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="header-actions">
+
+            <button
+                type="button"
+                class="logout-button"
+                onclick="logoutUser()"
+            >
+                Logout
+            </button>
+
+        </div>
+
+
+    </div>
+
+</header>
+
+
+
+<!-- =====================================================
+     ADD EMPLOYEE PAGE
+====================================================== -->
+
+<section
+    id="newEmployeePage"
+    style="display:block !important; padding:30px;"
+>
+
+    <!-- BACK TO EMPLOYEES -->
+
+    <button
+        type="button"
+        class="back"
+        onclick="window.location.href='employees.html'"
+    >
+        Back to Employees
+    </button>
+
+
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header">
+
+        <h2>
+            Add New Employee
+        </h2>
+
+        <p>
+            Create an employee and their login account.
+        </p>
+
+    </div>
+
+
+
+    <!-- =================================================
+         EMPLOYEE FORM
+    ================================================== -->
+
+    <div class="card">
+
+        <h3>
+            Employee Information
+        </h3>
+
+
+        <div class="form-grid">
+
+
+            <!-- STAFF ID -->
+
+            <div class="form-group">
+
+                <label for="newStaffId">
+                    Staff ID
+                </label>
+
+                <input
+                    type="text"
+                    id="newStaffId"
+                    placeholder="Enter Staff ID"
+                >
+
+            </div>
+
+
+
+            <!-- FULL NAME -->
+
+            <div class="form-group">
+
+                <label for="newFullName">
+                    Full Name
+                </label>
+
+                <input
+                    type="text"
+                    id="newFullName"
+                    placeholder="Enter employee full name"
+                >
+
+            </div>
+
+
+
+            <!-- ROLE -->
+
+            <div class="form-group">
+
+                <label for="newRole">
+                    Role
+                </label>
+
+                <input
+                    type="text"
+                    id="newRole"
+                    placeholder="e.g. Employee"
+                >
+
+            </div>
+
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+                <label for="newEmail">
+                    Email
+                </label>
+
+                <input
+                    type="email"
+                    id="newEmail"
+                    placeholder="employee@example.com"
+                >
+
+            </div>
+
+
+
+            <!-- PHONE -->
+
+            <div class="form-group">
+
+                <label for="newPhone">
+                    Phone
+                </label>
+
+                <input
+                    type="tel"
+                    id="newPhone"
+                    placeholder="01xxxxxxxxx"
+                >
+
+            </div>
+
+
+
+            <!-- BRANCH -->
+
+            <div class="form-group">
+
+                <label for="newEmployeeBranch">
+                    Branch
+                </label>
+
+                <select id="newEmployeeBranch">
+
+                    <option value="">
+                        Loading branches...
+                    </option>
+
+                </select>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- STATUS MESSAGE -->
+
+        <div
+            id="addEmployeeStatus"
+            class="status"
+        ></div>
+
+
+
+        <!-- ACTIONS -->
+
+        <div class="form-actions">
+
+
+            <button
+                type="button"
+                class="primary"
+                onclick="addEmployee()"
+            >
+                Add Employee
+            </button>
+
+
+            <button
+                type="button"
+                class="secondary"
+                onclick="window.location.href='employees.html'"
+            >
+                Cancel
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer>
+
+    © 2026 Ahmed Sobhy. All rights reserved.
+
+</footer>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+====================================================== -->
+
+<script src="JS/config.js"></script>
+
+<script src="JS/api.js"></script>
+
+<script src="JS/auth.js"></script>
+
+<script src="JS/app.js"></script>
+
+<script src="JS/passkey.js"></script>
+
+
+
+<!-- =====================================================
+     PAGE INITIALIZATION
+====================================================== -->
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async () => {
+
+        if (
+            !localStorage.getItem(
+                "access_token"
+            )
+        ) {
+
+            return;
+
+        }
+
+
+        if (
+            typeof loadEmployeeBranches ===
+            "function"
+        ) {
+
+            await loadEmployeeBranches();
+
+        }
+
+    }
+);
+
+</script> 
+
+
+</body>
+
+</html>

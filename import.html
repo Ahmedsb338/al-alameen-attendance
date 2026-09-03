@@ -1,143 +1,350 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+
+<meta charset="UTF-8">
 
 <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
 >
 
-<title>Quantech Attendance System</title>
+<title>Import Excel - Quantech Attendance System</title>
 
 <link
     rel="stylesheet"
     href="CSS/style.css"
 >
-<!-- <link
+
+<link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-> -->
-    
-    
+>
+
 </head>
 
 <body>
 
 <header>
 
-    <div class="header-content">
+```
+<div class="header-content">
 
-        <div class="header-brand">
+    <div class="header-brand">
 
-            <h1>
-                Quantech Attendance System
-            </h1>
+        <h1>
+            Quantech Attendance System
+        </h1>
+
+        <p>
+            <span id="branchHeaderName"></span>
+        </p>
+
+        <div class="user-header-info">
+
+            <span id="headerUserName">-</span>
+
+            <span id="headerUserRole">-</span>
+
+        </div>
+
+    </div>
+
+    <div class="header-actions">
+
+        <button
+            type="button"
+            class="logout-button"
+            onclick="logoutUser()"
+        >
+            Logout
+        </button>
+
+    </div>
+
+</div>
+```
+
+</header>
+
+<section
+    id="importPage"
+    class="page active"
+>
+
+```
+<div class="import-container">
+
+    <div class="page-header">
+
+        <h2>
+            <i class="fa-solid fa-file-import"></i>
+            Import Monthly Schedule
+        </h2>
+
+        <p>
+            Upload the monthly employee shift schedule from Excel.
+        </p>
+
+    </div>
+
+
+    <!-- Upload Card -->
+
+    <div class="import-card">
+
+        <h3>
+            <i class="fa-solid fa-upload"></i>
+            Upload Schedule
+        </h3>
+
+        <p class="import-card-description">
+            Select an Excel file containing the monthly schedule.
+        </p>
+
+
+        <div class="upload-area">
+
+            <div class="upload-icon">
+                <i class="fa-solid fa-file-excel"></i>
+            </div>
+
+            <h3>
+                Select Excel File
+            </h3>
 
             <p>
-                <span id="branchHeaderName">
-                    
-                </span>
+                Supported formats: .xlsx, .xls, .csv
             </p>
 
-            <div class="user-header-info">
+            <div class="file-input-wrapper">
 
-                <span id="headerUserName">
-                    -
-                </span>
+                <input
+                    type="file"
+                    id="excelFile"
+                    accept=".xlsx,.xls,.csv"
+                >
 
-                <span id="headerUserRole">
-                    -
+            </div>
+
+            <div
+                id="fileInfo"
+                class="file-info"
+            >
+
+                <i class="fa-solid fa-file"></i>
+
+                <span id="selectedFileName">
+                    No file selected
                 </span>
 
             </div>
 
         </div>
 
-        <div class="header-actions">
+
+        <div class="import-actions">
 
             <button
                 type="button"
-                class="logout-button"
-                onclick="logoutUser()"
+                class="primary"
+                onclick="readExcel()"
             >
-                ÃƒÂ°Ã…Â¸Ã…Â¡Ã‚Âª Logout
+                <i class="fa-solid fa-eye"></i>
+                Preview Excel
             </button>
+
+            <button
+                type="button"
+                onclick="document.getElementById('excelFile').value=''; document.getElementById('fileInfo').style.display='none'; document.getElementById('excelPreview').innerHTML='';"
+            >
+                <i class="fa-solid fa-xmark"></i>
+                Clear
+            </button>
+
+        </div>
+
+
+        <div
+            id="importStatus"
+            class="status-box"
+        ></div>
+
+    </div>
+
+
+    <!-- Required Format -->
+
+    <div class="import-card">
+
+        <h3>
+            <i class="fa-solid fa-table"></i>
+            Required Excel Format
+        </h3>
+
+        <p class="import-card-description">
+            The Excel file should follow this structure:
+        </p>
+
+
+        <table class="format-table">
+
+            <thead>
+
+                <tr>
+                    <th>Column</th>
+                    <th>Content</th>
+                    <th>Example</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>Column A</td>
+                    <td>Date</td>
+                    <td>01/09/2026</td>
+                </tr>
+
+                <tr>
+                    <td>Column B onward</td>
+                    <td>Employee Staff IDs</td>
+                    <td>121090</td>
+                </tr>
+
+                <tr>
+                    <td>Employee cells</td>
+                    <td>Shift</td>
+                    <td>AM / PM / OFF</td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+
+        <h4>
+            Allowed Shift Values
+        </h4>
+
+        <div class="shift-badges">
+
+            <span class="shift-badge">
+                AM
+            </span>
+
+            <span class="shift-badge">
+                PM
+            </span>
+
+            <span class="shift-badge">
+                Support
+            </span>
+
+            <span class="shift-badge">
+                OFF
+            </span>
+
+            <span class="shift-badge">
+                Annual Leave
+            </span>
 
         </div>
 
     </div>
 
-</header>
 
-<section
-    id="importPage"
-    class="page"
->
-
-    <button
-        class="back"
-        onclick="window.location.href='index.html'"
-    >
-        ÃƒÂ¢Ã¢â‚¬Â Ã‚Â Back to Dashboard
-    </button>
-
-    <div class="page-header">
-
-        <h2>ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¥ Import Monthly Schedule</h2>
-
-        <p>
-            Upload the monthly Excel schedule.
-        </p>
-
-    </div>
-
-    <div class="status">
-
-        <strong>Required format</strong>
-
-        <p>
-            Column A = Date
-        </p>
-
-        <p>
-            Columns B onward = Staff IDs
-        </p>
-
-        <p>
-            Shift values:
-            AM / PM / Support / OFF / Annual Leave
-        </p>
-
-    </div>
-
-    <input
-        type="file"
-        id="excelFile"
-        accept=".xlsx,.xls,.csv"
-    >
-
-    <button
-        class="primary"
-        onclick="readExcel()"
-    >
-        Preview Excel
-    </button>
+    <!-- Preview -->
 
     <div
-        id="excelPreview"
-        style="margin-top:20px;"
-    ></div>
+        class="import-card preview-section"
+    >
+
+        <div class="preview-title">
+
+            <h3>
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Excel Preview
+            </h3>
+
+        </div>
+
+        <div
+            id="excelPreview"
+        >
+            <div class="status">
+                Select an Excel file and click
+                <strong>Preview Excel</strong>
+                to view the schedule.
+            </div>
+        </div>
+
+    </div>
+
+</div>
+```
 
 </section>
 
 <footer>
-    Â© 2026 Ahmed Sobhy. All rights reserved.
+
+```
+© 2026 Ahmed Sobhy. All rights reserved.
+```
+
 </footer>
 
-<script src="JS/app.js"></script><script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+<script src="JS/config.js"></script>
+
+<script src="JS/api.js"></script>
+
+<script src="JS/auth.js"></script>
+
+<script src="JS/app.js"></script>
+
+<script src="https://unpkg.com/@simplewebauthn/browser@13.3.0/dist/bundle/index.umd.min.js"></script>
+
+<script src="JS/passkey.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
 <script src="JS/import.js"></script>
 
+<script>
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+        const fileInput = document.getElementById("excelFile");
+        const fileInfo = document.getElementById("fileInfo");
+        const fileName = document.getElementById("selectedFileName");
+
+        if (!fileInput) return;
+
+        fileInput.addEventListener("change", () => {
+
+            const file = fileInput.files[0];
+
+            if (!file) {
+                fileInfo.style.display = "none";
+                return;
+            }
+
+            fileName.textContent =
+                file.name + " (" +
+                Math.round(file.size / 1024) +
+                " KB)";
+
+            fileInfo.style.display = "block";
+
+        });
+
+    });
+
+</script>
+
 </body>
+
 </html>

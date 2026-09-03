@@ -2,28 +2,31 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<title>Quantech Attendance System</title>
+    <title>Branches - Quantech Attendance System</title>
 
-<link
-    rel="stylesheet"
-    href="CSS/style.css"
->
-<!-- <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
->
-     -->
-    
+    <link
+        rel="stylesheet"
+        href="CSS/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
 </head>
 
+
 <body>
+
 
 <header>
 
@@ -36,9 +39,7 @@
             </h1>
 
             <p>
-                <span id="branchHeaderName">
-                    
-                </span>
+                <span id="branchHeaderName"></span>
             </p>
 
             <div class="user-header-info">
@@ -55,6 +56,7 @@
 
         </div>
 
+
         <div class="header-actions">
 
             <button
@@ -62,7 +64,7 @@
                 class="logout-button"
                 onclick="logoutUser()"
             >
-                ÃƒÂ°Ã…Â¸Ã…Â¡Ã‚Âª Logout
+                Logout
             </button>
 
         </div>
@@ -71,223 +73,80 @@
 
 </header>
 
+
+
 <section
     id="branchesPage"
-    class="page"
+    class="page active"
 >
 
-    <button
-        class="back"
-        onclick="window.location.href='index.html'"
-    >
-        ÃƒÂ¢Ã¢â‚¬Â Ã‚Â Back to Dashboard
-    </button>
+
+    <!-- ============================================= -->
+    <!-- PAGE HEADER -->
+    <!-- ============================================= -->
 
     <div class="page-header">
 
-        <h2>ÃƒÂ°Ã…Â¸Ã‚ÂÃ‚Â¢ Branch Management</h2>
+        <div>
 
-        <p>
-            Create and manage company branches.
-        </p>
+            <h2>
+                <i class="fa-solid fa-code-branch"></i>
+                Branch Management
+            </h2>
 
-    </div>
+            <p>
+                Create and manage company branches.
+            </p>
 
-    <div class="card">
+        </div>
 
-        <h3>ÃƒÂ¢Ã…Â¾Ã¢â‚¬Â¢ Create New Branch</h3>
 
-        <div class="form-grid">
+        <div>
+        <div>
 
-            <div class="form-group">
+            <button
+                type="button"
+                class="primary"
+                onclick="window.location.href='add-branch.html'"
+            >
 
-                <label for="branchNameInput">
-                    Branch Name
-                </label>
+                <i class="fa-solid fa-plus"></i>
 
-                <input
-                    type="text"
-                    id="branchNameInput"
-                    placeholder="Enter branch name"
+                Add Branch
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="secondary"
+                    onclick="window.location.href='edit-branch.html'"
                 >
 
-            </div>
+                    <i class="fa-solid fa-pen-to-square"></i>
 
-            <div class="form-group">
+                    Edit Branch
 
-                <label for="branchCodeInput">
-                    Branch Code
-                </label>
-
-                <input
-                    type="text"
-                    id="branchCodeInput"
-                    placeholder="e.g. 1706"
-                >
-
-            </div>
-
-            <div class="form-group">
-
-                <label for="managerNameInput">
-                    Manager Name
-                </label>
-
-                <input
-                    type="text"
-                    id="managerNameInput"
-                    placeholder="Enter manager name"
-                >
-
-            </div>
-
-            <div class="form-group">
-
-                <label for="managerEmailInput">
-                    Manager Email
-                </label>
-
-                <input
-                    type="email"
-                    id="managerEmailInput"
-                    placeholder="manager@example.com"
-                >
-
-            </div>
-
-            <div class="form-group">
-
-                <label for="managerPhoneInput">
-                    Manager Phone
-                </label>
-
-                <input
-                    type="tel"
-                    id="managerPhoneInput"
-                    placeholder="01xxxxxxxxx"
-                >
-
-            </div>
-
-            <div class="form-group">
-
-                <label for="branchLatitudeInput">
-                    Latitude
-                </label>
-
-                <input
-                    type="number"
-                    id="branchLatitudeInput"
-                    step="any"
-                    placeholder="31.2001"
-                >
-
-            </div>
-
-            <div class="form-group">
-
-                <label for="branchLongitudeInput">
-                    Longitude
-                </label>
-
-                <input
-                    type="number"
-                    id="branchLongitudeInput"
-                    step="any"
-                    placeholder="29.9187"
-                >
-
-            </div>
-
-            <div class="form-group">
-
-                <label for="branchRadiusInput">
-                    Allowed Radius (meters)
-                </label>
-
-                <input
-                    type="number"
-                    id="branchRadiusInput"
-                    value="50"
-                    min="1"
-                >
+                </button>
 
             </div>
 
         </div>
 
-        <div
-            id="createBranchStatus"
-            class="status"
-        ></div>
-
-        <button
-            type="button"
-            class="primary"
-            onclick="createBranch()"
-        >
-            ÃƒÂ¢Ã…Â¾Ã¢â‚¬Â¢ Create Branch
-        </button>
-
     </div>
 
-    <div
-        class="card"
-        id="branchActivationResult"
-        style="display:none;"
-    >
+
+
+    <!-- ============================================= -->
+    <!-- EXISTING BRANCHES -->
+    <!-- ============================================= -->
+
+    <div class="card">
 
         <h3>
-            ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Branch Created Successfully
+            Existing Branches
         </h3>
 
-        <p>
-            <strong>Branch Name:</strong>
-            <span id="createdBranchName">-</span>
-        </p>
-
-        <p>
-            <strong>Branch Code:</strong>
-            <span id="createdBranchCode">-</span>
-        </p>
-
-        <p>
-            <strong>Manager Username:</strong>
-            <span id="createdManagerLogin">-</span>
-        </p>
-
-        <p>
-            <strong>Manager:</strong>
-            <span id="createdManagerName">-</span>
-        </p>
-
-        <div class="form-group">
-
-            <label>
-                Manager Activation Link
-            </label>
-
-            <textarea
-                id="managerActivationLink"
-                readonly
-                rows="3"
-            ></textarea>
-
-        </div>
-
-        <button
-            type="button"
-            class="primary"
-            onclick="copyManagerActivationLink()"
-        >
-            ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Â¹ Copy Activation Link
-        </button>
-
-    </div>
-
-    <div class="card">
-
-        <h3>Existing Branches</h3>
 
         <div
             id="branchesStatus"
@@ -295,6 +154,7 @@
         >
             Loading branches...
         </div>
+
 
         <div class="table-container">
 
@@ -305,14 +165,31 @@
                     <tr>
 
                         <th>#</th>
-                        <th>Branch Code</th>
-                        <th>Branch Name</th>
-                        <th>Manager</th>
-                        <th>Status</th>
+
+                        <th>
+                            Branch Code
+                        </th>
+
+                        <th>
+                            Branch Name
+                        </th>
+
+                        <th>
+                            Manager
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Actions
+                        </th>
 
                     </tr>
 
                 </thead>
+
 
                 <tbody id="branchesTable"></tbody>
 
@@ -322,14 +199,36 @@
 
     </div>
 
+
 </section>
 
+
+
 <footer>
-    Â© 2026 Ahmed Sobhy. All rights reserved.
+
+    © 2026 Ahmed Sobhy. All rights reserved.
+
 </footer>
 
-<script src="JS/app.js"></script><script src="https://unpkg.com/@simplewebauthn/browser@13.3.0/dist/bundle/index.umd.min.js"></script>
+
+
+<!-- ============================================= -->
+<!-- JAVASCRIPT -->
+<!-- ============================================= -->
+
+<script src="JS/config.js"></script>
+
+<script src="JS/api.js"></script>
+
+<script src="JS/auth.js"></script>
+
+<script src="JS/app.js"></script>
+
 <script src="JS/passkey.js"></script>
 
+<script src="JS/branches.js"></script>
+
+
 </body>
+
 </html>

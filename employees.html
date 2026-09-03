@@ -2,25 +2,26 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<title>Quantech Attendance System</title>
+    <title>Quantech Attendance System</title>
 
-<link
-    rel="stylesheet"
-    href="CSS/style.css"
->
-<link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
->
-    
-    
+    <link
+        rel="stylesheet"
+        href="CSS/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
 </head>
 
 <body>
@@ -36,9 +37,7 @@
             </h1>
 
             <p>
-                <span id="branchHeaderName">
-                    
-                </span>
+                <span id="branchHeaderName"></span>
             </p>
 
             <div class="user-header-info">
@@ -62,7 +61,7 @@
                 class="logout-button"
                 onclick="logoutUser()"
             >
-                ÃƒÂ°Ã…Â¸Ã…Â¡Ã‚Âª Logout
+                Logout
             </button>
 
         </div>
@@ -71,21 +70,18 @@
 
 </header>
 
+
 <section
     id="employeesPage"
-    class="page"
+    class="page active"
 >
 
-    <button
-        class="back"
-        onclick="window.location.href='index.html'"
-    >
-        ÃƒÂ¢Ã¢â‚¬Â Ã‚Â Back to Dashboard
-    </button>
 
     <div class="page-header">
 
-        <h2>ÃƒÂ°Ã…Â¸Ã¢â‚¬ËœÃ‚Â¥ Employees</h2>
+        <h2>
+            Employees
+        </h2>
 
         <p>
             Manage employees and employee accounts.
@@ -93,124 +89,32 @@
 
     </div>
 
+
     <div class="card">
+    <h3>Add New Employee</h3>
+    <p>Create a new employee account and assign it to a branch.</p>
 
-        <h3>ÃƒÂ¢Ã…Â¾Ã¢â‚¬Â¢ Add New Employee</h3>
-
-        <div class="form-grid">
-
-            <div class="form-group">
-
-                <label for="newStaffId">
-                    Staff ID
-                </label>
-
-                <input
-                    type="text"
-                    id="newStaffId"
-                    placeholder="Enter Staff ID"
-                >
-
-            </div>
-
-            <div class="form-group">
-
-                <label for="newFullName">
-                    Full Name
-                </label>
-
-                <input
-                    type="text"
-                    id="newFullName"
-                    placeholder="Enter employee full name"
-                >
-
-            </div>
-
-            <div class="form-group">
-
-                <label for="newRole">
-                    Role
-                </label>
-
-                <input
-                    type="text"
-                    id="newRole"
-                    placeholder="e.g. Employee"
-                >
-
-            </div>
-
-            <div class="form-group">
-
-                <label for="newEmail">
-                    Email
-                </label>
-
-                <input
-                    type="email"
-                    id="newEmail"
-                    placeholder="employee@example.com"
-                >
-
-            </div>
-
-            <div class="form-group">
-
-                <label for="newPhone">
-                    Phone
-                </label>
-
-                <input
-                    type="tel"
-                    id="newPhone"
-                    placeholder="01xxxxxxxxx"
-                >
-
-            </div>
-
-            <div class="form-group">
-
-                <label for="newEmployeeBranch">
-                    Branch
-                </label>
-
-                <select id="newEmployeeBranch">
-
-                    <option value="">
-                        Select Branch
-                    </option>
-
-                </select>
-
-            </div>
-
-        </div>
-
-        <div
-            id="addEmployeeStatus"
-            class="status"
-        ></div>
-
-        <button
-            type="button"
-            class="primary"
-            onclick="addEmployee()"
-        >
-            ÃƒÂ¢Ã…Â¾Ã¢â‚¬Â¢ Add Employee
-        </button>
-
-    </div>
+    <button
+        type="button"
+        class="primary"
+        onclick="window.location.href='new-employee.html'"
+    >
+        Add New Employee
+    </button>
+</div>
 
     <div class="card">
 
-        <h3>Employee List</h3>
+        <h3>
+            Employee List
+        </h3>
+
 
         <div
             id="employeesStatus"
             class="status loading"
-        >
-        </div>
+        ></div>
+
 
         <div class="table-container">
 
@@ -241,12 +145,38 @@
 
 </section>
 
+
+
 <footer>
-    Â© 2026 Ahmed Sobhy. All rights reserved.
+    © 2026 Ahmed Sobhy. All rights reserved.
 </footer>
 
-<script src="JS/app.js"></script><script src="https://unpkg.com/@simplewebauthn/browser@13.3.0/dist/bundle/index.umd.min.js"></script>
+    <script src="JS/config.js"></script>
+    <script src="JS/api.js"></script>
+    <script src="JS/auth.js"></script>
+    <script src="JS/app.js"></script>
+    <script src="JS/passkey.js"></script>
+
+
+<!-- =====================================================
+     PASSKEY
+     ===================================================== -->
+
+<script src="https://unpkg.com/@simplewebauthn/browser@13.3.0/dist/bundle/index.umd.min.js"></script>
+
 <script src="JS/passkey.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+    if (!localStorage.getItem("access_token")) {
+        return;
+    }
+
+    await loadEmployees();
+    await loadEmployeeBranches();
+});
+</script>
 
 </body>
+
 </html>
+

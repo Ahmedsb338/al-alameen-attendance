@@ -12,10 +12,7 @@
 
     <title>Quantech Attendance System</title>
 
-    <link
-        rel="stylesheet"
-        href="CSS/style.css"
-    >
+    <link rel="stylesheet" href="CSS/style.css">
 
 </head>
 
@@ -212,65 +209,57 @@
 
         <button
             id="employeesMenuButton"
-            onclick="showPage('employeesPage')"
+            onclick="window.location.href='employees.html'"
         >
             Employees
         </button>
 
         <button
             id="branchesMenuButton"
-            onclick="showPage('branchesPage')"
+            onclick="window.location.href='branches.html'"
         >
             Branches
         </button>
 
         <button
             id="attendanceMenuButton"
-            onclick="showPage('attendancePage')"
+            onclick="window.location.href='attendance.html'"
         >
             Attendance
         </button>
 
         <button
             id="scheduleMenuButton"
-            onclick="showPage('schedulePage')"
+            onclick="window.location.href='schedule.html'"
         >
             Schedule
         </button>
 
         <button
             id="importMenuButton"
-            onclick="showPage('importPage')"
+            onclick="window.location.href='import.html'"
         >
             Import Excel
         </button>
 
         <button
             id="exportMenuButton"
-            onclick="openExportDialog()"
+            onclick="window.location.href='export.html'"
         >
             Export Excel
         </button>
-
-        <a href="ai-reports.html" class="menu-item">
-            <span>🤖</span>
+        <button>
+            <a href="ai-reports.html" class="menu-item">
             <span>AI Reports & Analytics</span>
-        </a>
-
-        <!-- <button
-            id="reportsMenuButton"
-            onclick="showPage('reportsPage')"
-        >
-            Reports
-        </button> -->
+            </a>
+        </button>
 
         <button
             id="settingsMenuButton"
-            onclick="showPage('settingsPage')"
+            onclick="window.location.href='settings.html'"
         >
-             Settings
+            Settings
         </button>
-
 
     </div>
     <div class="status">

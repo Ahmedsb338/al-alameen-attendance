@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Edit Branch - Quantech Attendance System</title>
+
+    <link
+        rel="stylesheet"
+        href="CSS/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="header-content">
+
+        <div class="header-brand">
+
+            <h1>
+                Quantech Attendance System
+            </h1>
+
+            <p>
+                <span id="branchHeaderName"></span>
+            </p>
+
+            <div class="user-header-info">
+
+                <span id="headerUserName">
+                    -
+                </span>
+
+                <span id="headerUserRole">
+                    -
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="header-actions">
+
+            <button
+                type="button"
+                class="logout-button"
+                onclick="logoutUser()"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<section
+    id="editBranchPage"
+    class="page active"
+>
+
+
+    <!-- ============================================= -->
+    <!-- PAGE HEADER -->
+    <!-- ============================================= -->
+
+    <div class="page-header">
+
+        <div>
+
+            <h2>
+                <i class="fa-solid fa-pen-to-square"></i>
+                Edit Branch
+            </h2>
+
+            <p>
+                Select a branch and update its information.
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ============================================= -->
+    <!-- SELECT BRANCH -->
+    <!-- ============================================= -->
+
+    <div class="card">
+
+        <h3>
+            Select Branch
+        </h3>
+
+
+        <div class="form-grid">
+
+            <div class="form-group">
+
+                <label for="editBranchSelector">
+                    Branch
+                </label>
+
+                <select
+                    id="editBranchSelector"
+                >
+
+                    <option value="">
+                        Select a branch
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="editBranchSelectorStatus"
+            class="status"
+        ></div>
+
+    </div>
+
+
+
+    <!-- ============================================= -->
+    <!-- BRANCH INFORMATION -->
+    <!-- ============================================= -->
+
+    <div
+        class="card"
+        id="editBranchFormCard"
+        style="display: none;"
+    >
+
+        <h3>
+            Branch Information
+        </h3>
+
+
+        <div class="form-grid">
+
+
+            <!-- Branch Name -->
+
+            <div class="form-group">
+
+                <label for="editBranchName">
+                    Branch Name
+                </label>
+
+                <input
+                    type="text"
+                    id="editBranchName"
+                    placeholder="Branch Name"
+                >
+
+            </div>
+
+
+
+            <!-- Branch Code -->
+
+            <div class="form-group">
+
+                <label for="editBranchCode">
+                    Branch Code
+                </label>
+
+                <input
+                    type="text"
+                    id="editBranchCode"
+                    placeholder="Branch Code"
+                    readonly
+                >
+
+                <span class="readonly-note">
+                    Branch code cannot be changed.
+                </span>
+
+            </div>
+
+
+
+            <!-- Manager Name -->
+
+            <div class="form-group">
+
+                <label for="editManagerName">
+                    Manager Name
+                </label>
+
+                <input
+                    type="text"
+                    id="editManagerName"
+                    placeholder="Manager Name"
+                >
+
+            </div>
+
+
+
+            <!-- Manager Email -->
+
+            <div class="form-group">
+
+                <label for="editManagerEmail">
+                    Manager Email
+                </label>
+
+                <input
+                    type="email"
+                    id="editManagerEmail"
+                    placeholder="Manager Email"
+                >
+
+            </div>
+
+
+
+            <!-- Manager Phone -->
+
+            <div class="form-group">
+
+                <label for="editManagerPhone">
+                    Manager Phone
+                </label>
+
+                <input
+                    type="tel"
+                    id="editManagerPhone"
+                    placeholder="Manager Phone"
+                >
+
+            </div>
+
+
+
+            <!-- Latitude -->
+
+            <div class="form-group">
+
+                <label for="editBranchLatitude">
+                    Latitude
+                </label>
+
+                <input
+                    type="number"
+                    id="editBranchLatitude"
+                    step="any"
+                    placeholder="Latitude"
+                >
+
+            </div>
+
+
+
+            <!-- Longitude -->
+
+            <div class="form-group">
+
+                <label for="editBranchLongitude">
+                    Longitude
+                </label>
+
+                <input
+                    type="number"
+                    id="editBranchLongitude"
+                    step="any"
+                    placeholder="Longitude"
+                >
+
+            </div>
+
+
+
+            <!-- Allowed Radius -->
+
+            <div class="form-group">
+
+                <label for="editBranchRadius">
+                    Allowed Radius (meters)
+                </label>
+
+                <input
+                    type="number"
+                    id="editBranchRadius"
+                    min="1"
+                    placeholder="50"
+                >
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- Status -->
+
+        <div
+            id="editBranchStatus"
+            class="status"
+        ></div>
+
+
+
+        <!-- Actions -->
+
+        <div class="settings-actions">
+
+
+            <button
+                type="button"
+                class="secondary"
+                onclick="window.location.href='branches.html'"
+            >
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Back
+
+            </button>
+
+
+
+            <button
+                type="button"
+                id="saveEditBranchButton"
+                class="primary"
+                onclick="saveEditedBranch()"
+            >
+
+                <i class="fa-solid fa-floppy-disk"></i>
+
+                Save Changes
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+<footer>
+
+    © 2026 Ahmed Sobhy. All rights reserved.
+
+</footer>
+
+
+
+<!-- ============================================= -->
+<!-- JAVASCRIPT -->
+<!-- ============================================= -->
+
+<script src="JS/config.js"></script>
+
+<script src="JS/api.js"></script>
+
+<script src="JS/auth.js"></script>
+
+<script src="JS/app.js"></script>
+
+<script src="https://unpkg.com/@simplewebauthn/browser@13.3.0/dist/bundle/index.umd.min.js"></script>
+
+<script src="JS/passkey.js"></script>
+
+<script src="JS/branches.js"></script>
+
+
+</body>
+
+</html>

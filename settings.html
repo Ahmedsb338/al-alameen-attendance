@@ -2,108 +2,119 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+
+<meta charset="UTF-8">
 
 <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0"
 >
 
-<title>Quantech Attendance System</title>
+<title>Settings - Quantech Attendance System</title>
+
+<link rel="stylesheet" href="CSS/style.css">
 
 <link
     rel="stylesheet"
-    href="CSS/style.css"
->
-<!-- <link
-    rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-> -->
-    
-    
+>
+
+
 </head>
 
 <body>
 
 <header>
 
-    <div class="header-content">
 
-        <div class="header-brand">
+<div class="header-content">
 
-            <h1>
-                Quantech Attendance System
-            </h1>
+    <div class="header-brand">
 
-            <p>
-                <span id="branchHeaderName">
-                    
-                </span>
-            </p>
+        <h1>
+            Quantech Attendance System
+        </h1>
 
-            <div class="user-header-info">
+        <p>
+            <span id="branchHeaderName"></span>
+        </p>
 
-                <span id="headerUserName">
-                    -
-                </span>
+        <div class="user-header-info">
 
-                <span id="headerUserRole">
-                    -
-                </span>
+            <span id="headerUserName">
+                -
+            </span>
 
-            </div>
-
-        </div>
-
-        <div class="header-actions">
-
-            <button
-                type="button"
-                class="logout-button"
-                onclick="logoutUser()"
-            >
-                ÃƒÂ°Ã…Â¸Ã…Â¡Ã‚Âª Logout
-            </button>
+            <span id="headerUserRole">
+                -
+            </span>
 
         </div>
 
     </div>
+
+
+    <div class="header-actions">
+
+        <button
+            type="button"
+            class="logout-button"
+            onclick="logoutUser()"
+        >
+            Logout
+        </button>
+
+    </div>
+
+</div>
+
 
 </header>
 
 <section
     id="settingsPage"
-    class="page"
+    class="page active"
 >
 
-    <button
-        class="back"
-        onclick="window.location.href='index.html'"
-    >
-        ÃƒÂ¢Ã¢â‚¬Â Ã‚Â Back to Dashboard
-    </button>
+<div class="settings-container">
+
 
     <div class="page-header">
 
         <h2>
-            ÃƒÂ¢Ã…Â¡Ã¢â€žÂ¢ÃƒÂ¯Ã‚Â¸Ã‚Â Settings
+            <i class="fa-solid fa-gear"></i>
+            Settings
         </h2>
 
         <p>
-            Manage your branch settings.
+            Manage your branch information and attendance settings.
         </p>
 
     </div>
 
 
+    <!-- =====================================================
+         BRANCH INFORMATION
+    ====================================================== -->
+
     <div
         id="branchSettingsCard"
-        class="card"
+        class="settings-card"
     >
 
-        <h3>
-            ÃƒÂ°Ã…Â¸Ã‚ÂÃ‚Â¢ Branch Settings
-        </h3>
+        <div class="settings-card-header">
+
+            <i class="fa-solid fa-store"></i>
+
+            <h3>
+                Branch Information
+            </h3>
+
+        </div>
+
+        <p class="settings-description">
+            Update the basic information of your branch.
+        </p>
 
 
         <div class="form-grid">
@@ -137,7 +148,39 @@
                     readonly
                 >
 
+                <span class="readonly-note">
+                    Branch code cannot be changed here.
+                </span>
+
             </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         MANAGER INFORMATION
+    ====================================================== -->
+
+    <div class="settings-card">
+
+        <div class="settings-card-header">
+
+            <i class="fa-solid fa-user-tie"></i>
+
+            <h3>
+                Manager Information
+            </h3>
+
+        </div>
+
+        <p class="settings-description">
+            Branch manager contact information.
+        </p>
+
+
+        <div class="form-grid">
 
 
             <div class="form-group">
@@ -183,6 +226,34 @@
                 >
 
             </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         LOCATION & ATTENDANCE
+    ====================================================== -->
+
+    <div class="settings-card">
+
+        <div class="settings-card-header">
+
+            <i class="fa-solid fa-location-dot"></i>
+
+            <h3>
+                Location & Attendance
+            </h3>
+
+        </div>
+
+        <p class="settings-description">
+            Configure the branch location used for attendance verification.
+        </p>
+
+
+        <div class="form-grid">
 
 
             <div class="form-group">
@@ -235,30 +306,152 @@
         </div>
 
 
+        <div class="location-info">
+
+            <div class="location-item">
+
+                <span class="location-label">
+                    Latitude
+                </span>
+
+                <span
+                    id="settingsLatitudePreview"
+                    class="location-value"
+                >
+                    -
+                </span>
+
+            </div>
+
+
+            <div class="location-item">
+
+                <span class="location-label">
+                    Longitude
+                </span>
+
+                <span
+                    id="settingsLongitudePreview"
+                    class="location-value"
+                >
+                    -
+                </span>
+
+            </div>
+
+
+            <div class="location-item">
+
+                <span class="location-label">
+                    Allowed Radius
+                </span>
+
+                <span
+                    id="settingsRadiusPreview"
+                    class="location-value"
+                >
+                    -
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="info-box">
+
+            <strong>
+                <i class="fa-solid fa-circle-info"></i>
+                Attendance Location
+            </strong>
+
+            Employees will be required to be within the configured
+            radius of the branch location when checking in or out.
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SAVE
+    ====================================================== -->
+
+    <div class="settings-card">
+
+        <div class="settings-card-header">
+
+            <i class="fa-solid fa-floppy-disk"></i>
+
+            <h3>
+                Save Settings
+            </h3>
+
+        </div>
+
+        <p class="settings-description">
+            Save the changes made to your branch settings.
+        </p>
+
+
         <div
             id="branchSettingsStatus"
-            class="status"
+            class="status settings-status"
         ></div>
 
 
-        <button
-            type="button"
-            class="primary"
-            onclick="saveBranchSettings()"
-        >
-            ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â¾ Save Changes
-        </button>
+        <div class="settings-actions">
+
+            <div></div>
+
+            <button
+                type="button"
+                id="saveBranchSettingsButton"
+                class="primary settings-save-button"
+                onclick="saveBranchSettings()"
+            >
+                <i class="fa-solid fa-floppy-disk"></i>
+                Save Changes
+            </button>
+
+        </div>
 
     </div>
+
+
+</div>
+```
 
 </section>
 
 <footer>
-    Â© 2026 Ahmed Sobhy. All rights reserved.
+
+```
+© 2026 Ahmed Sobhy. All rights reserved.
+```
+
 </footer>
 
-<script src="JS/app.js"></script><script src="https://unpkg.com/@simplewebauthn/browser@13.3.0/dist/bundle/index.umd.min.js"></script>
-<script src="JS/passkey.js"></script>
+    <!-- =====================================================
+        JAVASCRIPT
+    ====================================================== -->
+
+    <script src="JS/config.js"></script>
+
+    <script src="JS/api.js"></script>
+
+    <script src="JS/auth.js"></script>
+
+    <script src="JS/app.js"></script>
+
+    <script src="https://unpkg.com/@simplewebauthn/browser@13.3.0/dist/bundle/index.umd.min.js"></script>
+
+    <script src="JS/passkey.js"></script>
+
+    <script src="JS/settings.js"></script>
+
+    <script src="JS/settings.js"></script>
 
 </body>
+
 </html>
