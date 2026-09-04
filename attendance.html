@@ -23,7 +23,7 @@
          ===================================================== -->
 
     <script
-        src="https://unpkg.com/@simplewebauthn/browser/dist/bundle/index.umd.min.js"
+        src="https://unpkg.com/@simplewebauthn/browser@13.3.0/dist/bundle/index.umd.min.js"
     ></script>
 
 </head>
@@ -47,9 +47,7 @@
             </h1>
 
             <p>
-
                 <span id="branchHeaderName"></span>
-
             </p>
 
             <div class="user-header-info">
@@ -163,6 +161,44 @@
 
         </div>
 
+
+    </div>
+
+
+    <!-- =================================================
+         PASSKEY SETUP
+         ================================================= -->
+
+    <div
+        class="card"
+        id="passkeySetupCard"
+        style="margin-top:20px;"
+    >
+
+        <h3>
+            Passkey Security
+        </h3>
+
+        <p>
+            Register a Passkey on this device before using
+            Check In and Check Out.
+        </p>
+
+        <button
+            id="registerPasskeyButton"
+            type="button"
+            onclick="registerCurrentUserPasskey()"
+        >
+            Register Passkey
+        </button>
+
+        <div
+            id="passkeyStatus"
+            class="status"
+            style="margin-top:12px;"
+        >
+            Passkey registration is required once on this device.
+        </div>
 
     </div>
 
