@@ -2,23 +2,39 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<title>Quantech Attendance System</title>
+    <title>Quantech Attendance System</title>
 
-<link
-    rel="stylesheet"
-    href="CSS/style.css"
->
-     
+    <link
+        rel="stylesheet"
+        href="CSS/style.css"
+    >
+
+    <!-- =====================================================
+         SIMPLE WEBAUTHN BROWSER
+         Required for Passkey Registration / Authentication
+         ===================================================== -->
+
+    <script
+        src="https://unpkg.com/@simplewebauthn/browser/dist/bundle/index.umd.min.js"
+    ></script>
+
 </head>
 
+
 <body>
+
+
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
 
 <header>
 
@@ -31,9 +47,9 @@
             </h1>
 
             <p>
-                <span id="branchHeaderName">
-                    
-                </span>
+
+                <span id="branchHeaderName"></span>
+
             </p>
 
             <div class="user-header-info">
@@ -49,6 +65,7 @@
             </div>
 
         </div>
+
 
         <div class="header-actions">
 
@@ -66,14 +83,22 @@
 
 </header>
 
+
+<!-- =====================================================
+     ATTENDANCE PAGE
+     ===================================================== -->
+
 <section
     id="attendancePage"
     class="page active"
 >
 
+
     <div class="page-header">
 
-        <h2>Attendance</h2>
+        <h2>
+            Attendance
+        </h2>
 
         <p>
             Attendance and check-in/check-out management.
@@ -81,7 +106,13 @@
 
     </div>
 
+
+    <!-- =================================================
+         TODAY'S ATTENDANCE SUMMARY
+         ================================================= -->
+
     <div class="cards">
+
 
         <div class="card">
 
@@ -97,6 +128,7 @@
             </div>
 
         </div>
+
 
         <div class="card">
 
@@ -114,6 +146,7 @@
 
         </div>
 
+
         <div class="card">
 
             <div class="card-title">
@@ -130,28 +163,44 @@
 
         </div>
 
+
     </div>
+
+
+    <!-- =================================================
+         ATTENDANCE ACTIONS
+         ================================================= -->
 
     <div
         class="menu"
         id="attendanceActions"
     >
 
+
         <button
             id="checkInButton"
+            type="button"
             onclick="checkIn()"
         >
             Check In
         </button>
 
+
         <button
             id="checkOutButton"
+            type="button"
             onclick="checkOut()"
         >
             Check Out
         </button>
 
+
     </div>
+
+
+    <!-- =================================================
+         STATUS
+         ================================================= -->
 
     <div
         id="attendancePageStatus"
@@ -160,55 +209,124 @@
         Ready
     </div>
 
+
+    <!-- =================================================
+         ATTENDANCE RECORDS
+         ================================================= -->
+
     <div
         class="card"
         id="attendanceDataCard"
     >
 
-        <h3>Attendance Records</h3>
 
-        <div id="attendanceFilters"></div>
+        <h3>
+            Attendance Records
+        </h3>
+
+
+        <div
+            id="attendanceFilters"
+        ></div>
+
 
         <div class="table-container">
 
+
             <table>
+
 
                 <thead>
 
                     <tr>
 
-                        <th>Date</th>
-                        <th>Staff ID</th>
-                        <th>Employee</th>
-                        <th>Branch</th>
-                        <th>Check In</th>
-                        <th>Check Out</th>
+                        <th>
+                            Date
+                        </th>
+
+                        <th>
+                            Staff ID
+                        </th>
+
+                        <th>
+                            Employee
+                        </th>
+
+                        <th>
+                            Branch
+                        </th>
+
+                        <th>
+                            Check In
+                        </th>
+
+                        <th>
+                            Check Out
+                        </th>
 
                     </tr>
 
                 </thead>
 
-                <tbody id="attendanceTable"></tbody>
+
+                <tbody
+                    id="attendanceTable"
+                ></tbody>
+
 
             </table>
 
+
         </div>
+
 
     </div>
 
+
 </section>
 
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
 <footer>
+
     © 2026 Ahmed Sobhy. All rights reserved.
+
 </footer>
 
-    <script src="JS/config.js"></script>
-    <script src="JS/api.js"></script>
-    <script src="JS/auth.js"></script>
-    <script src="JS/app.js"></script>
-    <script src="JS/passkey.js"></script>
-    <script src="JS/attendance.js"></script>
+
+<!-- =====================================================
+     APPLICATION JAVASCRIPT
+     ===================================================== -->
+
+<script src="JS/config.js"></script>
+
+<script src="JS/api.js"></script>
+
+<script src="JS/auth.js"></script>
+
+<script src="JS/app.js"></script>
+
+
+<!-- =====================================================
+     SIMPLEWEBAUTHN PASSKEY
+     IMPORTANT:
+     The browser library is loaded in HEAD above.
+     passkey.js must load AFTER it.
+     ===================================================== -->
+
+<script src="JS/passkey.js"></script>
+
+
+<!-- =====================================================
+     ATTENDANCE LOGIC
+     ===================================================== -->
+
+<script src="JS/attendance.js"></script>
+
 
 </body>
-</html>
 
+</html>
