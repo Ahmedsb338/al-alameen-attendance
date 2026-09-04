@@ -26,13 +26,248 @@ function getPasskeyAccessToken() {
 
 
 // =====================================================
+// LOAD CURRENT USER PROFILE DIRECTLY
+// =====================================================
+// IMPORTANT:
+// Passkey must NOT depend only on checkLoginSession()
+// because attendance.html may call Passkey before
+// window.currentUserProfile is initialized.
+// =====================================================
+
+async function loadPasskeyUserProfile() {
+
+    const accessToken =
+        getPasskeyAccessToken();
+
+
+    // =================================================
+    // CHECK REQUIRED SUPABASE CONFIGURATION
+    // =================================================
+
+    if (
+        typeof SUPABASE_URL === "undefined" ||
+        typeof SUPABASE_KEY === "undefined"
+    ) {
+
+        throw new Error(
+            "Supabase configuration is not available."
+        );
+    }
+
+
+    // =================================================
+    // GET CURRENT AUTH USER
+    // =================================================
+
+    const userResponse =
+        await fetch(
+            SUPABASE_URL +
+            "/auth/v1/user",
+            {
+                method: "GET",
+
+                headers: {
+
+                    "apikey":
+                        SUPABASE_KEY,
+
+                    "Authorization":
+                        "Bearer " +
+                        accessToken,
+
+                    "Content-Type":
+                        "application/json"
+                },
+
+                cache: "no-store"
+            }
+        );
+
+
+    let userData = null;
+
+    try {
+
+        userData =
+            await userResponse.json();
+
+    }
+
+    catch (error) {
+
+        throw new Error(
+            "Unable to read the current user session."
+        );
+    }
+
+
+    if (
+        !userResponse.ok ||
+        !userData ||
+        !userData.id
+    ) {
+
+        console.error(
+            "Supabase Auth user error:",
+            userData
+        );
+
+        throw new Error(
+            "Your session has expired. Please login again."
+        );
+    }
+
+
+    // =================================================
+    // LOAD PROFILE
+    // =================================================
+
+    const profileResponse =
+        await fetch(
+            SUPABASE_URL +
+            "/rest/v1/profiles" +
+            "?id=eq." +
+            encodeURIComponent(userData.id) +
+            "&select=*",
+            {
+                method: "GET",
+
+                headers: {
+
+                    "apikey":
+                        SUPABASE_KEY,
+
+                    "Authorization":
+                        "Bearer " +
+                        accessToken,
+
+                    "Content-Type":
+                        "application/json"
+                },
+
+                cache: "no-store"
+            }
+        );
+
+
+    let profiles = null;
+
+    try {
+
+        profiles =
+            await profileResponse.json();
+
+    }
+
+    catch (error) {
+
+        throw new Error(
+            "Unable to read your user profile."
+        );
+    }
+
+
+    if (
+        !profileResponse.ok
+    ) {
+
+        console.error(
+            "Supabase profile error:",
+            profiles
+        );
+
+        throw new Error(
+            "Unable to load your user profile."
+        );
+    }
+
+
+    if (
+        !Array.isArray(profiles) ||
+        profiles.length === 0
+    ) {
+
+        console.error(
+            "No profile found for Auth user:",
+            userData.id
+        );
+
+        throw new Error(
+            "User profile was not found. Please contact your administrator."
+        );
+    }
+
+
+    const profile =
+        profiles[0];
+
+
+    // =================================================
+    // ACCOUNT ACTIVE CHECK
+    // =================================================
+
+    if (
+        profile.active !== true
+    ) {
+
+        throw new Error(
+            "Your account has been deactivated."
+        );
+    }
+
+
+    // =================================================
+    // EMPLOYEE LINK CHECK
+    // =================================================
+
+    if (
+        !profile.employee_id
+    ) {
+
+        throw new Error(
+            "This account is not linked to an employee."
+        );
+    }
+
+
+    // =================================================
+    // SAVE PROFILE GLOBALLY
+    // =================================================
+
+    window.currentUserProfile =
+        profile;
+
+
+    console.log(
+        "Passkey profile loaded successfully:",
+        {
+            userId:
+                userData.id,
+
+            employeeId:
+                profile.employee_id,
+
+            role:
+                profile.role,
+
+            active:
+                profile.active
+        }
+    );
+
+
+    return profile;
+}
+
+
+// =====================================================
 // ENSURE USER SESSION / PROFILE
 // =====================================================
 
 async function ensurePasskeySession() {
 
     // =================================================
-    // PROFILE ALREADY AVAILABLE
+    // 1. USE EXISTING PROFILE IF VALID
     // =================================================
 
     if (
@@ -46,12 +281,45 @@ async function ensurePasskeySession() {
 
 
     // =================================================
-    // TRY TO LOAD SESSION
+    // 2. DIRECTLY LOAD PROFILE FROM SUPABASE
+    // =================================================
+    // This is the important fix.
+    // We no longer depend on checkLoginSession().
+    // =================================================
+
+    try {
+
+        const profile =
+            await loadPasskeyUserProfile();
+
+        if (
+            profile &&
+            profile.employee_id &&
+            profile.active === true
+        ) {
+
+            return profile;
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Direct Passkey profile loading failed:",
+            error
+        );
+    }
+
+
+    // =================================================
+    // 3. FALLBACK TO EXISTING SESSION FUNCTION
+    // =================================================
+    // Keep compatibility with the existing application.
     // =================================================
 
     if (
-        typeof checkLoginSession ===
-        "function"
+        typeof checkLoginSession === "function"
     ) {
 
         try {
@@ -63,7 +331,7 @@ async function ensurePasskeySession() {
         catch (error) {
 
             console.error(
-                "Unable to load login session:",
+                "Existing login session check failed:",
                 error
             );
         }
@@ -71,7 +339,7 @@ async function ensurePasskeySession() {
 
 
     // =================================================
-    // PROFILE NOW AVAILABLE
+    // 4. CHECK PROFILE AGAIN
     // =================================================
 
     if (
@@ -85,34 +353,38 @@ async function ensurePasskeySession() {
 
 
     // =================================================
-    // WAIT BRIEFLY FOR SESSION INITIALIZATION
+    // 5. FINAL DIRECT RETRY
     // =================================================
 
-    for (
-        let attempt = 0;
-        attempt < 20;
-        attempt++
-    ) {
+    try {
 
-        await new Promise(
-            resolve =>
-                setTimeout(resolve, 250)
-        );
-
+        const profile =
+            await loadPasskeyUserProfile();
 
         if (
-            window.currentUserProfile &&
-            window.currentUserProfile.employee_id &&
-            window.currentUserProfile.active === true
+            profile &&
+            profile.employee_id &&
+            profile.active === true
         ) {
 
-            return window.currentUserProfile;
+            return profile;
         }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Final Passkey profile loading attempt failed:",
+            error
+        );
+
+        throw error;
     }
 
 
     throw new Error(
-        "User profile is not available. Please refresh and try again."
+        "Unable to load your employee profile. Please login again."
     );
 }
 
@@ -130,12 +402,14 @@ function getPasskeyProfile() {
     if (!profile) {
 
         throw new Error(
-            "User profile is not available. Please refresh and try again."
+            "User profile is not available."
         );
     }
 
 
-    if (!profile.employee_id) {
+    if (
+        !profile.employee_id
+    ) {
 
         throw new Error(
             "This account is not linked to an employee."
@@ -143,7 +417,9 @@ function getPasskeyProfile() {
     }
 
 
-    if (profile.active !== true) {
+    if (
+        profile.active !== true
+    ) {
 
         throw new Error(
             "Your account is inactive."
@@ -207,6 +483,7 @@ async function readPasskeyResponse(
 
     let data = null;
 
+
     try {
 
         data =
@@ -250,7 +527,7 @@ async function registerCurrentUserPasskey() {
     try {
 
         // =================================================
-        // MAKE SURE SESSION / PROFILE IS READY
+        // ENSURE PROFILE
         // =================================================
 
         await ensurePasskeySession();
@@ -264,7 +541,7 @@ async function registerCurrentUserPasskey() {
 
 
         // =================================================
-        // GET FRESH ACCESS TOKEN
+        // ACCESS TOKEN
         // =================================================
 
         const accessToken =
@@ -418,10 +695,6 @@ async function registerCurrentUserPasskey() {
         }
 
 
-        // =================================================
-        // SUCCESS
-        // =================================================
-
         console.log(
             "Passkey registration completed successfully."
         );
@@ -461,10 +734,6 @@ async function registerCurrentUserPasskey() {
         );
 
 
-        // =================================================
-        // USER CANCELLED / TIMEOUT
-        // =================================================
-
         if (
             error &&
             error.name ===
@@ -478,10 +747,6 @@ async function registerCurrentUserPasskey() {
             return false;
         }
 
-
-        // =================================================
-        // CREDENTIAL ALREADY EXISTS
-        // =================================================
 
         if (
             error &&
@@ -497,10 +762,6 @@ async function registerCurrentUserPasskey() {
         }
 
 
-        // =================================================
-        // NOT SUPPORTED
-        // =================================================
-
         if (
             error &&
             error.name ===
@@ -515,20 +776,11 @@ async function registerCurrentUserPasskey() {
         }
 
 
-        // =================================================
-        // NETWORK / CORS
-        // =================================================
-
         if (
             error &&
             error.name ===
                 "TypeError"
         ) {
-
-            console.error(
-                "Possible network or CORS error:",
-                error
-            );
 
             alert(
                 "Unable to connect to the Passkey service. Please check your connection and try again."
@@ -537,10 +789,6 @@ async function registerCurrentUserPasskey() {
             return false;
         }
 
-
-        // =================================================
-        // OTHER ERROR
-        // =================================================
 
         alert(
             error &&
@@ -564,21 +812,34 @@ async function authenticateCurrentUserPasskey() {
     try {
 
         // =================================================
-        // MAKE SURE SESSION / PROFILE IS READY
+        // ENSURE PROFILE
         // =================================================
 
-        await ensurePasskeySession();
-
-
         const profile =
-            getPasskeyProfile();
+            await ensurePasskeySession();
+
+
+        // =================================================
+        // GET PROFILE AGAIN FROM VERIFIED SOURCE
+        // =================================================
+
+        if (
+            !profile ||
+            !profile.employee_id ||
+            profile.active !== true
+        ) {
+
+            throw new Error(
+                "Your employee profile is not available or inactive."
+            );
+        }
 
 
         ensurePasskeySupport();
 
 
         // =================================================
-        // GET CURRENT ACCESS TOKEN
+        // ACCESS TOKEN
         // =================================================
 
         const accessToken =
@@ -745,7 +1006,11 @@ async function authenticateCurrentUserPasskey() {
         // =================================================
 
         console.log(
-            "Passkey authentication verified successfully."
+            "Passkey authentication verified successfully.",
+            {
+                employeeId:
+                    profile.employee_id
+            }
         );
 
 
@@ -761,10 +1026,6 @@ async function authenticateCurrentUserPasskey() {
         );
 
 
-        // =================================================
-        // USER CANCELLED / TIMEOUT
-        // =================================================
-
         if (
             error &&
             error.name ===
@@ -778,10 +1039,6 @@ async function authenticateCurrentUserPasskey() {
             return false;
         }
 
-
-        // =================================================
-        // PASSKEY NOT FOUND
-        // =================================================
 
         if (
             error &&
@@ -797,10 +1054,6 @@ async function authenticateCurrentUserPasskey() {
         }
 
 
-        // =================================================
-        // NOT SUPPORTED
-        // =================================================
-
         if (
             error &&
             error.name ===
@@ -814,10 +1067,6 @@ async function authenticateCurrentUserPasskey() {
             return false;
         }
 
-
-        // =================================================
-        // NETWORK / CORS
-        // =================================================
 
         if (
             error &&
@@ -837,10 +1086,6 @@ async function authenticateCurrentUserPasskey() {
             return false;
         }
 
-
-        // =================================================
-        // OTHER ERROR
-        // =================================================
 
         alert(
             error &&
