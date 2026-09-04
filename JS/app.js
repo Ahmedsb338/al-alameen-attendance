@@ -164,12 +164,16 @@ function configureDashboardForRole(role) {
 
         return;
     }
-}
+
 // =====================================================
 // LOGOUT
 // =====================================================
 
 function logoutUser() {
+
+    // =================================================
+    // CLEAR SESSION
+    // =================================================
 
     localStorage.removeItem(
         "access_token"
@@ -179,21 +183,35 @@ function logoutUser() {
         "refresh_token"
     );
 
-
     window.currentUserProfile =
         null;
 
+
+    // =================================================
+    // HIDE APPLICATION
+    // =================================================
+
+    const appContainer =
+        document.getElementById(
+            "appContainer"
+        );
 
     const dashboardPage =
         document.getElementById(
             "dashboardPage"
         );
 
-
     const loginPage =
         document.getElementById(
             "loginPage"
         );
+
+
+    if (appContainer) {
+
+        appContainer.style.display =
+            "none";
+    }
 
 
     if (dashboardPage) {
@@ -205,7 +223,11 @@ function logoutUser() {
             "active"
         );
     }
+}
 
+    // =================================================
+    // SHOW LOGIN PAGE
+    // =================================================
 
     if (loginPage) {
 
@@ -214,19 +236,69 @@ function logoutUser() {
     }
 
 
-    document.getElementById(
-        "loginEmail"
-    ).value = "";
+    // =================================================
+    // CLEAR LOGIN FIELDS
+    // ONLY IF THEY EXIST
+    // =================================================
+
+    const loginEmail =
+        document.getElementById(
+            "loginEmail"
+        );
+
+    const loginPassword =
+        document.getElementById(
+            "loginPassword"
+        );
+
+    const loginError =
+        document.getElementById(
+            "loginError"
+        );
 
 
-    document.getElementById(
-        "loginPassword"
-    ).value = "";
+    if (loginEmail) {
+
+        loginEmail.value =
+            "";
+    }
 
 
-    document.getElementById(
-        "loginError"
-    ).textContent = "";
+    if (loginPassword) {
+
+        loginPassword.value =
+            "";
+    }
+
+
+    if (loginError) {
+
+        loginError.textContent =
+            "";
+    }
+
+
+    // =================================================
+    // IF THIS IS A SEPARATE PAGE
+    // RETURN TO MAIN LOGIN
+    // =================================================
+
+    const isSeparatePage =
+        !loginPage;
+
+
+    if (isSeparatePage) {
+
+        window.location.href =
+            "index.html";
+
+        return;
+    }
+
+
+    console.log(
+        "User logged out successfully."
+    );
 }
 
 
@@ -3401,3 +3473,5 @@ async function checkOut() {
             "status error";
     }
 }
+
+

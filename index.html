@@ -3,6 +3,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -12,17 +13,31 @@
 
     <title>Quantech Attendance System</title>
 
-    <link rel="stylesheet" href="CSS/style.css">
+    <link
+        rel="stylesheet"
+        href="CSS/style.css"
+    >
+
+    <!-- =====================================================
+         SIMPLE WEBAUTHN BROWSER
+         ===================================================== -->
+
+    <script
+    src="https://unpkg.com/@simplewebauthn/browser/dist/bundle/index.umd.min.js"
+    ></script>
 
 </head>
 
 <body>
 
     <!-- =====================================================
-     SECURE SESSION LOADING SCREEN
-     ===================================================== -->
+         SECURE SESSION LOADING SCREEN
+         ===================================================== -->
 
-    <div id="sessionLoader" class="session-loader">
+    <div
+        id="sessionLoader"
+        class="session-loader"
+    >
 
         <div class="session-loader-content">
 
@@ -40,1151 +55,1378 @@
 
     </div>
 
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
     <header>
 
-    <div class="header-content">
+        <div class="header-content">
 
-        <div class="header-brand">
+            <div class="header-brand">
+
+                <h1>
+                    Quantech Attendance System
+                </h1>
+
+                <p>
+                    <span id="branchHeaderName"></span>
+                </p>
+
+                <div class="user-header-info">
+
+                    <span id="headerUserName">
+                        -
+                    </span>
+
+                    <span id="headerUserRole">
+                        -
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="header-actions">
+
+                <button
+                    type="button"
+                    class="logout-button"
+                    onclick="logoutUser()"
+                >
+                    Logout
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         LOGIN PAGE
+         ===================================================== -->
+
+    <div
+        id="loginPage"
+        class="login-page"
+        style="display: none;"
+    >
+
+        <div class="login-box">
 
             <h1>
-                Quantech Attendance System
+                Employee Login
             </h1>
 
             <p>
-                <span id="branchHeaderName">
-                    
-                </span>
+                Please login to continue
             </p>
 
-            <div class="user-header-info">
+            <input
+                type="text"
+                id="loginEmail"
+                placeholder="Username"
+                autocomplete="username"
+            >
 
-                <span id="headerUserName">
-                    -
-                </span>
-
-                <span id="headerUserRole">
-                    -
-                </span>
-
-            </div>
-
-        </div>
-
-        <div class="header-actions">
+            <input
+                type="password"
+                id="loginPassword"
+                placeholder="Password"
+                autocomplete="current-password"
+            >
 
             <button
-                type="button"
-                class="logout-button"
-                onclick="logoutUser()"
+                class="primary login-button"
+                onclick="loginUser()"
             >
-                Logout
+                Login
             </button>
 
+            <div
+                id="loginError"
+                class="error"
+                style="margin-top:15px;"
+            ></div>
+
         </div>
 
     </div>
 
-</header>
 
-<div
-    id="loginPage"
-    class="login-page"
-    style="display: none;"
->
-
-    <div class="login-box">
-
-    <h1>Employee Login</h1>
-
-    <p>Please login to continue</p>
-
-    <input
-        type="text"
-        id="loginEmail"
-        placeholder="Username"
-        autocomplete="username"
-    >
-
-    <input
-        type="password"
-        id="loginPassword"
-        placeholder="Password"
-        autocomplete="current-password"
-    >
-
-    <button
-        class="primary login-button"
-        onclick="loginUser()"
-    >
-        Login
-    </button>
+    <!-- =====================================================
+         APPLICATION CONTAINER
+         ===================================================== -->
 
     <div
-        id="loginError"
-        class="error"
-        style="margin-top:15px;"
-    ></div>
-
-    </div>
-
-</div>
-
-<div
-    class="container"
-    id="appContainer"
-    style="display: none;"
->
-
-    <section
-        id="dashboardPage"
-        class="page active"
+        class="container"
+        id="appContainer"
+        style="display: none;"
     >
 
-    <div class="page-header">
 
-        <h2>Dashboard</h2>
+        <!-- =================================================
+             DASHBOARD
+             ================================================= -->
 
-        <p>
-            Attendance Management System
-        </p>
-
-    </div>
-
-    <div class="card">
-
-        <div
-            id="primaryStatTitle"
-            class="card-title"
+        <section
+            id="dashboardPage"
+            class="page active"
         >
-            Loading...
-        </div>
 
-        <div
-            id="primaryStatValue"
-            class="card-value"
-        >
-            Loading...
-        </div>
+            <div class="page-header">
 
-    </div>
+                <h2>
+                    Dashboard
+                </h2>
 
+                <p>
+                    Attendance Management System
+                </p>
 
-        <div class="card">
-
-            <div class="card-title">
-                Branch
             </div>
 
-            <div
-                id="branchName"
-                class="card-value"
-                style="font-size:20px;"
-            >
-                Loading...
-            </div>
 
-        </div>
+            <div class="card">
 
-        <div class="card">
-
-            <div class="card-title">
-                Today's Date
-            </div>
-
-            <div
-                id="todayDate"
-                class="card-value"
-                style="font-size:20px;"
-            >
-                -
-            </div>
-
-        </div>
-    <h2>System Management</h2>
-
-    <div
-        class="menu"
-        id="dashboardMenu"
-    >
-
-        <button
-            id="employeesMenuButton"
-            onclick="window.location.href='employees.html'"
-        >
-            Employees
-        </button>
-
-        <button
-            id="branchesMenuButton"
-            onclick="window.location.href='branches.html'"
-        >
-            Branches
-        </button>
-
-        <button
-            id="attendanceMenuButton"
-            onclick="window.location.href='attendance.html'"
-        >
-            Attendance
-        </button>
-
-        <button
-            id="scheduleMenuButton"
-            onclick="window.location.href='schedule.html'"
-        >
-            Schedule
-        </button>
-
-        <button
-            id="importMenuButton"
-            onclick="window.location.href='import.html'"
-        >
-            Import Excel
-        </button>
-
-        <button
-            id="exportMenuButton"
-            onclick="window.location.href='export.html'"
-        >
-            Export Excel
-        </button>
-        <button>
-            <a href="ai-reports.html" class="menu-item">
-            <span>AI Reports & Analytics</span>
-            </a>
-        </button>
-
-        <button
-            id="settingsMenuButton"
-            onclick="window.location.href='settings.html'"
-        >
-            Settings
-        </button>
-
-    </div>
-    <div class="status">
-
-        <strong>System Status:</strong>
-
-        <span
-            id="systemStatus"
-            class="loading"
-        >
-            Connecting...
-        </span>
-
-    </div>
-
-
-</div>
-
-
-</section>
-
-<section
-    id="employeesPage"
-    class="page"
->
-
-    <button
-        class="back"
-        onclick="showPage('dashboardPage')"
-    >
-        Back to Dashboard
-    </button>
-
-    <div class="page-header">
-
-        <h2>Employees</h2>
-
-        <p>
-            Manage employees and employee accounts.
-        </p>
-
-    </div>
-
-    <div class="card">
-
-        <h3>Add New Employee</h3>
-
-        <div class="form-grid">
-
-            <div class="form-group">
-
-                <label for="newStaffId">
-                    Staff ID
-                </label>
-
-                <input
-                    type="text"
-                    id="newStaffId"
-                    placeholder="Enter Staff ID"
+                <div
+                    id="primaryStatTitle"
+                    class="card-title"
                 >
+                    Loading...
+                </div>
 
-            </div>
-
-            <div class="form-group">
-
-                <label for="newFullName">
-                    Full Name
-                </label>
-
-                <input
-                    type="text"
-                    id="newFullName"
-                    placeholder="Enter employee full name"
+                <div
+                    id="primaryStatValue"
+                    class="card-value"
                 >
+                    Loading...
+                </div>
 
             </div>
 
-            <div class="form-group">
 
-                <label for="newRole">
-                    Role
-                </label>
+            <div class="card">
 
-                <input
-                    type="text"
-                    id="newRole"
-                    placeholder="e.g. Employee"
-                >
-
-            </div>
-
-            <div class="form-group">
-
-                <label for="newEmail">
-                    Email
-                </label>
-
-                <input
-                    type="email"
-                    id="newEmail"
-                    placeholder="employee@example.com"
-                >
-
-            </div>
-
-            <div class="form-group">
-
-                <label for="newPhone">
-                    Phone
-                </label>
-
-                <input
-                    type="tel"
-                    id="newPhone"
-                    placeholder="01xxxxxxxxx"
-                >
-
-            </div>
-
-            <div class="form-group">
-
-                <label for="newEmployeeBranch">
+                <div class="card-title">
                     Branch
-                </label>
+                </div>
 
-                <select id="newEmployeeBranch">
-
-                    <option value="">
-                        Select Branch
-                    </option>
-
-                </select>
-
-            </div>
-
-        </div>
-
-        <div
-            id="addEmployeeStatus"
-            class="status"
-        ></div>
-
-        <button
-            type="button"
-            class="primary"
-            onclick="addEmployee()"
-        >
-             Add Employee
-        </button>
-
-    </div>
-
-    <div class="card">
-
-        <h3>Employee List</h3>
-
-        <div
-            id="employeesStatus"
-            class="status loading"
-        >
-        </div>
-        
-        <div class="table-container">
-
-            <table>
-
-                <thead>
-
-                    <tr>
-
-                        <th>#</th>
-                        <th>Staff ID</th>
-                        <th>Full Name</th>
-                        <th>Role</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody id="employeesTable"></tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
-</section>
-
-<section
-    id="branchesPage"
-    class="page"
->
-
-    <button
-        class="back"
-        onclick="showPage('dashboardPage')"
-    >
-        Back to Dashboard
-    </button>
-
-    <div class="page-header">
-
-        <h2>Branch Management</h2>
-
-        <p>
-            Create and manage company branches.
-        </p>
-
-    </div>
-
-    <div class="card">
-
-        <h3>Create New Branch</h3>
-
-        <div class="form-grid">
-
-            <div class="form-group">
-
-                <label for="branchNameInput">
-                    Branch Name
-                </label>
-
-                <input
-                    type="text"
-                    id="branchNameInput"
-                    placeholder="Enter branch name"
+                <div
+                    id="branchName"
+                    class="card-value"
+                    style="font-size:20px;"
                 >
+                    Loading...
+                </div>
 
             </div>
 
-            <div class="form-group">
 
-                <label for="branchCodeInput">
-                    Branch Code
-                </label>
+            <div class="card">
 
-                <input
-                    type="text"
-                    id="branchCodeInput"
-                    placeholder="e.g. 1706"
+                <div class="card-title">
+                    Today's Date
+                </div>
+
+                <div
+                    id="todayDate"
+                    class="card-value"
+                    style="font-size:20px;"
                 >
+                    -
+                </div>
 
             </div>
 
-            <div class="form-group">
 
-                <label for="managerNameInput">
-                    Manager Name
-                </label>
+            <h2>
+                System Management
+            </h2>
 
-                <input
-                    type="text"
-                    id="managerNameInput"
-                    placeholder="Enter manager name"
-                >
-
-            </div>
-
-            <div class="form-group">
-
-                <label for="managerEmailInput">
-                    Manager Email
-                </label>
-
-                <input
-                    type="email"
-                    id="managerEmailInput"
-                    placeholder="manager@example.com"
-                >
-
-            </div>
-
-            <div class="form-group">
-
-                <label for="managerPhoneInput">
-                    Manager Phone
-                </label>
-
-                <input
-                    type="tel"
-                    id="managerPhoneInput"
-                    placeholder="01xxxxxxxxx"
-                >
-
-            </div>
-
-            <div class="form-group">
-
-                <label for="branchLatitudeInput">
-                    Latitude
-                </label>
-
-                <input
-                    type="number"
-                    id="branchLatitudeInput"
-                    step="any"
-                    placeholder="31.2001"
-                >
-
-            </div>
-
-            <div class="form-group">
-
-                <label for="branchLongitudeInput">
-                    Longitude
-                </label>
-
-                <input
-                    type="number"
-                    id="branchLongitudeInput"
-                    step="any"
-                    placeholder="29.9187"
-                >
-
-            </div>
-
-            <div class="form-group">
-
-                <label for="branchRadiusInput">
-                    Allowed Radius (meters)
-                </label>
-
-                <input
-                    type="number"
-                    id="branchRadiusInput"
-                    value="50"
-                    min="1"
-                >
-
-            </div>
-
-        </div>
-
-        <div
-            id="createBranchStatus"
-            class="status"
-        ></div>
-
-        <button
-            type="button"
-            class="primary"
-            onclick="createBranch()"
-        >
-             Create Branch
-        </button>
-
-    </div>
-
-    <div
-        class="card"
-        id="branchActivationResult"
-        style="display:none;"
-    >
-
-        <h3>
-            Branch Created Successfully
-        </h3>
-
-        <p>
-            <strong>Branch Name:</strong>
-            <span id="createdBranchName">-</span>
-        </p>
-
-        <p>
-            <strong>Branch Code:</strong>
-            <span id="createdBranchCode">-</span>
-        </p>
-
-        <p>
-            <strong>Manager Username:</strong>
-            <span id="createdManagerLogin">-</span>
-        </p>
-
-        <p>
-            <strong>Manager:</strong>
-            <span id="createdManagerName">-</span>
-        </p>
-
-        <div class="form-group">
-
-            <label>
-                Manager Activation Link
-            </label>
-
-            <textarea
-                id="managerActivationLink"
-                readonly
-                rows="3"
-            ></textarea>
-
-        </div>
-
-        <button
-            type="button"
-            class="primary"
-            onclick="copyManagerActivationLink()"
-        >
-            Copy Activation Link
-        </button>
-
-    </div>
-
-    <div class="card">
-
-        <h3>Existing Branches</h3>
-
-        <div
-            id="branchesStatus"
-            class="status loading"
-        >
-            Loading branches...
-        </div>
-
-        <div class="table-container">
-
-            <table>
-
-                <thead>
-
-                    <tr>
-
-                        <th>#</th>
-                        <th>Branch Code</th>
-                        <th>Branch Name</th>
-                        <th>Manager</th>
-                        <th>Status</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody id="branchesTable"></tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
-</section>
-
-<section
-    id="attendancePage"
-    class="page"
->
-
-    <button
-        class="back"
-        onclick="showPage('dashboardPage')"
-    >
-        Back to Dashboard
-    </button>
-
-    <div class="page-header">
-
-        <h2>Attendance</h2>
-
-        <p>
-            Attendance and check-in/check-out management.
-        </p>
-
-    </div>
-
-    <div class="cards">
-
-        <div class="card">
-
-            <div class="card-title">
-                Today's Status
-            </div>
 
             <div
-                id="myAttendanceStatus"
-                class="card-value"
+                class="menu"
+                id="dashboardMenu"
             >
-                -
+
+                <button
+                    id="employeesMenuButton"
+                    onclick="window.location.href='employees.html'"
+                >
+                    Employees
+                </button>
+
+
+                <button
+                    id="branchesMenuButton"
+                    onclick="window.location.href='branches.html'"
+                >
+                    Branches
+                </button>
+
+
+                <button
+                    id="attendanceMenuButton"
+                    onclick="window.location.href='attendance.html'"
+                >
+                    Attendance
+                </button>
+
+
+                <button
+                    id="scheduleMenuButton"
+                    onclick="window.location.href='schedule.html'"
+                >
+                    Schedule
+                </button>
+
+
+                <button
+                    id="importMenuButton"
+                    onclick="window.location.href='import.html'"
+                >
+                    Import Excel
+                </button>
+
+
+                <button
+                    id="exportMenuButton"
+                    onclick="window.location.href='export.html'"
+                >
+                    Export Excel
+                </button>
+
+
+                <button>
+
+                    <a
+                        href="ai-reports.html"
+                        class="menu-item"
+                    >
+                        <span>
+                            AI Reports & Analytics
+                        </span>
+                    </a>
+
+                </button>
+
+
+                <button
+                    id="settingsMenuButton"
+                    onclick="window.location.href='settings.html'"
+                >
+                    Settings
+                </button>
+
             </div>
 
-        </div>
 
-        <div class="card">
+            <div class="status">
 
-            <div class="card-title">
-                Check In
+                <strong>
+                    System Status:
+                </strong>
+
+                <span
+                    id="systemStatus"
+                    class="loading"
+                >
+                    Connecting...
+                </span>
+
             </div>
+
+        </section>
+
+
+        <!-- =================================================
+             EMPLOYEES
+             ================================================= -->
+
+        <section
+            id="employeesPage"
+            class="page"
+        >
+
+            <button
+                class="back"
+                onclick="showPage('dashboardPage')"
+            >
+                Back to Dashboard
+            </button>
+
+
+            <div class="page-header">
+
+                <h2>
+                    Employees
+                </h2>
+
+                <p>
+                    Manage employees and employee accounts.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>
+                    Add New Employee
+                </h3>
+
+
+                <div class="form-grid">
+
+
+                    <div class="form-group">
+
+                        <label for="newStaffId">
+                            Staff ID
+                        </label>
+
+                        <input
+                            type="text"
+                            id="newStaffId"
+                            placeholder="Enter Staff ID"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="newFullName">
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="newFullName"
+                            placeholder="Enter employee full name"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="newRole">
+                            Role
+                        </label>
+
+                        <input
+                            type="text"
+                            id="newRole"
+                            placeholder="e.g. Employee"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="newEmail">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="newEmail"
+                            placeholder="employee@example.com"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="newPhone">
+                            Phone
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="newPhone"
+                            placeholder="01xxxxxxxxx"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="newEmployeeBranch">
+                            Branch
+                        </label>
+
+                        <select id="newEmployeeBranch">
+
+                            <option value="">
+                                Select Branch
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="addEmployeeStatus"
+                    class="status"
+                ></div>
+
+
+                <button
+                    type="button"
+                    class="primary"
+                    onclick="addEmployee()"
+                >
+                    Add Employee
+                </button>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>
+                    Employee List
+                </h3>
+
+
+                <div
+                    id="employeesStatus"
+                    class="status loading"
+                >
+                </div>
+
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>#</th>
+                                <th>Staff ID</th>
+                                <th>Full Name</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="employeesTable"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             BRANCHES
+             ================================================= -->
+
+        <section
+            id="branchesPage"
+            class="page"
+        >
+
+            <button
+                class="back"
+                onclick="showPage('dashboardPage')"
+            >
+                Back to Dashboard
+            </button>
+
+
+            <div class="page-header">
+
+                <h2>
+                    Branch Management
+                </h2>
+
+                <p>
+                    Create and manage company branches.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>
+                    Create New Branch
+                </h3>
+
+
+                <div class="form-grid">
+
+
+                    <div class="form-group">
+
+                        <label for="branchNameInput">
+                            Branch Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="branchNameInput"
+                            placeholder="Enter branch name"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="branchCodeInput">
+                            Branch Code
+                        </label>
+
+                        <input
+                            type="text"
+                            id="branchCodeInput"
+                            placeholder="e.g. 1706"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="managerNameInput">
+                            Manager Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="managerNameInput"
+                            placeholder="Enter manager name"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="managerEmailInput">
+                            Manager Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="managerEmailInput"
+                            placeholder="manager@example.com"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="managerPhoneInput">
+                            Manager Phone
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="managerPhoneInput"
+                            placeholder="01xxxxxxxxx"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="branchLatitudeInput">
+                            Latitude
+                        </label>
+
+                        <input
+                            type="number"
+                            id="branchLatitudeInput"
+                            step="any"
+                            placeholder="31.2001"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="branchLongitudeInput">
+                            Longitude
+                        </label>
+
+                        <input
+                            type="number"
+                            id="branchLongitudeInput"
+                            step="any"
+                            placeholder="29.9187"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="branchRadiusInput">
+                            Allowed Radius (meters)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="branchRadiusInput"
+                            value="50"
+                            min="1"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="createBranchStatus"
+                    class="status"
+                ></div>
+
+
+                <button
+                    type="button"
+                    class="primary"
+                    onclick="createBranch()"
+                >
+                    Create Branch
+                </button>
+
+            </div>
+
 
             <div
-                id="myCheckInTime"
-                class="card-value"
-                style="font-size:20px;"
+                class="card"
+                id="branchActivationResult"
+                style="display:none;"
             >
-                -
+
+                <h3>
+                    Branch Created Successfully
+                </h3>
+
+
+                <p>
+
+                    <strong>
+                        Branch Name:
+                    </strong>
+
+                    <span id="createdBranchName">
+                        -
+                    </span>
+
+                </p>
+
+
+                <p>
+
+                    <strong>
+                        Branch Code:
+                    </strong>
+
+                    <span id="createdBranchCode">
+                        -
+                    </span>
+
+                </p>
+
+
+                <p>
+
+                    <strong>
+                        Manager Username:
+                    </strong>
+
+                    <span id="createdManagerLogin">
+                        -
+                    </span>
+
+                </p>
+
+
+                <p>
+
+                    <strong>
+                        Manager:
+                    </strong>
+
+                    <span id="createdManagerName">
+                        -
+                    </span>
+
+                </p>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Manager Activation Link
+                    </label>
+
+                    <textarea
+                        id="managerActivationLink"
+                        readonly
+                        rows="3"
+                    ></textarea>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="primary"
+                    onclick="copyManagerActivationLink()"
+                >
+                    Copy Activation Link
+                </button>
+
             </div>
 
-        </div>
 
-        <div class="card">
+            <div class="card">
 
-            <div class="card-title">
-                Check Out
+                <h3>
+                    Existing Branches
+                </h3>
+
+
+                <div
+                    id="branchesStatus"
+                    class="status loading"
+                >
+                    Loading branches...
+                </div>
+
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>#</th>
+                                <th>Branch Code</th>
+                                <th>Branch Name</th>
+                                <th>Manager</th>
+                                <th>Status</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="branchesTable"></tbody>
+
+                    </table>
+
+                </div>
+
             </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ATTENDANCE
+             ================================================= -->
+
+        <section
+            id="attendancePage"
+            class="page"
+        >
+
+            <button
+                class="back"
+                onclick="showPage('dashboardPage')"
+            >
+                Back to Dashboard
+            </button>
+
+
+            <div class="page-header">
+
+                <h2>
+                    Attendance
+                </h2>
+
+                <p>
+                    Attendance and check-in/check-out management.
+                </p>
+
+            </div>
+
+
+            <div class="cards">
+
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Today's Status
+                    </div>
+
+                    <div
+                        id="myAttendanceStatus"
+                        class="card-value"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Check In
+                    </div>
+
+                    <div
+                        id="myCheckInTime"
+                        class="card-value"
+                        style="font-size:20px;"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Check Out
+                    </div>
+
+                    <div
+                        id="myCheckOutTime"
+                        class="card-value"
+                        style="font-size:20px;"
+                    >
+                        -
+                    </div>
+
+                </div>
+
+            </div>
+
 
             <div
-                id="myCheckOutTime"
-                class="card-value"
-                style="font-size:20px;"
+                class="menu"
+                id="attendanceActions"
             >
-                -
+
+                <button
+                    id="checkInButton"
+                    onclick="checkIn()"
+                >
+                    Check In
+                </button>
+
+
+                <button
+                    id="checkOutButton"
+                    onclick="checkOut()"
+                >
+                    Check Out
+                </button>
+
             </div>
 
-        </div>
 
-    </div>
+            <div
+                id="attendancePageStatus"
+                class="status"
+            >
+                Ready
+            </div>
 
-    <div
-        class="menu"
-        id="attendanceActions"
-    >
 
-        <button
-            id="checkInButton"
-            onclick="checkIn()"
+            <div
+                class="card"
+                id="attendanceDataCard"
+            >
+
+                <h3>
+                    Attendance Records
+                </h3>
+
+
+                <div id="attendanceFilters"></div>
+
+
+                <div class="table-container">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Date</th>
+                                <th>Staff ID</th>
+                                <th>Employee</th>
+                                <th>Branch</th>
+                                <th>Check In</th>
+                                <th>Check Out</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="attendanceTable"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SCHEDULE
+             ================================================= -->
+
+        <section
+            id="schedulePage"
+            class="page"
         >
-            Check In
-        </button>
 
-        <button
-            id="checkOutButton"
-            onclick="checkOut()"
+            <button
+                class="back"
+                onclick="showPage('dashboardPage')"
+            >
+                Back to Dashboard
+            </button>
+
+
+            <div class="page-header">
+
+                <h2>
+                    Shift Schedule
+                </h2>
+
+                <p>
+                    Monthly employee shift schedule.
+                </p>
+
+            </div>
+
+
+            <div
+                id="scheduleStatus"
+                class="status loading"
+            >
+                Loading schedule...
+            </div>
+
+
+            <div class="table-container">
+
+                <table class="schedule-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                121090
+                            </th>
+
+                            <th>
+                                121040
+                            </th>
+
+                            <th>
+                                125453
+                            </th>
+
+                            <th>
+                                126439
+                            </th>
+
+                            <th>
+                                127981
+                            </th>
+
+                            <th>
+                                126225
+                            </th>
+
+                            <th>
+                                129776
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="scheduleTable"></tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             IMPORT
+             ================================================= -->
+
+        <section
+            id="importPage"
+            class="page"
         >
-            Check Out
-        </button>
 
-    </div>
+            <button
+                class="back"
+                onclick="showPage('dashboardPage')"
+            >
+                Back to Dashboard
+            </button>
 
-    <div
-        id="attendancePageStatus"
-        class="status"
-    >
-        Ready
-    </div>
 
-    <div
-        class="card"
-        id="attendanceDataCard"
-    >
+            <div class="page-header">
 
-        <h3>Attendance Records</h3>
+                <h2>
+                    Import Monthly Schedule
+                </h2>
 
-        <div id="attendanceFilters"></div>
-
-        <div class="table-container">
-
-            <table>
-
-                <thead>
-
-                    <tr>
-
-                        <th>Date</th>
-                        <th>Staff ID</th>
-                        <th>Employee</th>
-                        <th>Branch</th>
-                        <th>Check In</th>
-                        <th>Check Out</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody id="attendanceTable"></tbody>
-
-            </table>
-
-        </div>
-
-    </div>
-
-</section>
-
-<section
-    id="schedulePage"
-    class="page"
->
-
-    <button
-        class="back"
-        onclick="showPage('dashboardPage')"
-    >
-        Back to Dashboard
-    </button>
-
-    <div class="page-header">
-
-        <h2>Shift Schedule</h2>
-
-        <p>
-            Monthly employee shift schedule.
-        </p>
-
-    </div>
-
-    <div
-        id="scheduleStatus"
-        class="status loading"
-    >
-        Loading schedule...
-    </div>
-
-    <div class="table-container">
-
-        <table class="schedule-table">
-
-            <thead>
-
-                <tr>
-
-                    <th>Date</th>
-
-                    <th>121090</th>
-                    <th>121040</th>
-                    <th>125453</th>
-                    <th>126439</th>
-                    <th>127981</th>
-                    <th>126225</th>
-                    <th>129776</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody id="scheduleTable"></tbody>
-
-        </table>
-
-    </div>
-
-</section>
-
-<section
-    id="importPage"
-    class="page"
->
-
-    <button
-        class="back"
-        onclick="showPage('dashboardPage')"
-    >
-        Back to Dashboard
-    </button>
-
-    <div class="page-header">
-
-        <h2>Import Monthly Schedule</h2>
-
-        <p>
-            Upload the monthly Excel schedule.
-        </p>
-
-    </div>
-
-    <div class="status">
-
-        <strong>Required format</strong>
-
-        <p>
-            Column A = Date
-        </p>
-
-        <p>
-            Columns B onward = Staff IDs
-        </p>
-
-        <p>
-            Shift values:
-            AM / PM / Support / OFF / Annual Leave
-        </p>
-
-    </div>
-
-    <input
-        type="file"
-        id="excelFile"
-        accept=".xlsx,.xls,.csv"
-    >
-
-    <button
-        class="primary"
-        onclick="readExcel()"
-    >
-        Preview Excel
-    </button>
-
-    <div
-        id="excelPreview"
-        style="margin-top:20px;"
-    ></div>
-
-</section>
-
-<section
-    id="reportsPage"
-    class="page"
->
-
-    <button
-        class="back"
-        onclick="showPage('dashboardPage')"
-    >
-        Back to Dashboard
-    </button>
-
-    <div class="page-header">
-
-        <h2>Reports</h2>
-
-        <p>
-            Reports will be added later.
-        </p>
-
-    </div>
-
-    <div class="card">
-
-        <h3>Reports</h3>
-
-        <p>
-            This section is reserved for future reports.
-        </p>
-
-    </div>
-
-</section>
-
-<section
-    id="settingsPage"
-    class="page"
->
-
-    <button
-        class="back"
-        onclick="showPage('dashboardPage')"
-    >
-        Back to Dashboard
-    </button>
-
-    <div class="page-header">
-
-        <h2>
-            Settings
-        </h2>
-
-        <p>
-            Manage your branch settings.
-        </p>
-
-    </div>
-
-
-    <div
-        id="branchSettingsCard"
-        class="card"
-    >
-
-        <h3>
-            Branch Settings
-        </h3>
-
-
-        <div class="form-grid">
-
-
-            <div class="form-group">
-
-                <label for="settingsBranchName">
-                    Branch Name
-                </label>
-
-                <input
-                    type="text"
-                    id="settingsBranchName"
-                    placeholder="Branch Name"
-                >
+                <p>
+                    Upload the monthly Excel schedule.
+                </p>
 
             </div>
 
 
-            <div class="form-group">
+            <div class="status">
 
-                <label for="settingsBranchCode">
-                    Branch Code
-                </label>
+                <strong>
+                    Required format
+                </strong>
 
-                <input
-                    type="text"
-                    id="settingsBranchCode"
-                    placeholder="Branch Code"
-                    readonly
-                >
+                <p>
+                    Column A = Date
+                </p>
 
-            </div>
+                <p>
+                    Columns B onward = Staff IDs
+                </p>
 
-
-            <div class="form-group">
-
-                <label for="settingsManagerName">
-                    Manager Name
-                </label>
-
-                <input
-                    type="text"
-                    id="settingsManagerName"
-                    placeholder="Manager Name"
-                >
+                <p>
+                    Shift values:
+                    AM / PM / Support / OFF / Annual Leave
+                </p>
 
             </div>
 
 
-            <div class="form-group">
-
-                <label for="settingsManagerEmail">
-                    Manager Email
-                </label>
-
-                <input
-                    type="email"
-                    id="settingsManagerEmail"
-                    placeholder="Manager Email"
-                >
-
-            </div>
+            <input
+                type="file"
+                id="excelFile"
+                accept=".xlsx,.xls,.csv"
+            >
 
 
-            <div class="form-group">
-
-                <label for="settingsManagerPhone">
-                    Manager Phone
-                </label>
-
-                <input
-                    type="tel"
-                    id="settingsManagerPhone"
-                    placeholder="Manager Phone"
-                >
-
-            </div>
+            <button
+                class="primary"
+                onclick="readExcel()"
+            >
+                Preview Excel
+            </button>
 
 
-            <div class="form-group">
+            <div
+                id="excelPreview"
+                style="margin-top:20px;"
+            ></div>
 
-                <label for="settingsLatitude">
-                    Latitude
-                </label>
-
-                <input
-                    type="number"
-                    id="settingsLatitude"
-                    step="any"
-                    placeholder="Latitude"
-                >
-
-            </div>
+        </section>
 
 
-            <div class="form-group">
+        <!-- =================================================
+             REPORTS
+             ================================================= -->
 
-                <label for="settingsLongitude">
-                    Longitude
-                </label>
-
-                <input
-                    type="number"
-                    id="settingsLongitude"
-                    step="any"
-                    placeholder="Longitude"
-                >
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="settingsRadius">
-                    Allowed Radius (meters)
-                </label>
-
-                <input
-                    type="number"
-                    id="settingsRadius"
-                    min="1"
-                    placeholder="50"
-                >
-
-            </div>
-
-        </div>
-
-
-        <div
-            id="branchSettingsStatus"
-            class="status"
-        ></div>
-
-
-        <button
-            type="button"
-            class="primary"
-            onclick="saveBranchSettings()"
+        <section
+            id="reportsPage"
+            class="page"
         >
-            Save Changes
-        </button>
+
+            <button
+                class="back"
+                onclick="showPage('dashboardPage')"
+            >
+                Back to Dashboard
+            </button>
+
+
+            <div class="page-header">
+
+                <h2>
+                    Reports
+                </h2>
+
+                <p>
+                    Reports will be added later.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <h3>
+                    Reports
+                </h3>
+
+                <p>
+                    This section is reserved for future reports.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SETTINGS
+             ================================================= -->
+
+        <section
+            id="settingsPage"
+            class="page"
+        >
+
+            <button
+                class="back"
+                onclick="showPage('dashboardPage')"
+            >
+                Back to Dashboard
+            </button>
+
+
+            <div class="page-header">
+
+                <h2>
+                    Settings
+                </h2>
+
+                <p>
+                    Manage your branch settings.
+                </p>
+
+            </div>
+
+
+            <div
+                id="branchSettingsCard"
+                class="card"
+            >
+
+                <h3>
+                    Branch Settings
+                </h3>
+
+
+                <div class="form-grid">
+
+
+                    <div class="form-group">
+
+                        <label for="settingsBranchName">
+                            Branch Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="settingsBranchName"
+                            placeholder="Branch Name"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="settingsBranchCode">
+                            Branch Code
+                        </label>
+
+                        <input
+                            type="text"
+                            id="settingsBranchCode"
+                            placeholder="Branch Code"
+                            readonly
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="settingsManagerName">
+                            Manager Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="settingsManagerName"
+                            placeholder="Manager Name"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="settingsManagerEmail">
+                            Manager Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="settingsManagerEmail"
+                            placeholder="Manager Email"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="settingsManagerPhone">
+                            Manager Phone
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="settingsManagerPhone"
+                            placeholder="Manager Phone"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="settingsLatitude">
+                            Latitude
+                        </label>
+
+                        <input
+                            type="number"
+                            id="settingsLatitude"
+                            step="any"
+                            placeholder="Latitude"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="settingsLongitude">
+                            Longitude
+                        </label>
+
+                        <input
+                            type="number"
+                            id="settingsLongitude"
+                            step="any"
+                            placeholder="Longitude"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="settingsRadius">
+                            Allowed Radius (meters)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="settingsRadius"
+                            min="1"
+                            placeholder="50"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    id="branchSettingsStatus"
+                    class="status"
+                ></div>
+
+
+                <button
+                    type="button"
+                    class="primary"
+                    onclick="saveBranchSettings()"
+                >
+                    Save Changes
+                </button>
+
+            </div>
+
+        </section>
 
     </div>
 
-</section>
-    
-</div>
 
-    
-<footer>
-    © 2026 Ahmed Sobhy. All rights reserved.
-</footer>
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer>
+
+        © 2026 Ahmed Sobhy. All rights reserved.
+
+    </footer>
+
+
+    <!-- =====================================================
+         APPLICATION JAVASCRIPT
+         ===================================================== -->
 
     <script src="JS/config.js"></script>
 
@@ -1194,21 +1436,15 @@
 
     <script src="JS/app.js"></script>
 
-    <script
-        src="JS/import.js"
-    ></script>
+    <script src="JS/import.js"></script>
 
-    <script
-        src="JS/schedule.js"
-    ></script>
+    <script src="JS/schedule.js"></script>
 
-    <script
-        src="JS/export.js"
-    ></script>
+    <script src="JS/export.js"></script>
 
-    <script
-        src="JS/passkey.js"
-    ></script>
+    <!-- SimpleWebAuthn is loaded in HEAD above -->
+
+    <script src="JS/passkey.js"></script>
 
     <script src="JS/attendance.js"></script>
 

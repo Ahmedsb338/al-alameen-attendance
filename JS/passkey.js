@@ -914,34 +914,84 @@ async function authenticateCurrentUserPasskey() {
 
 
         // =================================================
-        // AUTHENTICATE PASSKEY
-        // =================================================
+// AUTHENTICATE PASSKEY
+// =================================================
 
-        let authenticationResponse;
+let authenticationResponse;
 
+try {
 
-        try {
+    authenticationResponse =
+        await window
+            .SimpleWebAuthnBrowser
+            .startAuthentication({
+                optionsJSON: options
+            });
 
-            authenticationResponse =
-                await window
-                    .SimpleWebAuthnBrowser
-                    .startAuthentication({
-                        optionsJSON:
-                            options
-                    });
+}
+catch (error) {
 
-        }
+    if (error && error.name === "NotAllowedError") {
 
-        catch (error) {
+        console.warn(
+            "Passkey authentication was cancelled by the user or timed out."
+        );
 
-            console.error(
-                "WebAuthn authentication ceremony failed:",
-                error
-            );
+        alert(
+            "Authentication was not completed. Please try again."
+        );
 
-            throw error;
-        }
+        return false;
+    }
 
+    if (error && error.name === "NotFoundError") {
+
+        console.warn(
+            "No matching passkey was found."
+        );
+
+        alert(
+            "No registered passkey was found on this device."
+        );
+
+        return false;
+    }
+
+    if (error && error.name === "SecurityError") {
+
+        console.error(
+            "WebAuthn security error:",
+            error
+        );
+
+        alert(
+            "Passkey authentication was blocked by the browser security settings."
+        );
+
+        return false;
+    }
+
+    if (error && error.name === "InvalidStateError") {
+
+        console.error(
+            "WebAuthn invalid state:",
+            error
+        );
+
+        alert(
+            "The passkey is currently unavailable. Please try again."
+        );
+
+        return false;
+    }
+
+    console.error(
+        "Unexpected WebAuthn authentication error:",
+        error
+    );
+
+    throw error;
+}
 
         // =================================================
         // VERIFY AUTHENTICATION
